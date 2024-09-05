@@ -1,37 +1,8 @@
-create TABLE person (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255),
-    surname VARCHAR(255)
-);
-
-create TABLE post (
+create TABLE parent_calculation (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255),
-    content VARCHAR(255),
-    user_id INTEGER,
-    FOREIGN KEY (user_id) REFERENCES person(id)
+    date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
--- id: 1
--- ITRWorkedDays: 13
--- coeficientOfNDS: 1.2
--- costOfElectricityPerDay: 550
--- galvanizedValue: 1000
--- numberOfDaysPerShift: 21
--- numberOfHoursPerShift: 8
--- rentalCostPerDay: 170
--- profitabilityCoeficient: 0.1
--- title: "Калькуляция-30.7.2024"
--- transportValue: 2000
--- dateOfCreation: "30.7.2024"
--- lastEditDate: "30.7.2024 6:24:33"
-
--- ITRData: {table: Array(6)}
--- consumablesData: (18) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
--- hardwareData: (5) [{…}, {…}, {…}, {…}, {…}]
--- metalData: (3) [{…}, {…}, {…}]
--- specificationData: {table: Array(1), notes: 'specificationData notes'}
--- workersData: {table: Array(3), notes: 'workersData notes'}
 
 create TABLE calculation (
     id SERIAL PRIMARY KEY,
@@ -45,6 +16,12 @@ create TABLE calculation (
     profitability_coeficient DECIMAL,
     title VARCHAR(255),
     transport_value INTEGER,
-    date_of_creation TIMESTAMP,
-    last_edit_date TIMESTAMP
+    date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    last_edit_date TIMESTAMP,
+    parent_calculation_id INTEGER,
+    FOREIGN KEY (parent_calculation_id) REFERENCES parent_calculation(id),
+    calculation_type VARCHAR(255),
+    consumables_data JSON,
+    hardware_data JSON,
+    metal_data JSON,
 );
