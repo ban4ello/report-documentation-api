@@ -1,3 +1,19 @@
+create TABLE users (
+	id SERIAL PRIMARY KEY,
+	date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+	name VARCHAR(255),
+	lastname VARCHAR(255),
+	role VARCHAR(255)
+);
+
+create TABLE workers (
+	id SERIAL PRIMARY KEY,
+	date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+	name VARCHAR(255),
+	lastname VARCHAR(255),
+	position VARCHAR(255)
+);
+
 create TABLE parent_calculation (
 	id SERIAL PRIMARY KEY,
 	title VARCHAR(255),
