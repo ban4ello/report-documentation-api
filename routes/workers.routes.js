@@ -8,5 +8,9 @@ router.put('/worker', workersController.updateWorker)
 router.delete('/worker/:id', workersController.deleteWorkerById)
 
 router.get('/workers', workersController.getWorkers)
+router.get('/workers-test', (req, res) => {
+    console.log('Test route hit');
+    return res.json({ "success": true });
+})
 
 module.exports = router
