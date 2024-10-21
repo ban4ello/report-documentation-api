@@ -21,5 +21,11 @@ app.use('/api', calculationRouter)
 app.use('/api', parentCalculationRouter)
 app.use('/api', workersRouter)
 
+app.get("/", function(request, response){
+     
+    // отправляем ответ
+    response.send("<h2>Привет Express!</h2>");
+});
+
 app.listen(PORT, () => console.log('Server started on port ' + PORT))
 app.requestTimeout = 10000;
