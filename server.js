@@ -25,7 +25,7 @@ app.get("/", function(request, response){
     response.send("<h2>Привет Express!</h2>");
 });
 
-app.get("/test", function(request, response){
+app.get("/api/test", function(request, response){
     response.send("<h2>test</h2>");
 });
 
