@@ -25,5 +25,9 @@ app.get("/", function(request, response){
     response.send("<h2>Привет Express!</h2>");
 });
 
+app.get("/test", function(request, response){
+    response.send("<h2>test</h2>");
+});
+
 app.listen(PORT, () => console.log('Server started on port ' + PORT))
 app.requestTimeout = 10000;
