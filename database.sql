@@ -40,6 +40,9 @@ create TABLE calculation (
 	consumables_data JSON,
 	hardware_data JSON,
 	metal_data JSON,
+	total_metal_per_item DECIMAL,
+	total_processing_per_item DECIMAL,
+	total_profitability_per_item DECIMAL,
 	total DECIMAL
 );
 
