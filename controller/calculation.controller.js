@@ -25,6 +25,9 @@ class CalculationController {
 			itrData,
       workersTaxData,
       itrTaxData,
+      totalMetalPerItem,
+      totalProcessingPerItem,
+      totalProfitabilityPerItem,
       total
     } = req.body;
     let resSpecificationDataTable = [];
@@ -57,8 +60,11 @@ class CalculationController {
 			consumables_data,
 			hardware_data,
 			metal_data,
+			total_metal_per_item,
+			total_processing_per_item,
+			total_profitability_per_item,
       total
-		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING *`,
+		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING *`,
       [
         itrWorkedDays,
         coeficientOfNds,
@@ -76,6 +82,9 @@ class CalculationController {
         consumablesData,
         hardwareData,
         metalData,
+        totalMetalPerItem,
+        totalProcessingPerItem,
+        totalProfitabilityPerItem,
         total
       ]
     );
@@ -263,6 +272,9 @@ class CalculationController {
 			itrData,
       workersTaxData,
       itrTaxData,
+      totalMetalPerItem,
+      totalProcessingPerItem,
+      totalProfitabilityPerItem,
       total
     } = req.body;
 
@@ -282,8 +294,11 @@ class CalculationController {
 				consumables_data = $12,
 				hardware_data = $13,
 				metal_data = $14,
-				total = $15
-				where id = $16 RETURNING *`,
+				total = $15,
+				total_metal_per_item = $16,
+				total_processing_per_item = $17,
+				total_profitability_per_item = $18
+				where id = $19 RETURNING *`,
       [
         itrWorkedDays,
         coeficientOfNds,
@@ -300,6 +315,9 @@ class CalculationController {
         hardwareData,
         metalData,
         total,
+        totalMetalPerItem,
+        totalProcessingPerItem,
+        totalProfitabilityPerItem,
         id
       ]
     );
@@ -700,7 +718,22 @@ class CalculationController {
   }
 
   async getCalculations(req, res) {
-    const calculations = await db.query('SELECT * FROM calculation');
+    const filter = req.query;
+    let calculations = {};
+    const whereClauses = [];
+    const values = [];
+
+    for (const key in filter) {
+      if (filter.hasOwnProperty(key)) {
+        values.push(filter[key]);
+        whereClauses.push(`${key} = $${values.length}`);
+      }
+    }
+
+    const whereClause = whereClauses.length ? `WHERE ${whereClauses.join(' AND ')}` : '';
+
+    calculations = await db.query(`SELECT * FROM calculation ${whereClause}`, values);
+
     res.json(calculations.rows);
   }
 
