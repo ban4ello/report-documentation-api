@@ -1,9 +1,10 @@
 create TABLE users (
 	id SERIAL PRIMARY KEY,
 	date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-	name VARCHAR(255),
-	lastname VARCHAR(255),
-	role VARCHAR(255)
+	role VARCHAR(10) DEFAULT 'guest',
+    username VARCHAR(255),
+    email VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
 );
 
 create TABLE workers (
@@ -22,7 +23,7 @@ create TABLE parent_calculation (
 
 create TABLE calculation (
 	id SERIAL PRIMARY KEY,
-	itr_worked_days INTEGER,
+	itr_worked_days DECIMAL,
 	coeficient_of_nds DECIMAL,
 	cost_of_electricity_per_day INTEGER,
 	galvanized_value INTEGER,
