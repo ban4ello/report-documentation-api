@@ -4,7 +4,16 @@ create TABLE users (
 	role VARCHAR(10) DEFAULT 'guest',
     username VARCHAR(255),
     email VARCHAR(50) NOT NULL UNIQUE,
+    isActivated BOOLEAN DEFAULT FALSE,
+    activationLink VARCHAR(255),
     password VARCHAR(255) NOT NULL
+);
+
+create TABLE tokenSchema (
+	id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    refreshToken VARCHAR(50) NOT NULL UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 create TABLE workers (
