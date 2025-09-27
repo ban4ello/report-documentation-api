@@ -52,6 +52,17 @@ class AuthController {
       res.status(500).json({ message: 'Ошибка при входе' });
     }
   }
+
+  async logoutUser(req, res) {
+    try {
+      // В JWT токенах logout обычно происходит на клиенте путем удаления токена
+      // Но мы можем добавить логику для blacklist токенов если нужно
+      res.json({ message: 'Успешный выход из системы' });
+    } catch (error) {
+      console.error('Ошибка при выходе:', error);
+      res.status(500).json({ message: 'Ошибка при выходе' });
+    }
+  }
 }
 
 module.exports = new AuthController();
