@@ -1,11 +1,10 @@
-const db = require('../db');
 // const camelize = (s) => s.replace(/_./g, (x) => x[1].toUpperCase());
 
 class WorkersController {
   async createWorker(req, res) {
     const { name, lastname, position } = req.body;
 
-    const newWorkerRes = await db.query(
+    const newWorkerRes = await req.userDb.query(
       `INSERT INTO workers (name, lastname, position) values ($1, $2, $3) RETURNING *`, [name, lastname, position]
     );
 
@@ -16,7 +15,7 @@ class WorkersController {
     const id = req.params.id;
     const { name, lastname, position } = req.body;
 
-    const updatedWorkerRes = await db.query(
+    const updatedWorkerRes = await req.userDb.query(
       `UPDATE workers set 
 				name = $1,
 				lastname = $2,
@@ -35,12 +34,12 @@ class WorkersController {
 
   async deleteWorkerById(req, res) {
     const id = req.params.id;
-    const deletedWorkerRes = await db.query('DELETE FROM workers where id = $1', [id]);
+    const deletedWorkerRes = await req.userDb.query('DELETE FROM workers where id = $1', [id]);
     res.json(deletedWorkerRes.rows[0]);
   }
 
   async getWorkers(req, res) {
-    const allWorkersRes = await db.query('SELECT * FROM workers');
+    const allWorkersRes = await req.userDb.query('SELECT * FROM workers');
     res.json(allWorkersRes.rows);
   }
 }

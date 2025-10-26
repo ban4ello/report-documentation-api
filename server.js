@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const dbManager = require('./dbManager');
 const PORT = process.env.PORT || 8000
 const app = express()
 const calculationRouter = require('./routes/calculation.routes.js')
@@ -29,5 +30,24 @@ app.use('/api', parentCalculationRouter)
 app.use('/api', workersRouter)
 app.use('/api', authRouter)
 
-app.listen(PORT, () => console.log('Server started on port ' + PORT))
+const server = app.listen(PORT, () => console.log('Server started on port ' + PORT))
 app.requestTimeout = 10000;
+
+// Graceful shutdown
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(async () => {
+    console.log('Process terminated');
+    await dbManager.closeAll();
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', async () => {
+  console.log('SIGINT received, shutting down gracefully');
+  server.close(async () => {
+    console.log('Process terminated');
+    await dbManager.closeAll();
+    process.exit(0);
+  });
+});

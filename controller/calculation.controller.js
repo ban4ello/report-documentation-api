@@ -38,11 +38,11 @@ class CalculationController {
 
     let newParentCalculationId = parentCalculationId;
     if (calculationType === 'plan') {
-      const parent = await db.query(`INSERT INTO parent_calculation (title) values ($1) RETURNING *`, [title]);
+      const parent = await req.userDb.query(`INSERT INTO parent_calculation (title) values ($1) RETURNING *`, [title]);
       newParentCalculationId = parent.rows[0].id;
     }
 
-    const newCalculation = await db.query(
+    const newCalculation = await req.userDb.query(
       `INSERT INTO calculation (
 			itr_worked_days,
 			coeficient_of_nds,
@@ -96,7 +96,7 @@ class CalculationController {
         itrTaxData.map((item) => {
           return new Promise((res) =>
             res(
-              db.query(
+              req.userDb.query(
 								`INSERT INTO itr_tax_data (
                   order_id,
 									name,
@@ -130,7 +130,7 @@ class CalculationController {
         workersTaxData.map((item) => {
           return new Promise((res) =>
             res(
-              db.query(
+              req.userDb.query(
 								`INSERT INTO workers_tax_data (
                   order_id,
 									name,
@@ -160,7 +160,7 @@ class CalculationController {
     }
 
     if (specificationData) {
-      const newSpecificationDataRes = await db.query(`INSERT INTO specification_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
+      const newSpecificationDataRes = await req.userDb.query(`INSERT INTO specification_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
         specificationData.notes,
         newCalculationId
       ]);
@@ -170,7 +170,7 @@ class CalculationController {
         specificationData.table.map((item) => {
           return new Promise((res) =>
             res(
-              db.query(
+              req.userDb.query(
 								`INSERT INTO specification_data_table (
 									name,
 									quantity,
@@ -188,7 +188,7 @@ class CalculationController {
     }
 
     if (workersData) {
-      const newWorkersDataRes = await db.query(`INSERT INTO workers_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
+      const newWorkersDataRes = await req.userDb.query(`INSERT INTO workers_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
         workersData.notes,
         newCalculationId
       ]);
@@ -198,7 +198,7 @@ class CalculationController {
         workersData.table.map((item) => {
           return new Promise((res) =>
             res(
-              db.query(
+              req.userDb.query(
 								`INSERT INTO workers_data_table (
 									name,
 									number_of_hours_worked,
@@ -216,7 +216,7 @@ class CalculationController {
     }
 
     if (itrData) {
-      const newItrDataRes = await db.query(`INSERT INTO itr_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
+      const newItrDataRes = await req.userDb.query(`INSERT INTO itr_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
         itrData.notes,
         newCalculationId
       ]);
@@ -226,7 +226,7 @@ class CalculationController {
         itrData.table.map((item) => {
           return new Promise((res) =>
             res(
-              db.query(
+              req.userDb.query(
 								`INSERT INTO itr_data_table (
 									name,
 									salary_per_month,
@@ -278,7 +278,7 @@ class CalculationController {
       total
     } = req.body;
 
-    const calculation = await db.query(
+    const calculation = await req.userDb.query(
       `UPDATE calculation set 
 				itr_worked_days = $1,
 				coeficient_of_nds = $2,
@@ -323,7 +323,7 @@ class CalculationController {
     );
 
 		if (specificationData) {
-			const specificationDataRes = await db.query(
+			const specificationDataRes = await req.userDb.query(
 				`UPDATE specification_data set 
 					notes = $1
 					where calculation_id = $2 RETURNING *`,
@@ -335,15 +335,15 @@ class CalculationController {
 
 			await Promise.all(
         specificationData.table.map(async (item) => {
-					const isSpecificationItemExists = await db.query(
+					const isSpecificationItemExists = await req.userDb.query(
             `SELECT * FROM specification_data_table WHERE id = $1`,
             [item.id]
           );
 
           return new Promise((res) => {
 						if (isSpecificationItemExists.rows.length) {
-							res(
-								db.query(
+            res(
+              req.userDb.query(
 									`UPDATE specification_data_table set
 										name = $1,
 										quantity = $2,
@@ -355,8 +355,8 @@ class CalculationController {
 								)
 							)
 						} else {
-							res(
-								db.query(
+            res(
+              req.userDb.query(
 									`INSERT INTO specification_data_table (
 										name,
 										quantity,
@@ -375,7 +375,7 @@ class CalculationController {
 		}
 
 		if (workersData) {
-			const workersDataRes = await db.query(
+			const workersDataRes = await req.userDb.query(
 				`UPDATE workers_data set 
 					notes = $1
 					where calculation_id = $2 RETURNING *`,
@@ -387,15 +387,15 @@ class CalculationController {
 
 			await Promise.all(
         workersData.table.map(async (item) => {
-					const isWorkerItemExists = await db.query(
+					const isWorkerItemExists = await req.userDb.query(
             `SELECT * FROM workers_data_table WHERE id = $1`,
             [item.id]
           );
 
 					return new Promise((res) => {
 						if (isWorkerItemExists.rows.length) {
-							res(
-								db.query(
+            res(
+              req.userDb.query(
 									`UPDATE workers_data_table set
 										name = $1,
 										number_of_hours_worked = $2,
@@ -407,8 +407,8 @@ class CalculationController {
 								)
 							)
 						} else {
-							res(
-								db.query(
+            res(
+              req.userDb.query(
 									`INSERT INTO workers_data_table (
 										name,
 										number_of_hours_worked,
@@ -427,7 +427,7 @@ class CalculationController {
 		}
 
 		if (itrData) {
-			const itrDataRes = await db.query(
+			const itrDataRes = await req.userDb.query(
 				`UPDATE itr_data set 
 					notes = $1
 					where calculation_id = $2 RETURNING *`,
@@ -439,15 +439,15 @@ class CalculationController {
 
 			await Promise.all(
         itrData.table.map(async (item) => {
-					const isItrItemExists = await db.query(
+					const isItrItemExists = await req.userDb.query(
             `SELECT * FROM itr_data_table WHERE id = $1`,
             [item.id]
           );
 
 					return new Promise((res) => {
 						if (isItrItemExists.rows.length) {
-							res(
-								db.query(
+            res(
+              req.userDb.query(
 									`UPDATE itr_data_table set
 										name = $1,
 										salary_per_month = $2
@@ -456,8 +456,8 @@ class CalculationController {
 								)
 							)
 						} else {
-							res(
-								db.query(
+            res(
+              req.userDb.query(
 									`INSERT INTO itr_data_table (
 										name,
 										salary_per_month,
@@ -475,15 +475,15 @@ class CalculationController {
 		if (workersTaxData) {
 			await Promise.all(
         workersTaxData.map(async (item) => {
-					const isWorkersTaxDataExists = await db.query(
+					const isWorkersTaxDataExists = await req.userDb.query(
             `SELECT * FROM workers_tax_data WHERE id = $1`,
             [item.id]
           );
 
 					return new Promise((res) => {
 						if (isWorkersTaxDataExists.rows.length) {
-							res(
-								db.query(
+            res(
+              req.userDb.query(
 									`UPDATE workers_tax_data set
                     name = $1,
                     coefficient = $2,
@@ -509,7 +509,7 @@ class CalculationController {
 							)
 						} else {
 							res(
-                db.query(
+                req.userDb.query(
                   `INSERT INTO workers_tax_data (
                     order_id,
                     name,
@@ -543,15 +543,15 @@ class CalculationController {
 		if (itrTaxData) {
 			await Promise.all(
         itrTaxData.map(async (item) => {
-					const isItrTaxDataExists = await db.query(
+					const isItrTaxDataExists = await req.userDb.query(
             `SELECT * FROM itr_tax_data WHERE id = $1`,
             [item.id]
           );
 
 					return new Promise((res) => {
 						if (isItrTaxDataExists.rows.length) {
-							res(
-								db.query(
+            res(
+              req.userDb.query(
 									`UPDATE itr_tax_data set
                     name = $1,
                     coefficient = $2,
@@ -577,7 +577,7 @@ class CalculationController {
 							)
 						} else {
 							res(
-                db.query(
+                req.userDb.query(
                   `INSERT INTO itr_tax_data (
                     order_id,
                     name,
@@ -613,13 +613,13 @@ class CalculationController {
 
   async getCalculation(req, res) {
     const id = req.params.id;
-    const calculation = await db.query('SELECT * FROM calculation where id = $1', [id]);
-    const newSpecificationData = await db.query('SELECT * FROM specification_data where calculation_id = $1', [id]);
+    const calculation = await req.userDb.query('SELECT * FROM calculation where id = $1', [id]);
+    const newSpecificationData = await req.userDb.query('SELECT * FROM specification_data where calculation_id = $1', [id]);
     const newSpecificationDataNotes = newSpecificationData.rows[0].notes;
     const newSpecificationDataId = newSpecificationData.rows[0].id;
-    const resSpecificationDataTable = await db.query('SELECT * FROM specification_data_table where specification_data_id = $1', [newSpecificationDataId]);
-    const resWorkersTaxData = await db.query('SELECT * FROM workers_tax_data where calculation_id = $1', [id]);
-    const resItrTaxData = await db.query('SELECT * FROM itr_tax_data where calculation_id = $1', [id]);
+    const resSpecificationDataTable = await req.userDb.query('SELECT * FROM specification_data_table where specification_data_id = $1', [newSpecificationDataId]);
+    const resWorkersTaxData = await req.userDb.query('SELECT * FROM workers_tax_data where calculation_id = $1', [id]);
+    const resItrTaxData = await req.userDb.query('SELECT * FROM itr_tax_data where calculation_id = $1', [id]);
 
 		const camelizeSpecificationData = resSpecificationDataTable.rows.map((row) => { // TODO: refactor this
 			return Object.keys(row).reduce((acc, key) => {
@@ -629,10 +629,10 @@ class CalculationController {
 			}, {});
 		});
 
-    const newWorkersData = await db.query('SELECT * FROM workers_data where calculation_id = $1', [id]);
+    const newWorkersData = await req.userDb.query('SELECT * FROM workers_data where calculation_id = $1', [id]);
     const newWorkersDataNotes = newWorkersData.rows[0].notes;
     const newWorkersDataId = newWorkersData.rows[0].id;
-    const resWorkersDataTable = await db.query('SELECT * FROM workers_data_table where workers_data_id = $1', [newWorkersDataId]);
+    const resWorkersDataTable = await req.userDb.query('SELECT * FROM workers_data_table where workers_data_id = $1', [newWorkersDataId]);
 
 		const camelizeWorkersData = resWorkersDataTable.rows.map((row) => { // TODO: refactor this
 			return Object.keys(row).reduce((acc, key) => {
@@ -642,12 +642,12 @@ class CalculationController {
 			}, {});
 		});
 
-    const newItrDataRes = await db.query('SELECT * FROM itr_data where calculation_id = $1', [id]);
+    const newItrDataRes = await req.userDb.query('SELECT * FROM itr_data where calculation_id = $1', [id]);
 		const newItrData = newItrDataRes.rows.length ? newItrDataRes.rows[0] : {};
     const newItrDataId = newItrData.id;
     const newItrDataNotes = newItrData.notes || ('note-' + newItrDataId);
     // const newItrDataNotes = newItrData.notes;
-    const resItrDataTable = await db.query('SELECT * FROM itr_data_table where itr_data_id = $1', [newItrDataId]);
+    const resItrDataTable = await req.userDb.query('SELECT * FROM itr_data_table where itr_data_id = $1', [newItrDataId]);
 
 		const camelizeItrData = resItrDataTable.rows.map((row) => { // TODO: refactor this
 			return Object.keys(row).reduce((acc, key) => {
@@ -713,7 +713,7 @@ class CalculationController {
 
   async getCalculationByParentId(req, res) {
     const id = req.query.id;
-    const calculation = await db.query('SELECT * FROM calculation where parent_calculation_id = $1', [id]);
+    const calculation = await req.userDb.query('SELECT * FROM calculation where parent_calculation_id = $1', [id]);
     res.json(calculation.rows);
   }
 
@@ -732,24 +732,24 @@ class CalculationController {
 
     const whereClause = whereClauses.length ? `WHERE ${whereClauses.join(' AND ')}` : '';
 
-    calculations = await db.query(`SELECT * FROM calculation ${whereClause}`, values);
+    calculations = await req.userDb.query(`SELECT * FROM calculation ${whereClause}`, values);
 
     res.json(calculations.rows);
   }
 
   async deleteCalculation(req, res) {
     const id = req.params.id;
-    const calculation = await db.query('DELETE FROM calculation where id = $1', [id]);
+    const calculation = await req.userDb.query('DELETE FROM calculation where id = $1', [id]);
     res.json(calculation.rows[0]);
   }
 
   async deleteItemFromWorkersData(req, res) {
     const id = req.params.id;
 
-		const isWorkerExists = await db.query(`SELECT * FROM workers_data_table WHERE id = $1`, [id]);
+		const isWorkerExists = await req.userDb.query(`SELECT * FROM workers_data_table WHERE id = $1`, [id]);
 
 		if (isWorkerExists.rows.length) {
-			await db.query('DELETE FROM workers_data_table where id = $1', [id]);
+			await req.userDb.query('DELETE FROM workers_data_table where id = $1', [id]);
 
 			res.json([]);
 		}
@@ -758,10 +758,10 @@ class CalculationController {
   async deleteItemFromItrData(req, res) {
     const id = req.params.id;
 
-		const isItrExists = await db.query(`SELECT * FROM itr_data_table WHERE id = $1`, [id]);
+		const isItrExists = await req.userDb.query(`SELECT * FROM itr_data_table WHERE id = $1`, [id]);
 
 		if (isItrExists.rows.length) {
-			await db.query('DELETE FROM itr_data_table where id = $1', [id]);
+			await req.userDb.query('DELETE FROM itr_data_table where id = $1', [id]);
 
 			res.json([]);
 		}
@@ -770,10 +770,10 @@ class CalculationController {
   async deleteItemFromSpecificationData(req, res) {
     const id = req.params.id;
 
-		const isItemExists = await db.query(`SELECT * FROM specification_data_table WHERE id = $1`, [id]);
+		const isItemExists = await req.userDb.query(`SELECT * FROM specification_data_table WHERE id = $1`, [id]);
 
 		if (isItemExists.rows.length) {
-			await db.query('DELETE FROM specification_data_table where id = $1', [id]);
+			await req.userDb.query('DELETE FROM specification_data_table where id = $1', [id]);
 
 			res.json([]);
 		}

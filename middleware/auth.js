@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
+const dbManager = require('../dbManager');
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
   try {
     // Получаем токен из заголовка Authorization
     const authHeader = req.header('Authorization');
@@ -26,6 +27,10 @@ const authMiddleware = (req, res, next) => {
     
     // Добавляем информацию о пользователе в запрос
     req.user = decoded;
+    
+    // Получаем подключение к БД пользователя
+    req.userDb = await dbManager.getUserConnection(decoded.userId);
+    
     next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
