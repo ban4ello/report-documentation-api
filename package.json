@@ -7,7 +7,10 @@
     "dev": "nodemon server.js",
     "start": "pm2 start server.js",
     "stop": "pm2 stop server.js",
-    "lint:fix": "eslint --fix ./*.js"
+    "lint:fix": "eslint --fix ./*.js",
+    "populate-workers": "node scripts/populate-test-workers.js",
+    "clear-workers": "node scripts/clear-workers.js",
+    "clone-calculation": "node scripts/clone-calculation.js"
   },
   "keywords": [],
   "author": "",
