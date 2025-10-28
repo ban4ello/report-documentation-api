@@ -9,6 +9,14 @@ create TABLE users (
     password VARCHAR(255) NOT NULL
 );
 
+create TABLE login_attempts (
+	id SERIAL PRIMARY KEY,
+	email VARCHAR(50) NOT NULL,
+	success BOOLEAN DEFAULT FALSE,
+	ip_address VARCHAR(45),
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 create TABLE tokenSchema (
 	id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
