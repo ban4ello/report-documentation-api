@@ -10,6 +10,7 @@
     "lint:fix": "eslint --fix ./*.js",
     "populate-workers": "node scripts/populate-test-workers.js",
     "clear-workers": "node scripts/clear-workers.js",
+    "clear-parent-calculations": "node scripts/clear-parent-calculations.js",
     "clone-calculation": "node scripts/clone-calculation.js"
   },
   "keywords": [],
