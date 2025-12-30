@@ -1,0 +1,3560 @@
+{
+  "metadata": {
+    "userId": "4",
+    "schemaName": "user_4",
+    "backupDate": "2025-12-29T14:37:14.044Z",
+    "version": "1.0"
+  },
+  "parent_calculations": [
+    {
+      "id": 1,
+      "title": "Название калькуляции-план: 1",
+      "date_of_creation": "2025-10-28T07:15:12.561Z",
+      "calculations": [
+        {
+          "id": 1,
+          "itr_worked_days": "11",
+          "coeficient_of_nds": "1.2",
+          "cost_of_electricity_per_day": 444,
+          "galvanized_value": 1111,
+          "number_of_days_per_shift": 21,
+          "number_of_hours_per_shift": 8,
+          "rental_cost_per_day": 333,
+          "profitability_coeficient": "0.2",
+          "title": "Название калькуляции-план: 1",
+          "transport_value": 2222,
+          "date_of_creation": "2025-10-28T07:15:12.700Z",
+          "last_edit_date": "2025-11-12T17:51:09.234Z",
+          "parent_calculation_id": 1,
+          "calculation_type": "plan",
+          "consumables_data": [
+            {
+              "quantity": 2,
+              "name": "Проволока сварочная 15 кг ",
+              "price": 2032.2,
+              "unitOfMeasurement": "бухты",
+              "taxPrice": 1016.1,
+              "order": 1
+            },
+            {
+              "quantity": 2,
+              "name": "Смесь",
+              "price": 3000,
+              "unitOfMeasurement": "баллон",
+              "taxPrice": 1500,
+              "order": 2
+            },
+            {
+              "quantity": 21,
+              "name": "Круги отрезные 230",
+              "price": 933.87,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 44.47,
+              "order": 3
+            },
+            {
+              "quantity": 3,
+              "name": "Круги зачистные 230",
+              "price": 336,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 112,
+              "order": 4
+            },
+            {
+              "quantity": 1,
+              "name": "Фреза 32",
+              "price": 1320,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 1320,
+              "order": 5
+            },
+            {
+              "quantity": 2,
+              "name": "Фреза 22",
+              "price": 1800,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 900,
+              "order": 6
+            },
+            {
+              "quantity": 0.3,
+              "name": "Лента для лентопила",
+              "price": 846,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2820,
+              "order": 7
+            },
+            {
+              "quantity": 0.5,
+              "name": "Сож ",
+              "price": 75,
+              "unitOfMeasurement": "л",
+              "taxPrice": 150,
+              "order": 8
+            },
+            {
+              "quantity": 1,
+              "name": "Борфреза",
+              "price": 350,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 350,
+              "order": 9
+            },
+            {
+              "quantity": 2,
+              "name": "Сварочный наконечник",
+              "price": 96,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 48,
+              "order": 10
+            },
+            {
+              "quantity": 2,
+              "name": "Плазменный наконечник",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 11
+            },
+            {
+              "quantity": 2,
+              "name": "Сопло плазменное",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 12
+            },
+            {
+              "quantity": 2,
+              "name": "Краги",
+              "price": 384,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 192,
+              "order": 13
+            },
+            {
+              "quantity": 2,
+              "name": "Полукраги",
+              "price": 180,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 90,
+              "order": 14
+            },
+            {
+              "quantity": 1,
+              "name": "Перчатки резиновые",
+              "price": 35,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 35,
+              "order": 15
+            },
+            {
+              "quantity": 5,
+              "name": "Перчатки тканевые",
+              "price": 90,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 18,
+              "order": 16
+            },
+            {
+              "quantity": 5,
+              "name": "Стекло прозрачное ",
+              "price": 65,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 13,
+              "order": 17
+            },
+            {
+              "quantity": 2,
+              "name": "Стекло темное",
+              "price": 50,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 25,
+              "order": 18
+            }
+          ],
+          "hardware_data": [
+            {
+              "quantity": 276,
+              "name": "Болты М20*60",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Гайка М20",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Шайба М20",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            },
+            {
+              "quantity": 6,
+              "name": "Шпилька М30 кл.пр.88 ",
+              "price": 3900,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 650,
+              "order": 4
+            },
+            {
+              "quantity": 24,
+              "name": "Гайка М30",
+              "price": 3072,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 128,
+              "order": 5
+            }
+          ],
+          "metal_data": [
+            {
+              "quantity": 276,
+              "name": "Труба 1-fact",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Труба 2",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Труба 3",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            }
+          ],
+          "total_metal_per_item": "1170",
+          "total_processing_per_item": "2284.89",
+          "total_profitability_per_item": "690.9783636363636",
+          "total": "91209.144",
+          "specification_data": {
+            "id": 1,
+            "notes": "Заметки",
+            "date_of_creation": "2025-10-28T07:15:12.838Z",
+            "calculation_id": 1,
+            "table": [
+              {
+                "id": 1,
+                "date_of_creation": "2025-10-28T08:05:08.863Z",
+                "name": "Наименование изделия",
+                "quantity": 2,
+                "value_per_unit": "11",
+                "unit_of_measurement": "тн",
+                "total_weight": null,
+                "specification_data_id": 1
+              }
+            ]
+          },
+          "workers_data": {
+            "id": 1,
+            "notes": "Заметки",
+            "date_of_creation": "2025-10-28T07:15:12.860Z",
+            "calculation_id": 1,
+            "table": [
+              {
+                "id": 1,
+                "date_of_creation": "2025-10-28T08:05:08.888Z",
+                "name": "Арсений Николаев",
+                "number_of_hours_worked": 123,
+                "salary_per_day": 1000,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 1
+              }
+            ]
+          },
+          "itr_data": {
+            "id": 1,
+            "notes": "note-1",
+            "date_of_creation": "2025-10-28T07:15:12.864Z",
+            "calculation_id": 1,
+            "table": [
+              {
+                "id": 1,
+                "date_of_creation": "2025-10-28T08:05:08.895Z",
+                "name": "Дмитрий Степанов",
+                "salary_per_month": 1000,
+                "itr_data_id": 1
+              }
+            ]
+          },
+          "workers_tax_data": [
+            {
+              "id": 1,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 1,
+              "order_id": 1
+            },
+            {
+              "id": 2,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 1,
+              "order_id": 3
+            },
+            {
+              "id": 3,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 1,
+              "order_id": 5
+            },
+            {
+              "id": 4,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 1,
+              "order_id": 4
+            },
+            {
+              "id": 5,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 1,
+              "order_id": 2
+            }
+          ],
+          "itr_tax_data": [
+            {
+              "id": 1,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 1,
+              "order_id": 1
+            },
+            {
+              "id": 2,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 1,
+              "order_id": 3
+            },
+            {
+              "id": 3,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 1,
+              "order_id": 4
+            },
+            {
+              "id": 4,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 1,
+              "order_id": 2
+            },
+            {
+              "id": 5,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 1,
+              "order_id": 5
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "itr_worked_days": "11",
+          "coeficient_of_nds": "1.2",
+          "cost_of_electricity_per_day": 444,
+          "galvanized_value": 1111,
+          "number_of_days_per_shift": 21,
+          "number_of_hours_per_shift": 8,
+          "rental_cost_per_day": 333,
+          "profitability_coeficient": "0.2",
+          "title": "Название калькуляции-факт 1-1",
+          "transport_value": 2222,
+          "date_of_creation": "2025-10-28T11:01:18.108Z",
+          "last_edit_date": "2025-10-28T08:01:18.028Z",
+          "parent_calculation_id": 1,
+          "calculation_type": "fact",
+          "consumables_data": [
+            {
+              "quantity": 2,
+              "name": "Проволока сварочная 15 кг ",
+              "price": 2032.2,
+              "unitOfMeasurement": "бухты",
+              "taxPrice": 1016.1,
+              "order": 1
+            },
+            {
+              "quantity": 2,
+              "name": "Смесь",
+              "price": 3000,
+              "unitOfMeasurement": "баллон",
+              "taxPrice": 1500,
+              "order": 2
+            },
+            {
+              "quantity": 21,
+              "name": "Круги отрезные 230",
+              "price": 933.87,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 44.47,
+              "order": 3
+            },
+            {
+              "quantity": 3,
+              "name": "Круги зачистные 230",
+              "price": 336,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 112,
+              "order": 4
+            },
+            {
+              "quantity": 1,
+              "name": "Фреза 32",
+              "price": 1320,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 1320,
+              "order": 5
+            },
+            {
+              "quantity": 2,
+              "name": "Фреза 22",
+              "price": 1800,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 900,
+              "order": 6
+            },
+            {
+              "quantity": 0.3,
+              "name": "Лента для лентопила",
+              "price": 846,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2820,
+              "order": 7
+            },
+            {
+              "quantity": 0.5,
+              "name": "Сож ",
+              "price": 75,
+              "unitOfMeasurement": "л",
+              "taxPrice": 150,
+              "order": 8
+            },
+            {
+              "quantity": 1,
+              "name": "Борфреза",
+              "price": 350,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 350,
+              "order": 9
+            },
+            {
+              "quantity": 2,
+              "name": "Сварочный наконечник",
+              "price": 96,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 48,
+              "order": 10
+            },
+            {
+              "quantity": 2,
+              "name": "Плазменный наконечник",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 11
+            },
+            {
+              "quantity": 2,
+              "name": "Сопло плазменное",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 12
+            },
+            {
+              "quantity": 2,
+              "name": "Краги",
+              "price": 384,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 192,
+              "order": 13
+            },
+            {
+              "quantity": 2,
+              "name": "Полукраги",
+              "price": 180,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 90,
+              "order": 14
+            },
+            {
+              "quantity": 1,
+              "name": "Перчатки резиновые",
+              "price": 35,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 35,
+              "order": 15
+            },
+            {
+              "quantity": 5,
+              "name": "Перчатки тканевые",
+              "price": 90,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 18,
+              "order": 16
+            },
+            {
+              "quantity": 5,
+              "name": "Стекло прозрачное ",
+              "price": 65,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 13,
+              "order": 17
+            },
+            {
+              "quantity": 2,
+              "name": "Стекло темное",
+              "price": 50,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 25,
+              "order": 18
+            }
+          ],
+          "hardware_data": [
+            {
+              "quantity": 276,
+              "name": "Болты М20*60",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Гайка М20",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Шайба М20",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            },
+            {
+              "quantity": 6,
+              "name": "Шпилька М30 кл.пр.88 ",
+              "price": 3900,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 650,
+              "order": 4
+            },
+            {
+              "quantity": 24,
+              "name": "Гайка М30",
+              "price": 3072,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 128,
+              "order": 5
+            }
+          ],
+          "metal_data": [
+            {
+              "quantity": 276,
+              "name": "Труба 1-fact",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Труба 2",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Труба 3",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            }
+          ],
+          "total_metal_per_item": null,
+          "total_processing_per_item": "2400.95",
+          "total_profitability_per_item": "714.1902727272727",
+          "total": "94273.116",
+          "specification_data": {
+            "id": 5,
+            "notes": "Заметки",
+            "date_of_creation": "2025-10-28T11:01:18.308Z",
+            "calculation_id": 5,
+            "table": [
+              {
+                "id": 6,
+                "date_of_creation": "2025-10-28T11:01:18.309Z",
+                "name": "Наименование изделия",
+                "quantity": 2,
+                "value_per_unit": "11",
+                "unit_of_measurement": "тн",
+                "total_weight": null,
+                "specification_data_id": 5
+              }
+            ]
+          },
+          "workers_data": {
+            "id": 5,
+            "notes": "Заметки",
+            "date_of_creation": "2025-10-28T11:01:18.311Z",
+            "calculation_id": 5,
+            "table": [
+              {
+                "id": 5,
+                "date_of_creation": "2025-10-28T11:01:18.313Z",
+                "name": "Арсений Николаев",
+                "number_of_hours_worked": 123,
+                "salary_per_day": 1100,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 5
+              }
+            ]
+          },
+          "itr_data": {
+            "id": 5,
+            "notes": "note-1",
+            "date_of_creation": "2025-10-28T11:01:18.314Z",
+            "calculation_id": 5,
+            "table": [
+              {
+                "id": 5,
+                "date_of_creation": "2025-10-28T11:01:18.316Z",
+                "name": "Дмитрий Степанов",
+                "salary_per_month": 1000,
+                "itr_data_id": 5
+              }
+            ]
+          },
+          "workers_tax_data": [
+            {
+              "id": 16,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 5,
+              "order_id": 1
+            },
+            {
+              "id": 17,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 5,
+              "order_id": 2
+            },
+            {
+              "id": 18,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 5,
+              "order_id": 3
+            },
+            {
+              "id": 19,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 5,
+              "order_id": 5
+            },
+            {
+              "id": 20,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 5,
+              "order_id": 4
+            }
+          ],
+          "itr_tax_data": [
+            {
+              "id": 16,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 5,
+              "order_id": 1
+            },
+            {
+              "id": 17,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 5,
+              "order_id": 3
+            },
+            {
+              "id": 18,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 5,
+              "order_id": 5
+            },
+            {
+              "id": 19,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 5,
+              "order_id": 4
+            },
+            {
+              "id": 20,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 5,
+              "order_id": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Калькуляция 21.12.2025",
+      "date_of_creation": "2025-12-21T04:11:14.513Z",
+      "calculations": [
+        {
+          "id": 6,
+          "itr_worked_days": "11",
+          "coeficient_of_nds": "1.2",
+          "cost_of_electricity_per_day": 444,
+          "galvanized_value": 1111,
+          "number_of_days_per_shift": 21,
+          "number_of_hours_per_shift": 8,
+          "rental_cost_per_day": 333,
+          "profitability_coeficient": "0.2",
+          "title": "Калькуляция 21.12.2025",
+          "transport_value": 2222,
+          "date_of_creation": "2025-12-21T04:11:14.687Z",
+          "last_edit_date": "2025-12-21T01:11:14.438Z",
+          "parent_calculation_id": 4,
+          "calculation_type": "plan",
+          "consumables_data": [
+            {
+              "quantity": 2,
+              "name": "Проволока сварочная 15 кг ",
+              "price": 2032.2,
+              "unitOfMeasurement": "бухты",
+              "taxPrice": 1016.1,
+              "order": 1
+            },
+            {
+              "quantity": 2,
+              "name": "Смесь",
+              "price": 3000,
+              "unitOfMeasurement": "баллон",
+              "taxPrice": 1500,
+              "order": 2
+            },
+            {
+              "quantity": 21,
+              "name": "Круги отрезные 230",
+              "price": 933.87,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 44.47,
+              "order": 3
+            },
+            {
+              "quantity": 3,
+              "name": "Круги зачистные 230",
+              "price": 336,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 112,
+              "order": 4
+            },
+            {
+              "quantity": 1,
+              "name": "Фреза 32",
+              "price": 1320,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 1320,
+              "order": 5
+            },
+            {
+              "quantity": 2,
+              "name": "Фреза 22",
+              "price": 1800,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 900,
+              "order": 6
+            },
+            {
+              "quantity": 0.3,
+              "name": "Лента для лентопила",
+              "price": 846,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2820,
+              "order": 7
+            },
+            {
+              "quantity": 0.5,
+              "name": "Сож ",
+              "price": 75,
+              "unitOfMeasurement": "л",
+              "taxPrice": 150,
+              "order": 8
+            },
+            {
+              "quantity": 1,
+              "name": "Борфреза",
+              "price": 350,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 350,
+              "order": 9
+            },
+            {
+              "quantity": 2,
+              "name": "Сварочный наконечник",
+              "price": 96,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 48,
+              "order": 10
+            },
+            {
+              "quantity": 2,
+              "name": "Плазменный наконечник",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 11
+            },
+            {
+              "quantity": 2,
+              "name": "Сопло плазменное",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 12
+            },
+            {
+              "quantity": 2,
+              "name": "Краги",
+              "price": 384,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 192,
+              "order": 13
+            },
+            {
+              "quantity": 2,
+              "name": "Полукраги",
+              "price": 180,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 90,
+              "order": 14
+            },
+            {
+              "quantity": 1,
+              "name": "Перчатки резиновые",
+              "price": 35,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 35,
+              "order": 15
+            },
+            {
+              "quantity": 5,
+              "name": "Перчатки тканевые",
+              "price": 90,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 18,
+              "order": 16
+            },
+            {
+              "quantity": 5,
+              "name": "Стекло прозрачное ",
+              "price": 65,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 13,
+              "order": 17
+            },
+            {
+              "quantity": 2,
+              "name": "Стекло темное",
+              "price": 50,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 25,
+              "order": 18
+            }
+          ],
+          "hardware_data": [
+            {
+              "quantity": 276,
+              "name": "Болты М20*60",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Гайка М20",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Шайба М20",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            },
+            {
+              "quantity": 6,
+              "name": "Шпилька М30 кл.пр.88 ",
+              "price": 3900,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 650,
+              "order": 4
+            },
+            {
+              "quantity": 24,
+              "name": "Гайка М30",
+              "price": 3072,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 128,
+              "order": 5
+            }
+          ],
+          "metal_data": [
+            {
+              "quantity": 276,
+              "name": "Труба 1-fact",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Труба 2",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Труба 3",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            }
+          ],
+          "total_metal_per_item": null,
+          "total_processing_per_item": "2171.7",
+          "total_profitability_per_item": "668.3402727272727",
+          "total": "88220.916",
+          "specification_data": {
+            "id": 6,
+            "notes": "Заметки",
+            "date_of_creation": "2025-12-21T04:11:15.268Z",
+            "calculation_id": 6,
+            "table": [
+              {
+                "id": 7,
+                "date_of_creation": "2025-12-21T04:11:15.290Z",
+                "name": "Наименование изделия 1",
+                "quantity": 2,
+                "value_per_unit": "11",
+                "unit_of_measurement": "тн",
+                "total_weight": null,
+                "specification_data_id": 6
+              }
+            ]
+          },
+          "workers_data": {
+            "id": 6,
+            "notes": "Зарплата  цех Заметки",
+            "date_of_creation": "2025-12-21T04:11:15.312Z",
+            "calculation_id": 6,
+            "table": [
+              {
+                "id": 6,
+                "date_of_creation": "2025-12-21T04:11:15.315Z",
+                "name": "Арсений Николаев",
+                "number_of_hours_worked": 111,
+                "salary_per_day": 1000,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 6
+              }
+            ]
+          },
+          "itr_data": {
+            "id": 6,
+            "notes": "",
+            "date_of_creation": "2025-12-21T04:11:15.318Z",
+            "calculation_id": 6,
+            "table": [
+              {
+                "id": 6,
+                "date_of_creation": "2025-12-21T04:11:15.320Z",
+                "name": "Роман Лебедев",
+                "salary_per_month": 1000,
+                "itr_data_id": 6
+              }
+            ]
+          },
+          "workers_tax_data": [
+            {
+              "id": 21,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 6,
+              "order_id": 1
+            },
+            {
+              "id": 22,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 6,
+              "order_id": 2
+            },
+            {
+              "id": 23,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 6,
+              "order_id": 3
+            },
+            {
+              "id": 24,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 6,
+              "order_id": 4
+            },
+            {
+              "id": 25,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 6,
+              "order_id": 5
+            }
+          ],
+          "itr_tax_data": [
+            {
+              "id": 21,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 6,
+              "order_id": 1
+            },
+            {
+              "id": 22,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 6,
+              "order_id": 3
+            },
+            {
+              "id": 23,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 6,
+              "order_id": 4
+            },
+            {
+              "id": 24,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 6,
+              "order_id": 2
+            },
+            {
+              "id": 25,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 6,
+              "order_id": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Калькуляция 21.12.2025 - 2",
+      "date_of_creation": "2025-12-21T05:13:16.783Z",
+      "calculations": [
+        {
+          "id": 7,
+          "itr_worked_days": "11",
+          "coeficient_of_nds": "1.2",
+          "cost_of_electricity_per_day": 444,
+          "galvanized_value": 1111,
+          "number_of_days_per_shift": 21,
+          "number_of_hours_per_shift": 8,
+          "rental_cost_per_day": 333,
+          "profitability_coeficient": "0.2",
+          "title": "Калькуляция 21.12.2025 - 2",
+          "transport_value": 2222,
+          "date_of_creation": "2025-12-21T05:13:16.927Z",
+          "last_edit_date": "2025-12-21T02:13:16.063Z",
+          "parent_calculation_id": 5,
+          "calculation_type": "plan",
+          "consumables_data": [
+            {
+              "quantity": 2,
+              "name": "Проволока сварочная 15 кг ",
+              "price": 2032.2,
+              "unitOfMeasurement": "бухты",
+              "taxPrice": 1016.1,
+              "order": 1
+            },
+            {
+              "quantity": 2,
+              "name": "Смесь",
+              "price": 3000,
+              "unitOfMeasurement": "баллон",
+              "taxPrice": 1500,
+              "order": 2
+            },
+            {
+              "quantity": 21,
+              "name": "Круги отрезные 230",
+              "price": 933.87,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 44.47,
+              "order": 3
+            },
+            {
+              "quantity": 3,
+              "name": "Круги зачистные 230",
+              "price": 336,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 112,
+              "order": 4
+            },
+            {
+              "quantity": 1,
+              "name": "Фреза 32",
+              "price": 1320,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 1320,
+              "order": 5
+            },
+            {
+              "quantity": 2,
+              "name": "Фреза 22",
+              "price": 1800,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 900,
+              "order": 6
+            },
+            {
+              "quantity": 0.3,
+              "name": "Лента для лентопила",
+              "price": 846,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2820,
+              "order": 7
+            },
+            {
+              "quantity": 0.5,
+              "name": "Сож ",
+              "price": 75,
+              "unitOfMeasurement": "л",
+              "taxPrice": 150,
+              "order": 8
+            },
+            {
+              "quantity": 1,
+              "name": "Борфреза",
+              "price": 350,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 350,
+              "order": 9
+            },
+            {
+              "quantity": 2,
+              "name": "Сварочный наконечник",
+              "price": 96,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 48,
+              "order": 10
+            },
+            {
+              "quantity": 2,
+              "name": "Плазменный наконечник",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 11
+            },
+            {
+              "quantity": 2,
+              "name": "Сопло плазменное",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 12
+            },
+            {
+              "quantity": 2,
+              "name": "Краги",
+              "price": 384,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 192,
+              "order": 13
+            },
+            {
+              "quantity": 2,
+              "name": "Полукраги",
+              "price": 180,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 90,
+              "order": 14
+            },
+            {
+              "quantity": 1,
+              "name": "Перчатки резиновые",
+              "price": 35,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 35,
+              "order": 15
+            },
+            {
+              "quantity": 5,
+              "name": "Перчатки тканевые",
+              "price": 90,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 18,
+              "order": 16
+            },
+            {
+              "quantity": 5,
+              "name": "Стекло прозрачное ",
+              "price": 65,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 13,
+              "order": 17
+            },
+            {
+              "quantity": 2,
+              "name": "Стекло темное",
+              "price": 50,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 25,
+              "order": 18
+            }
+          ],
+          "hardware_data": [
+            {
+              "quantity": 276,
+              "name": "Болты М20*60",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Гайка М20",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Шайба М20",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            },
+            {
+              "quantity": 6,
+              "name": "Шпилька М30 кл.пр.88 ",
+              "price": 3900,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 650,
+              "order": 4
+            },
+            {
+              "quantity": 24,
+              "name": "Гайка М30",
+              "price": 3072,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 128,
+              "order": 5
+            }
+          ],
+          "metal_data": [
+            {
+              "quantity": 276,
+              "name": "Труба 1-fact",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Труба 2",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Труба 3",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            }
+          ],
+          "total_metal_per_item": null,
+          "total_processing_per_item": "1537.79",
+          "total_profitability_per_item": "463.56",
+          "total": "91784.87999999999",
+          "specification_data": {
+            "id": 7,
+            "notes": "Заметки",
+            "date_of_creation": "2025-12-21T05:13:17.474Z",
+            "calculation_id": 7,
+            "table": [
+              {
+                "id": 8,
+                "date_of_creation": "2025-12-21T05:13:17.476Z",
+                "name": "Наименование изделия 2",
+                "quantity": 3,
+                "value_per_unit": "11",
+                "unit_of_measurement": "тн",
+                "total_weight": null,
+                "specification_data_id": 7
+              }
+            ]
+          },
+          "workers_data": {
+            "id": 7,
+            "notes": "Заметки",
+            "date_of_creation": "2025-12-21T05:13:17.480Z",
+            "calculation_id": 7,
+            "table": [
+              {
+                "id": 7,
+                "date_of_creation": "2025-12-21T05:13:17.481Z",
+                "name": "Арсений Николаев",
+                "number_of_hours_worked": 123,
+                "salary_per_day": 1015,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 7
+              }
+            ]
+          },
+          "itr_data": {
+            "id": 7,
+            "notes": "",
+            "date_of_creation": "2025-12-21T05:13:17.485Z",
+            "calculation_id": 7,
+            "table": [
+              {
+                "id": 7,
+                "date_of_creation": "2025-12-21T05:13:17.487Z",
+                "name": "Дмитрий Степанов",
+                "salary_per_month": 1111,
+                "itr_data_id": 7
+              }
+            ]
+          },
+          "workers_tax_data": [
+            {
+              "id": 26,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 7,
+              "order_id": 2
+            },
+            {
+              "id": 27,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 7,
+              "order_id": 1
+            },
+            {
+              "id": 28,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 7,
+              "order_id": 3
+            },
+            {
+              "id": 29,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 7,
+              "order_id": 4
+            },
+            {
+              "id": 30,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 7,
+              "order_id": 5
+            }
+          ],
+          "itr_tax_data": [
+            {
+              "id": 26,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 7,
+              "order_id": 1
+            },
+            {
+              "id": 27,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 7,
+              "order_id": 4
+            },
+            {
+              "id": 28,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 7,
+              "order_id": 3
+            },
+            {
+              "id": 29,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 7,
+              "order_id": 2
+            },
+            {
+              "id": 30,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 7,
+              "order_id": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "!!! Эталонная калькуляция !!!",
+      "date_of_creation": "2025-12-21T12:23:49.178Z",
+      "calculations": [
+        {
+          "id": 8,
+          "itr_worked_days": "13",
+          "coeficient_of_nds": "1.2",
+          "cost_of_electricity_per_day": 550,
+          "galvanized_value": 1000,
+          "number_of_days_per_shift": 21,
+          "number_of_hours_per_shift": 8,
+          "rental_cost_per_day": 170,
+          "profitability_coeficient": "0.1",
+          "title": "!!! Эталонная калькуляция !!!",
+          "transport_value": 2000,
+          "date_of_creation": "2025-12-21T12:23:49.374Z",
+          "last_edit_date": "2025-12-21T09:23:49.094Z",
+          "parent_calculation_id": 6,
+          "calculation_type": "plan",
+          "consumables_data": [
+            {
+              "quantity": 2,
+              "name": "Проволока сварочная 15 кг ",
+              "price": 2032.2,
+              "unitOfMeasurement": "бухты",
+              "taxPrice": 1016.1,
+              "order": 1
+            },
+            {
+              "quantity": 2,
+              "name": "Смесь",
+              "price": 3000,
+              "unitOfMeasurement": "баллон",
+              "taxPrice": 1500,
+              "order": 2
+            },
+            {
+              "quantity": 21,
+              "name": "Круги отрезные 230",
+              "price": 933.87,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 44.47,
+              "order": 3
+            },
+            {
+              "quantity": 3,
+              "name": "Круги зачистные 230",
+              "price": 336,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 112,
+              "order": 4
+            },
+            {
+              "quantity": 1,
+              "name": "Фреза 32",
+              "price": 1320,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 1320,
+              "order": 5
+            },
+            {
+              "quantity": 2,
+              "name": "Фреза 22",
+              "price": 1800,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 900,
+              "order": 6
+            },
+            {
+              "quantity": 0.3,
+              "name": "Лента для лентопила",
+              "price": 846,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2820,
+              "order": 7
+            },
+            {
+              "quantity": 0.5,
+              "name": "Сож ",
+              "price": 75,
+              "unitOfMeasurement": "л",
+              "taxPrice": 150,
+              "order": 8
+            },
+            {
+              "quantity": 1,
+              "name": "Борфреза",
+              "price": 350,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 350,
+              "order": 9
+            },
+            {
+              "quantity": 2,
+              "name": "Сварочный наконечник",
+              "price": 96,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 48,
+              "order": 10
+            },
+            {
+              "quantity": 2,
+              "name": "Плазменный наконечник",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 11
+            },
+            {
+              "quantity": 2,
+              "name": "Сопло плазменное",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 12
+            },
+            {
+              "quantity": 2,
+              "name": "Краги",
+              "price": 384,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 192,
+              "order": 13
+            },
+            {
+              "quantity": 2,
+              "name": "Полукраги",
+              "price": 180,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 90,
+              "order": 14
+            },
+            {
+              "quantity": 1,
+              "name": "Перчатки резиновые",
+              "price": 35,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 35,
+              "order": 15
+            },
+            {
+              "quantity": 5,
+              "name": "Перчатки тканевые",
+              "price": 90,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 18,
+              "order": 16
+            },
+            {
+              "quantity": 5,
+              "name": "Стекло прозрачное ",
+              "price": 65,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 13,
+              "order": 17
+            },
+            {
+              "quantity": 2,
+              "name": "Стекло темное",
+              "price": 50,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 25,
+              "order": 18
+            }
+          ],
+          "hardware_data": [
+            {
+              "quantity": 276,
+              "name": "Болты М20*60",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Гайка М20",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Шайба М20",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            },
+            {
+              "quantity": 6,
+              "name": "Шпилька М30 кл.пр.88 ",
+              "price": 3900,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 650,
+              "order": 4
+            },
+            {
+              "quantity": 24,
+              "name": "Гайка М30",
+              "price": 3072,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 128,
+              "order": 5
+            }
+          ],
+          "metal_data": [
+            {
+              "quantity": 276,
+              "name": "Труба 1-fact",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Труба 2",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Труба 3",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            }
+          ],
+          "total_metal_per_item": null,
+          "total_processing_per_item": "67990.67",
+          "total_profitability_per_item": "8084.910580477571",
+          "total": "178028.114",
+          "specification_data": {
+            "id": 8,
+            "notes": "Заметки",
+            "date_of_creation": "2025-12-21T12:23:49.926Z",
+            "calculation_id": 8,
+            "table": [
+              {
+                "id": 9,
+                "date_of_creation": "2025-12-21T12:23:49.998Z",
+                "name": "Наименование изделия 3",
+                "quantity": 1,
+                "value_per_unit": "2.00180",
+                "unit_of_measurement": "тн",
+                "total_weight": null,
+                "specification_data_id": 8
+              }
+            ]
+          },
+          "workers_data": {
+            "id": 8,
+            "notes": "Заметки",
+            "date_of_creation": "2025-12-21T12:23:50.016Z",
+            "calculation_id": 8,
+            "table": [
+              {
+                "id": 8,
+                "date_of_creation": "2025-12-21T12:23:50.031Z",
+                "name": "Арсений Николаев",
+                "number_of_hours_worked": 63,
+                "salary_per_day": 1690,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 8
+              },
+              {
+                "id": 9,
+                "date_of_creation": "2025-12-21T12:23:50.031Z",
+                "name": "Дмитрий Степанов",
+                "number_of_hours_worked": 79,
+                "salary_per_day": 1700,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 8
+              },
+              {
+                "id": 10,
+                "date_of_creation": "2025-12-21T12:23:50.031Z",
+                "name": "Егор Волков",
+                "number_of_hours_worked": 77,
+                "salary_per_day": 1680,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 8
+              }
+            ]
+          },
+          "itr_data": {
+            "id": 8,
+            "notes": "",
+            "date_of_creation": "2025-12-21T12:23:50.033Z",
+            "calculation_id": 8,
+            "table": [
+              {
+                "id": 8,
+                "date_of_creation": "2025-12-21T12:23:50.035Z",
+                "name": "Роман Лебедев",
+                "salary_per_month": 1000,
+                "itr_data_id": 8
+              },
+              {
+                "id": 9,
+                "date_of_creation": "2025-12-21T12:23:50.035Z",
+                "name": "Алексей Новиков",
+                "salary_per_month": 10000,
+                "itr_data_id": 8
+              },
+              {
+                "id": 10,
+                "date_of_creation": "2025-12-21T12:23:50.035Z",
+                "name": "Илья Семёнов",
+                "salary_per_month": 3000,
+                "itr_data_id": 8
+              },
+              {
+                "id": 11,
+                "date_of_creation": "2025-12-21T12:23:50.036Z",
+                "name": "Иван Павлов",
+                "salary_per_month": 15000,
+                "itr_data_id": 8
+              },
+              {
+                "id": 12,
+                "date_of_creation": "2025-12-21T12:23:50.052Z",
+                "name": "Максим Петров",
+                "salary_per_month": 5000,
+                "itr_data_id": 8
+              }
+            ]
+          },
+          "workers_tax_data": [
+            {
+              "id": 31,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 8,
+              "order_id": 3
+            },
+            {
+              "id": 32,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 8,
+              "order_id": 1
+            },
+            {
+              "id": 33,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 8,
+              "order_id": 2
+            },
+            {
+              "id": 34,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 8,
+              "order_id": 4
+            },
+            {
+              "id": 35,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 8,
+              "order_id": 5
+            }
+          ],
+          "itr_tax_data": [
+            {
+              "id": 31,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 8,
+              "order_id": 1
+            },
+            {
+              "id": 32,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 8,
+              "order_id": 3
+            },
+            {
+              "id": 33,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 8,
+              "order_id": 2
+            },
+            {
+              "id": 34,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 8,
+              "order_id": 4
+            },
+            {
+              "id": 35,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 8,
+              "order_id": 5
+            }
+          ]
+        },
+        {
+          "id": 14,
+          "itr_worked_days": "13",
+          "coeficient_of_nds": "1.2",
+          "cost_of_electricity_per_day": 1000,
+          "galvanized_value": 1000,
+          "number_of_days_per_shift": 21,
+          "number_of_hours_per_shift": 8,
+          "rental_cost_per_day": 500,
+          "profitability_coeficient": "0.1",
+          "title": "!!! Эталонная калькуляция - факт 1",
+          "transport_value": 2000,
+          "date_of_creation": "2025-12-22T03:29:08.713Z",
+          "last_edit_date": "2025-12-22T00:29:08.572Z",
+          "parent_calculation_id": 6,
+          "calculation_type": "fact",
+          "consumables_data": [
+            {
+              "quantity": 2,
+              "name": "Проволока сварочная 15 кг ",
+              "price": 2032.2,
+              "unitOfMeasurement": "бухты",
+              "taxPrice": 1016.1,
+              "order": 1
+            },
+            {
+              "quantity": 2,
+              "name": "Смесь",
+              "price": 3000,
+              "unitOfMeasurement": "баллон",
+              "taxPrice": 1500,
+              "order": 2
+            },
+            {
+              "quantity": 21,
+              "name": "Круги отрезные 230",
+              "price": 933.87,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 44.47,
+              "order": 3
+            },
+            {
+              "quantity": 3,
+              "name": "Круги зачистные 230",
+              "price": 336,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 112,
+              "order": 4
+            },
+            {
+              "quantity": 1,
+              "name": "Фреза 32",
+              "price": 1320,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 1320,
+              "order": 5
+            },
+            {
+              "quantity": 2,
+              "name": "Фреза 22",
+              "price": 1800,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 900,
+              "order": 6
+            },
+            {
+              "quantity": 0.3,
+              "name": "Лента для лентопила",
+              "price": 846,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2820,
+              "order": 7
+            },
+            {
+              "quantity": 0.5,
+              "name": "Сож ",
+              "price": 75,
+              "unitOfMeasurement": "л",
+              "taxPrice": 150,
+              "order": 8
+            },
+            {
+              "quantity": 1,
+              "name": "Борфреза",
+              "price": 350,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 350,
+              "order": 9
+            },
+            {
+              "quantity": 2,
+              "name": "Сварочный наконечник",
+              "price": 96,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 48,
+              "order": 10
+            },
+            {
+              "quantity": 2,
+              "name": "Плазменный наконечник",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 11
+            },
+            {
+              "quantity": 2,
+              "name": "Сопло плазменное",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 12
+            },
+            {
+              "quantity": 2,
+              "name": "Краги",
+              "price": 384,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 192,
+              "order": 13
+            },
+            {
+              "quantity": 2,
+              "name": "Полукраги",
+              "price": 180,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 90,
+              "order": 14
+            },
+            {
+              "quantity": 1,
+              "name": "Перчатки резиновые",
+              "price": 35,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 35,
+              "order": 15
+            },
+            {
+              "quantity": 5,
+              "name": "Перчатки тканевые",
+              "price": 90,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 18,
+              "order": 16
+            },
+            {
+              "quantity": 5,
+              "name": "Стекло прозрачное ",
+              "price": 65,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 13,
+              "order": 17
+            },
+            {
+              "quantity": 2,
+              "name": "Стекло темное",
+              "price": 50,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 25,
+              "order": 18
+            }
+          ],
+          "hardware_data": [
+            {
+              "quantity": 276,
+              "name": "Болты М20*60",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Гайка М20",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Шайба М20",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            },
+            {
+              "quantity": 6,
+              "name": "Шпилька М30 кл.пр.88 ",
+              "price": 3900,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 650,
+              "order": 4
+            },
+            {
+              "quantity": 24,
+              "name": "Гайка М30",
+              "price": 3072,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 128,
+              "order": 5
+            }
+          ],
+          "metal_data": [
+            {
+              "quantity": 276,
+              "name": "Труба 1-fact",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Труба 2",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Труба 3",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            }
+          ],
+          "total_metal_per_item": null,
+          "total_processing_per_item": "86466.28",
+          "total_profitability_per_item": "9932.471275851734",
+          "total": "218711.03100000002",
+          "specification_data": {
+            "id": 14,
+            "notes": "Заметки",
+            "date_of_creation": "2025-12-22T03:29:08.834Z",
+            "calculation_id": 14,
+            "table": [
+              {
+                "id": 14,
+                "date_of_creation": "2025-12-22T03:29:08.836Z",
+                "name": "Наименование изделия 3",
+                "quantity": 1,
+                "value_per_unit": "2.00180",
+                "unit_of_measurement": "тн",
+                "total_weight": null,
+                "specification_data_id": 14
+              }
+            ]
+          },
+          "workers_data": {
+            "id": 14,
+            "notes": "Заметки",
+            "date_of_creation": "2025-12-22T03:29:08.866Z",
+            "calculation_id": 14,
+            "table": [
+              {
+                "id": 23,
+                "date_of_creation": "2025-12-22T03:29:08.909Z",
+                "name": "Арсений Николаев",
+                "number_of_hours_worked": 63,
+                "salary_per_day": 1690,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 14
+              },
+              {
+                "id": 24,
+                "date_of_creation": "2025-12-22T03:29:08.909Z",
+                "name": "Дмитрий Степанов",
+                "number_of_hours_worked": 79,
+                "salary_per_day": 1700,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 14
+              },
+              {
+                "id": 25,
+                "date_of_creation": "2025-12-22T03:29:08.909Z",
+                "name": "Егор Волков",
+                "number_of_hours_worked": 77,
+                "salary_per_day": 1680,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 14
+              },
+              {
+                "id": 26,
+                "date_of_creation": "2025-12-22T03:29:08.909Z",
+                "name": "Егор Волков",
+                "number_of_hours_worked": 77,
+                "salary_per_day": 1680,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 14
+              }
+            ]
+          },
+          "itr_data": {
+            "id": 14,
+            "notes": "note-8",
+            "date_of_creation": "2025-12-22T03:29:08.911Z",
+            "calculation_id": 14,
+            "table": [
+              {
+                "id": 33,
+                "date_of_creation": "2025-12-22T03:29:08.912Z",
+                "name": "Роман Лебедев",
+                "salary_per_month": 1000,
+                "itr_data_id": 14
+              },
+              {
+                "id": 34,
+                "date_of_creation": "2025-12-22T03:29:08.912Z",
+                "name": "Алексей Новиков",
+                "salary_per_month": 10000,
+                "itr_data_id": 14
+              },
+              {
+                "id": 35,
+                "date_of_creation": "2025-12-22T03:29:08.913Z",
+                "name": "Иван Павлов",
+                "salary_per_month": 15000,
+                "itr_data_id": 14
+              },
+              {
+                "id": 36,
+                "date_of_creation": "2025-12-22T03:29:08.913Z",
+                "name": "Максим Петров",
+                "salary_per_month": 5000,
+                "itr_data_id": 14
+              },
+              {
+                "id": 37,
+                "date_of_creation": "2025-12-22T03:29:08.913Z",
+                "name": "Илья Семёнов",
+                "salary_per_month": 3000,
+                "itr_data_id": 14
+              }
+            ]
+          },
+          "workers_tax_data": [
+            {
+              "id": 61,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 14,
+              "order_id": 1
+            },
+            {
+              "id": 62,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 14,
+              "order_id": 3
+            },
+            {
+              "id": 63,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 14,
+              "order_id": 2
+            },
+            {
+              "id": 64,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 14,
+              "order_id": 5
+            },
+            {
+              "id": 65,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 14,
+              "order_id": 4
+            }
+          ],
+          "itr_tax_data": [
+            {
+              "id": 61,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 14,
+              "order_id": 1
+            },
+            {
+              "id": 62,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 14,
+              "order_id": 4
+            },
+            {
+              "id": 63,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 14,
+              "order_id": 2
+            },
+            {
+              "id": 64,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 14,
+              "order_id": 5
+            },
+            {
+              "id": 65,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 14,
+              "order_id": 3
+            }
+          ]
+        },
+        {
+          "id": 15,
+          "itr_worked_days": "13",
+          "coeficient_of_nds": "1.2",
+          "cost_of_electricity_per_day": 550,
+          "galvanized_value": 1000,
+          "number_of_days_per_shift": 21,
+          "number_of_hours_per_shift": 8,
+          "rental_cost_per_day": 170,
+          "profitability_coeficient": "0.1",
+          "title": "!!! Эталонная калькуляция факт 2",
+          "transport_value": 2000,
+          "date_of_creation": "2025-12-22T03:31:30.362Z",
+          "last_edit_date": "2025-12-22T00:31:30.342Z",
+          "parent_calculation_id": 6,
+          "calculation_type": "fact",
+          "consumables_data": [
+            {
+              "quantity": 2,
+              "name": "Проволока сварочная 15 кг ",
+              "price": 2032.2,
+              "unitOfMeasurement": "бухты",
+              "taxPrice": 1016.1,
+              "order": 1
+            },
+            {
+              "quantity": 2,
+              "name": "Смесь",
+              "price": 3000,
+              "unitOfMeasurement": "баллон",
+              "taxPrice": 1500,
+              "order": 2
+            },
+            {
+              "quantity": 21,
+              "name": "Круги отрезные 230",
+              "price": 933.87,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 44.47,
+              "order": 3
+            },
+            {
+              "quantity": 3,
+              "name": "Круги зачистные 230",
+              "price": 336,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 112,
+              "order": 4
+            },
+            {
+              "quantity": 1,
+              "name": "Фреза 32",
+              "price": 1320,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 1320,
+              "order": 5
+            },
+            {
+              "quantity": 2,
+              "name": "Фреза 22",
+              "price": 1800,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 900,
+              "order": 6
+            },
+            {
+              "quantity": 0.3,
+              "name": "Лента для лентопила",
+              "price": 846,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2820,
+              "order": 7
+            },
+            {
+              "quantity": 0.5,
+              "name": "Сож ",
+              "price": 75,
+              "unitOfMeasurement": "л",
+              "taxPrice": 150,
+              "order": 8
+            },
+            {
+              "quantity": 1,
+              "name": "Борфреза",
+              "price": 350,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 350,
+              "order": 9
+            },
+            {
+              "quantity": 2,
+              "name": "Сварочный наконечник",
+              "price": 96,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 48,
+              "order": 10
+            },
+            {
+              "quantity": 2,
+              "name": "Плазменный наконечник",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 11
+            },
+            {
+              "quantity": 2,
+              "name": "Сопло плазменное",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 12
+            },
+            {
+              "quantity": 2,
+              "name": "Краги",
+              "price": 384,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 192,
+              "order": 13
+            },
+            {
+              "quantity": 2,
+              "name": "Полукраги",
+              "price": 180,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 90,
+              "order": 14
+            },
+            {
+              "quantity": 1,
+              "name": "Перчатки резиновые",
+              "price": 35,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 35,
+              "order": 15
+            },
+            {
+              "quantity": 5,
+              "name": "Перчатки тканевые",
+              "price": 90,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 18,
+              "order": 16
+            },
+            {
+              "quantity": 5,
+              "name": "Стекло прозрачное ",
+              "price": 65,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 13,
+              "order": 17
+            },
+            {
+              "quantity": 2,
+              "name": "Стекло темное",
+              "price": 50,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 25,
+              "order": 18
+            }
+          ],
+          "hardware_data": [
+            {
+              "quantity": 276,
+              "name": "Болты М20*60",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Гайка М20",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Шайба М20",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            },
+            {
+              "quantity": 6,
+              "name": "Шпилька М30 кл.пр.88 ",
+              "price": 3900,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 650,
+              "order": 4
+            },
+            {
+              "quantity": 24,
+              "name": "Гайка М30",
+              "price": 3072,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 128,
+              "order": 5
+            }
+          ],
+          "metal_data": [
+            {
+              "quantity": 276,
+              "name": "Труба 1-fact",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Труба 2",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Труба 3",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            }
+          ],
+          "total_metal_per_item": null,
+          "total_processing_per_item": "94811",
+          "total_profitability_per_item": "10766.943251074033",
+          "total": "237085.937",
+          "specification_data": {
+            "id": 15,
+            "notes": "Заметки",
+            "date_of_creation": "2025-12-22T03:31:30.424Z",
+            "calculation_id": 15,
+            "table": [
+              {
+                "id": 15,
+                "date_of_creation": "2025-12-22T03:31:30.427Z",
+                "name": "Наименование изделия 3",
+                "quantity": 1,
+                "value_per_unit": "2.00180",
+                "unit_of_measurement": "тн",
+                "total_weight": null,
+                "specification_data_id": 15
+              }
+            ]
+          },
+          "workers_data": {
+            "id": 15,
+            "notes": "Заметки",
+            "date_of_creation": "2025-12-22T03:31:30.468Z",
+            "calculation_id": 15,
+            "table": [
+              {
+                "id": 27,
+                "date_of_creation": "2025-12-22T03:31:30.470Z",
+                "name": "Арсений Николаев",
+                "number_of_hours_worked": 63,
+                "salary_per_day": 1690,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 15
+              },
+              {
+                "id": 28,
+                "date_of_creation": "2025-12-22T03:31:30.470Z",
+                "name": "Егор Волков",
+                "number_of_hours_worked": 77,
+                "salary_per_day": 1680,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 15
+              },
+              {
+                "id": 29,
+                "date_of_creation": "2025-12-22T03:31:30.470Z",
+                "name": "Егор Волков",
+                "number_of_hours_worked": 77,
+                "salary_per_day": 1680,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 15
+              },
+              {
+                "id": 30,
+                "date_of_creation": "2025-12-22T03:31:30.470Z",
+                "name": "Дмитрий Степанов",
+                "number_of_hours_worked": 79,
+                "salary_per_day": 1700,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 15
+              },
+              {
+                "id": 31,
+                "date_of_creation": "2025-12-22T03:31:30.471Z",
+                "name": "Егор Волков",
+                "number_of_hours_worked": 77,
+                "salary_per_day": 1680,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 15
+              }
+            ]
+          },
+          "itr_data": {
+            "id": 15,
+            "notes": "note-8",
+            "date_of_creation": "2025-12-22T03:31:30.472Z",
+            "calculation_id": 15,
+            "table": [
+              {
+                "id": 38,
+                "date_of_creation": "2025-12-22T03:31:30.473Z",
+                "name": "Алексей Новиков",
+                "salary_per_month": 10000,
+                "itr_data_id": 15
+              },
+              {
+                "id": 39,
+                "date_of_creation": "2025-12-22T03:31:30.473Z",
+                "name": "Иван Павлов",
+                "salary_per_month": 15000,
+                "itr_data_id": 15
+              },
+              {
+                "id": 40,
+                "date_of_creation": "2025-12-22T03:31:30.473Z",
+                "name": "Роман Лебедев",
+                "salary_per_month": 1000,
+                "itr_data_id": 15
+              },
+              {
+                "id": 41,
+                "date_of_creation": "2025-12-22T03:31:30.473Z",
+                "name": "Илья Семёнов",
+                "salary_per_month": 3000,
+                "itr_data_id": 15
+              },
+              {
+                "id": 42,
+                "date_of_creation": "2025-12-22T03:31:30.474Z",
+                "name": "Максим Петров",
+                "salary_per_month": 5000,
+                "itr_data_id": 15
+              }
+            ]
+          },
+          "workers_tax_data": [
+            {
+              "id": 66,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 15,
+              "order_id": 1
+            },
+            {
+              "id": 67,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 15,
+              "order_id": 2
+            },
+            {
+              "id": 68,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 15,
+              "order_id": 3
+            },
+            {
+              "id": 69,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 15,
+              "order_id": 4
+            },
+            {
+              "id": 70,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 15,
+              "order_id": 5
+            }
+          ],
+          "itr_tax_data": [
+            {
+              "id": 66,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 15,
+              "order_id": 1
+            },
+            {
+              "id": 67,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 15,
+              "order_id": 3
+            },
+            {
+              "id": 68,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 15,
+              "order_id": 2
+            },
+            {
+              "id": 69,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 15,
+              "order_id": 4
+            },
+            {
+              "id": 70,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 15,
+              "order_id": 5
+            }
+          ]
+        },
+        {
+          "id": 16,
+          "itr_worked_days": "13",
+          "coeficient_of_nds": "1.2",
+          "cost_of_electricity_per_day": 550,
+          "galvanized_value": 1000,
+          "number_of_days_per_shift": 21,
+          "number_of_hours_per_shift": 8,
+          "rental_cost_per_day": 170,
+          "profitability_coeficient": "0.1",
+          "title": "!!! Эталонная калькуляция факт 3",
+          "transport_value": 2000,
+          "date_of_creation": "2025-12-22T03:33:03.163Z",
+          "last_edit_date": "2025-12-22T00:33:02.943Z",
+          "parent_calculation_id": 6,
+          "calculation_type": "fact",
+          "consumables_data": [
+            {
+              "quantity": 2,
+              "name": "Проволока сварочная 15 кг ",
+              "price": 2032.2,
+              "unitOfMeasurement": "бухты",
+              "taxPrice": 1016.1,
+              "order": 1
+            },
+            {
+              "quantity": 2,
+              "name": "Смесь",
+              "price": 3000,
+              "unitOfMeasurement": "баллон",
+              "taxPrice": 1500,
+              "order": 2
+            },
+            {
+              "quantity": 21,
+              "name": "Круги отрезные 230",
+              "price": 933.87,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 44.47,
+              "order": 3
+            },
+            {
+              "quantity": 3,
+              "name": "Круги зачистные 230",
+              "price": 336,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 112,
+              "order": 4
+            },
+            {
+              "quantity": 1,
+              "name": "Фреза 32",
+              "price": 1320,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 1320,
+              "order": 5
+            },
+            {
+              "quantity": 2,
+              "name": "Фреза 22",
+              "price": 1800,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 900,
+              "order": 6
+            },
+            {
+              "quantity": 0.3,
+              "name": "Лента для лентопила",
+              "price": 846,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2820,
+              "order": 7
+            },
+            {
+              "quantity": 0.5,
+              "name": "Сож ",
+              "price": 75,
+              "unitOfMeasurement": "л",
+              "taxPrice": 150,
+              "order": 8
+            },
+            {
+              "quantity": 1,
+              "name": "Борфреза",
+              "price": 350,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 350,
+              "order": 9
+            },
+            {
+              "quantity": 2,
+              "name": "Сварочный наконечник",
+              "price": 96,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 48,
+              "order": 10
+            },
+            {
+              "quantity": 2,
+              "name": "Плазменный наконечник",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 11
+            },
+            {
+              "quantity": 2,
+              "name": "Сопло плазменное",
+              "price": 200,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 100,
+              "order": 12
+            },
+            {
+              "quantity": 2,
+              "name": "Краги",
+              "price": 384,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 192,
+              "order": 13
+            },
+            {
+              "quantity": 2,
+              "name": "Полукраги",
+              "price": 180,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 90,
+              "order": 14
+            },
+            {
+              "quantity": 1,
+              "name": "Перчатки резиновые",
+              "price": 35,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 35,
+              "order": 15
+            },
+            {
+              "quantity": 5,
+              "name": "Перчатки тканевые",
+              "price": 90,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 18,
+              "order": 16
+            },
+            {
+              "quantity": 5,
+              "name": "Стекло прозрачное ",
+              "price": 65,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 13,
+              "order": 17
+            },
+            {
+              "quantity": 2,
+              "name": "Стекло темное",
+              "price": 50,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 25,
+              "order": 18
+            }
+          ],
+          "hardware_data": [
+            {
+              "quantity": 276,
+              "name": "Болты М20*60",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Гайка М20",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Шайба М20",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            },
+            {
+              "quantity": 6,
+              "name": "Шпилька М30 кл.пр.88 ",
+              "price": 3900,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 650,
+              "order": 4
+            },
+            {
+              "quantity": 24,
+              "name": "Гайка М30",
+              "price": 3072,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 128,
+              "order": 5
+            }
+          ],
+          "metal_data": [
+            {
+              "quantity": 276,
+              "name": "Труба 1-fact",
+              "price": 6624,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 24,
+              "order": 1
+            },
+            {
+              "quantity": 276,
+              "name": "Труба 2",
+              "price": 1656,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 6,
+              "order": 2
+            },
+            {
+              "quantity": 552,
+              "name": "Труба 3",
+              "price": 1104,
+              "unitOfMeasurement": "шт",
+              "taxPrice": 2,
+              "order": 3
+            }
+          ],
+          "total_metal_per_item": null,
+          "total_processing_per_item": "94811",
+          "total_profitability_per_item": "10766.943251074033",
+          "total": "237085.937",
+          "specification_data": {
+            "id": 16,
+            "notes": "Заметки",
+            "date_of_creation": "2025-12-22T03:33:03.463Z",
+            "calculation_id": 16,
+            "table": [
+              {
+                "id": 16,
+                "date_of_creation": "2025-12-22T03:33:03.506Z",
+                "name": "Наименование изделия 3",
+                "quantity": 1,
+                "value_per_unit": "2.00180",
+                "unit_of_measurement": "тн",
+                "total_weight": null,
+                "specification_data_id": 16
+              }
+            ]
+          },
+          "workers_data": {
+            "id": 16,
+            "notes": "Заметки",
+            "date_of_creation": "2025-12-22T03:33:03.548Z",
+            "calculation_id": 16,
+            "table": [
+              {
+                "id": 32,
+                "date_of_creation": "2025-12-22T03:33:03.590Z",
+                "name": "Арсений Николаев",
+                "number_of_hours_worked": 63,
+                "salary_per_day": 1690,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 16
+              },
+              {
+                "id": 33,
+                "date_of_creation": "2025-12-22T03:33:03.595Z",
+                "name": "Егор Волков",
+                "number_of_hours_worked": 77,
+                "salary_per_day": 1680,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 16
+              },
+              {
+                "id": 34,
+                "date_of_creation": "2025-12-22T03:33:03.598Z",
+                "name": "Егор Волков",
+                "number_of_hours_worked": 77,
+                "salary_per_day": 1680,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 16
+              },
+              {
+                "id": 35,
+                "date_of_creation": "2025-12-22T03:33:03.598Z",
+                "name": "Егор Волков",
+                "number_of_hours_worked": 77,
+                "salary_per_day": 1680,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 16
+              },
+              {
+                "id": 36,
+                "date_of_creation": "2025-12-22T03:33:03.596Z",
+                "name": "Дмитрий Степанов",
+                "number_of_hours_worked": 79,
+                "salary_per_day": 1700,
+                "salary_per_hour": null,
+                "total": null,
+                "workers_data_id": 16
+              }
+            ]
+          },
+          "itr_data": {
+            "id": 16,
+            "notes": "note-8",
+            "date_of_creation": "2025-12-22T03:33:03.814Z",
+            "calculation_id": 16,
+            "table": [
+              {
+                "id": 43,
+                "date_of_creation": "2025-12-22T03:33:03.867Z",
+                "name": "Роман Лебедев",
+                "salary_per_month": 1000,
+                "itr_data_id": 16
+              },
+              {
+                "id": 44,
+                "date_of_creation": "2025-12-22T03:33:03.867Z",
+                "name": "Илья Семёнов",
+                "salary_per_month": 3000,
+                "itr_data_id": 16
+              },
+              {
+                "id": 45,
+                "date_of_creation": "2025-12-22T03:33:03.867Z",
+                "name": "Алексей Новиков",
+                "salary_per_month": 10000,
+                "itr_data_id": 16
+              },
+              {
+                "id": 46,
+                "date_of_creation": "2025-12-22T03:33:03.868Z",
+                "name": "Иван Павлов",
+                "salary_per_month": 15000,
+                "itr_data_id": 16
+              },
+              {
+                "id": 47,
+                "date_of_creation": "2025-12-22T03:33:03.868Z",
+                "name": "Максим Петров",
+                "salary_per_month": 5000,
+                "itr_data_id": 16
+              }
+            ]
+          },
+          "workers_tax_data": [
+            {
+              "id": 71,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 16,
+              "order_id": 2
+            },
+            {
+              "id": 72,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 16,
+              "order_id": 3
+            },
+            {
+              "id": 73,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 16,
+              "order_id": 5
+            },
+            {
+              "id": 74,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 16,
+              "order_id": 4
+            },
+            {
+              "id": 75,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 16,
+              "order_id": 1
+            }
+          ],
+          "itr_tax_data": [
+            {
+              "id": 71,
+              "name": "т",
+              "coefficient": "0.3",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "T",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 16,
+              "order_id": 1
+            },
+            {
+              "id": 72,
+              "name": "т н",
+              "coefficient": null,
+              "coefficient_a": "93",
+              "coefficient_b": "7",
+              "key": "TN",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 16,
+              "order_id": 2
+            },
+            {
+              "id": 73,
+              "name": "к налог есв",
+              "coefficient": "0.22",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KESV",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 16,
+              "order_id": 5
+            },
+            {
+              "id": 74,
+              "name": "к налог подаходн+военн",
+              "coefficient": "0.242236",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "KMIL",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 16,
+              "order_id": 4
+            },
+            {
+              "id": 75,
+              "name": "к",
+              "coefficient": "0.2",
+              "coefficient_a": null,
+              "coefficient_b": null,
+              "key": "K",
+              "subtotal": null,
+              "total": null,
+              "calculation_id": 16,
+              "order_id": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
