@@ -4,7 +4,7 @@ const workersController = require('../controller/workers.controller')
 const authMiddleware = require('../middleware/auth')
 
 router.post('/worker', authMiddleware, workersController.createWorker)
-router.put('/worker', authMiddleware, workersController.updateWorker)
+router.put('/worker/:id', authMiddleware, workersController.updateWorker)
 // router.get('/worker/:id', workersController.getWorkerById)
 router.delete('/worker/:id', authMiddleware, workersController.deleteWorkerById)
 
