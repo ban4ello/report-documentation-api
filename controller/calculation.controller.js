@@ -14,6 +14,7 @@ class CalculationController {
       profitabilityCoeficient,
       title,
       transportValue,
+      dateOfCreation,
       lastEditDate,
       parentCalculationId,
       calculationType,
@@ -38,7 +39,10 @@ class CalculationController {
 
     let newParentCalculationId = parentCalculationId;
     if (calculationType === 'plan') {
-      const parent = await req.userDb.query(`INSERT INTO parent_calculation (title) values ($1) RETURNING *`, [title]);
+      const parent = await req.userDb.query(
+        `INSERT INTO parent_calculation (title, date_of_creation) values ($1, $2) RETURNING *`,
+        [title, dateOfCreation || new Date()]
+      );
       newParentCalculationId = parent.rows[0].id;
     }
 
@@ -54,6 +58,7 @@ class CalculationController {
 			profitability_coeficient,
 			title,
 			transport_value,
+			date_of_creation,
 			last_edit_date,
 			parent_calculation_id,
 			calculation_type,
@@ -64,7 +69,7 @@ class CalculationController {
 			total_processing_per_item,
 			total_profitability_per_item,
       total
-		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING *`,
+		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21) RETURNING *`,
       [
         itrWorkedDays,
         coeficientOfNds,
@@ -76,6 +81,7 @@ class CalculationController {
         profitabilityCoeficient,
         title,
         transportValue,
+        dateOfCreation || new Date(),
         lastEditDate,
         newParentCalculationId,
         calculationType,
@@ -263,6 +269,7 @@ class CalculationController {
       profitabilityCoeficient,
       title,
       transportValue,
+      dateOfCreation,
       lastEditDate,
       consumablesData,
       hardwareData,
@@ -290,15 +297,16 @@ class CalculationController {
 				profitability_coeficient = $8,
 				title = $9,
 				transport_value = $10,
-				last_edit_date = $11,
-				consumables_data = $12,
-				hardware_data = $13,
-				metal_data = $14,
-				total = $15,
-				total_metal_per_item = $16,
-				total_processing_per_item = $17,
-				total_profitability_per_item = $18
-				where id = $19 RETURNING *`,
+				date_of_creation = $11,
+				last_edit_date = $12,
+				consumables_data = $13,
+				hardware_data = $14,
+				metal_data = $15,
+				total = $16,
+				total_metal_per_item = $17,
+				total_processing_per_item = $18,
+				total_profitability_per_item = $19
+				where id = $20 RETURNING *`,
       [
         itrWorkedDays,
         coeficientOfNds,
@@ -310,6 +318,7 @@ class CalculationController {
         profitabilityCoeficient,
         title,
         transportValue,
+        dateOfCreation,
         lastEditDate,
         consumablesData,
         hardwareData,
