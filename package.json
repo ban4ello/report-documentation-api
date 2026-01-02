@@ -13,7 +13,8 @@
     "clear-parent-calculations": "node scripts/clear-parent-calculations.js",
     "clone-calculation": "node scripts/clone-calculation.js",
     "backup-calculations": "node scripts/backup-calculations.js",
-    "restore-calculations": "node scripts/restore-calculations.js"
+    "restore-calculations": "node scripts/restore-calculations.js",
+    "create-media-files-table": "node scripts/create-media-files-table.js"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +27,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
     "pg": "^8.13.1",
     "uuid": "^11.0.5"
   },

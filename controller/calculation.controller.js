@@ -787,6 +787,148 @@ class CalculationController {
 			res.json([]);
 		}
   }
+
+  async uploadMediaFiles(req, res) {
+    const calculationId = req.params.id;
+    const files = req.files;
+
+    if (!files || files.length === 0) {
+      return res.status(400).json({ message: 'Файлы не были загружены' });
+    }
+
+    try {
+      const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+      const maxFileSize = 10 * 1024 * 1024; // 10MB
+
+      const uploadedFiles = [];
+
+      for (const file of files) {
+        if (!allowedTypes.includes(file.mimetype)) {
+          return res.status(400).json({ 
+            message: `Файл ${file.originalname} имеет недопустимый тип. Разрешены только PDF, JPG, PNG` 
+          });
+        }
+
+        if (file.size > maxFileSize) {
+          return res.status(400).json({ 
+            message: `Файл ${file.originalname} превышает максимальный размер 10MB` 
+          });
+        }
+
+        // Имя файла уже должно быть исправлено в middleware fixFileNameEncoding
+        // Но на всякий случай делаем дополнительную проверку
+        let fileName = file.originalname
+        try {
+          // Если имя содержит типичные символы неправильной кодировки (Ñ, Ð и т.д.)
+          if (/[ÑÐ]/.test(fileName)) {
+            const decodedName = Buffer.from(fileName, 'latin1').toString('utf8')
+            if (!/[ÑÐ]/.test(decodedName)) {
+              fileName = decodedName
+            }
+          }
+        } catch (error) {
+          console.warn('Could not decode filename, using original:', fileName)
+        }
+
+        const result = await req.userDb.query(
+          `INSERT INTO calculation_media_files (
+            calculation_id,
+            file_name,
+            file_type,
+            file_size,
+            file_data
+          ) VALUES ($1, $2, $3, $4, $5) RETURNING id, file_name, file_type, file_size, date_of_creation`,
+          [calculationId, fileName, file.mimetype, file.size, file.buffer]
+        );
+
+        uploadedFiles.push({
+          id: result.rows[0].id,
+          fileName: result.rows[0].file_name,
+          fileType: result.rows[0].file_type,
+          fileSize: result.rows[0].file_size,
+          dateOfCreation: result.rows[0].date_of_creation
+        });
+      }
+
+      res.json({ files: uploadedFiles });
+    } catch (error) {
+      console.error('Error uploading media files:', error);
+      res.status(500).json({ message: 'Ошибка при загрузке файлов' });
+    }
+  }
+
+  async getMediaFiles(req, res) {
+    const calculationId = req.params.id;
+
+    try {
+      const result = await req.userDb.query(
+        `SELECT id, file_name, file_type, file_size, date_of_creation 
+         FROM calculation_media_files 
+         WHERE calculation_id = $1 
+         ORDER BY date_of_creation DESC`,
+        [calculationId]
+      );
+
+      const camelize = (s) => s.replace(/_./g, (x) => x[1].toUpperCase());
+      const files = result.rows.map((row) => {
+        return Object.keys(row).reduce((acc, key) => {
+          acc[camelize(key)] = row[key];
+          return acc;
+        }, {});
+      });
+
+      res.json(files);
+    } catch (error) {
+      console.error('Error getting media files:', error);
+      res.status(500).json({ message: 'Ошибка при получении файлов' });
+    }
+  }
+
+  async downloadMediaFile(req, res) {
+    const fileId = req.params.id;
+
+    try {
+      const result = await req.userDb.query(
+        `SELECT file_name, file_type, file_data 
+         FROM calculation_media_files 
+         WHERE id = $1`,
+        [fileId]
+      );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({ message: 'Файл не найден' });
+      }
+
+      const file = result.rows[0];
+      res.setHeader('Content-Type', file.file_type);
+      res.setHeader('Content-Disposition', `attachment; filename="${file.file_name}"`);
+      res.send(file.file_data);
+    } catch (error) {
+      console.error('Error downloading media file:', error);
+      res.status(500).json({ message: 'Ошибка при скачивании файла' });
+    }
+  }
+
+  async deleteMediaFile(req, res) {
+    const fileId = req.params.id;
+
+    try {
+      const isFileExists = await req.userDb.query(
+        `SELECT * FROM calculation_media_files WHERE id = $1`,
+        [fileId]
+      );
+
+      if (isFileExists.rows.length) {
+        await req.userDb.query('DELETE FROM calculation_media_files WHERE id = $1', [fileId]);
+        res.json({ message: 'Файл удален' });
+      } else {
+        res.status(404).json({ message: 'Файл не найден' });
+      }
+    } catch (error) {
+      console.error('Error deleting media file:', error);
+      res.status(500).json({ message: 'Ошибка при удалении файла' });
+    }
+  }
 }
 
 module.exports = new CalculationController();

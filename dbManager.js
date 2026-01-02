@@ -182,6 +182,17 @@ class DatabaseManager {
         calculation_id INTEGER,
         order_id INTEGER,
         FOREIGN KEY (calculation_id) REFERENCES ${schemaName}.calculation(id) ON DELETE CASCADE
+      )`,
+      
+      `CREATE TABLE IF NOT EXISTS ${schemaName}.calculation_media_files (
+        id SERIAL PRIMARY KEY,
+        calculation_id INTEGER NOT NULL,
+        file_name VARCHAR(255) NOT NULL,
+        file_type VARCHAR(50) NOT NULL,
+        file_size INTEGER NOT NULL,
+        file_data BYTEA NOT NULL,
+        date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (calculation_id) REFERENCES ${schemaName}.calculation(id) ON DELETE CASCADE
       )`
     ];
 

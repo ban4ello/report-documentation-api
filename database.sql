@@ -149,3 +149,14 @@ create TABLE itr_tax_data (
 	order_id INTEGER,
 	FOREIGN KEY (calculation_id) REFERENCES calculation(id) ON DELETE CASCADE
 );
+
+create TABLE calculation_media_files (
+	id SERIAL PRIMARY KEY,
+	calculation_id INTEGER NOT NULL,
+	file_name VARCHAR(255) NOT NULL,
+	file_type VARCHAR(50) NOT NULL,
+	file_size INTEGER NOT NULL,
+	file_data BYTEA NOT NULL,
+	date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (calculation_id) REFERENCES calculation(id) ON DELETE CASCADE
+);
