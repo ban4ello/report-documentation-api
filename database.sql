@@ -61,13 +61,15 @@ create TABLE calculation (
 	total_metal_per_item DECIMAL,
 	total_processing_per_item DECIMAL,
 	total_profitability_per_item DECIMAL,
-	total DECIMAL
+	total DECIMAL,
+	is_metal_enabled BOOLEAN DEFAULT FALSE,
+	is_hardware_enabled BOOLEAN DEFAULT FALSE
 );
 
 
 create TABLE specification_data (
 	id SERIAL PRIMARY KEY,
-	notes VARCHAR(255),
+	notes TEXT,
 	date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	calculation_id INTEGER,
 	FOREIGN KEY (calculation_id) REFERENCES calculation(id) ON DELETE CASCADE
@@ -87,7 +89,7 @@ create TABLE specification_data_table (
 
 create TABLE workers_data (
 	id SERIAL PRIMARY KEY,
-	notes VARCHAR(255),
+	notes TEXT,
 	date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	calculation_id INTEGER,
 	FOREIGN KEY (calculation_id) REFERENCES calculation(id) ON DELETE CASCADE
@@ -107,7 +109,7 @@ create TABLE workers_data_table (
 
 create TABLE itr_data (
 	id SERIAL PRIMARY KEY,
-	notes VARCHAR(255),
+	notes TEXT,
 	date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	calculation_id INTEGER,
 	FOREIGN KEY (calculation_id) REFERENCES calculation(id) ON DELETE CASCADE

@@ -14,7 +14,10 @@
     "clone-calculation": "node scripts/clone-calculation.js",
     "backup-calculations": "node scripts/backup-calculations.js",
     "restore-calculations": "node scripts/restore-calculations.js",
-    "create-media-files-table": "node scripts/create-media-files-table.js"
+    "create-media-files-table": "node scripts/create-media-files-table.js",
+    "alter-notes-to-text": "node scripts/alter-notes-to-text.js",
+    "add-is-metal-enabled": "node scripts/add-is-metal-enabled.js",
+    "add-is-metal-excluded": "node scripts/add-is-metal-excluded.js"
   },
   "keywords": [],
   "author": "",

@@ -96,12 +96,14 @@ class DatabaseManager {
         total_processing_per_item DECIMAL,
         total_profitability_per_item DECIMAL,
         total DECIMAL,
+        is_metal_enabled BOOLEAN DEFAULT FALSE,
+        is_hardware_enabled BOOLEAN DEFAULT FALSE,
         FOREIGN KEY (parent_calculation_id) REFERENCES ${schemaName}.parent_calculation(id) ON DELETE CASCADE
       )`,
       
       `CREATE TABLE IF NOT EXISTS ${schemaName}.specification_data (
         id SERIAL PRIMARY KEY,
-        notes VARCHAR(255),
+        notes TEXT,
         date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         calculation_id INTEGER,
         FOREIGN KEY (calculation_id) REFERENCES ${schemaName}.calculation(id) ON DELETE CASCADE
@@ -121,7 +123,7 @@ class DatabaseManager {
       
       `CREATE TABLE IF NOT EXISTS ${schemaName}.workers_data (
         id SERIAL PRIMARY KEY,
-        notes VARCHAR(255),
+        notes TEXT,
         date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         calculation_id INTEGER,
         FOREIGN KEY (calculation_id) REFERENCES ${schemaName}.calculation(id) ON DELETE CASCADE
@@ -141,7 +143,7 @@ class DatabaseManager {
       
       `CREATE TABLE IF NOT EXISTS ${schemaName}.itr_data (
         id SERIAL PRIMARY KEY,
-        notes VARCHAR(255),
+        notes TEXT,
         date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         calculation_id INTEGER,
         FOREIGN KEY (calculation_id) REFERENCES ${schemaName}.calculation(id) ON DELETE CASCADE

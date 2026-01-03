@@ -29,7 +29,9 @@ class CalculationController {
       totalMetalPerItem,
       totalProcessingPerItem,
       totalProfitabilityPerItem,
-      total
+      total,
+      isMetalEnabled,
+      isHardwareEnabled
     } = req.body;
     let resSpecificationDataTable = [];
     let resWorkersTaxDataTable = [];
@@ -68,8 +70,10 @@ class CalculationController {
 			total_metal_per_item,
 			total_processing_per_item,
 			total_profitability_per_item,
-      total
-		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21) RETURNING *`,
+      total,
+			is_metal_enabled,
+			is_hardware_enabled
+		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23) RETURNING *`,
       [
         itrWorkedDays,
         coeficientOfNds,
@@ -91,7 +95,9 @@ class CalculationController {
         totalMetalPerItem,
         totalProcessingPerItem,
         totalProfitabilityPerItem,
-        total
+        total,
+        isMetalEnabled || false,
+        isHardwareEnabled || false
       ]
     );
 
@@ -282,7 +288,9 @@ class CalculationController {
       totalMetalPerItem,
       totalProcessingPerItem,
       totalProfitabilityPerItem,
-      total
+      total,
+      isMetalEnabled,
+      isHardwareEnabled
     } = req.body;
 
     const calculation = await req.userDb.query(
@@ -305,8 +313,10 @@ class CalculationController {
 				total = $16,
 				total_metal_per_item = $17,
 				total_processing_per_item = $18,
-				total_profitability_per_item = $19
-				where id = $20 RETURNING *`,
+				total_profitability_per_item = $19,
+				is_metal_enabled = $20,
+				is_hardware_enabled = $21
+				where id = $22 RETURNING *`,
       [
         itrWorkedDays,
         coeficientOfNds,
@@ -327,6 +337,8 @@ class CalculationController {
         totalMetalPerItem,
         totalProcessingPerItem,
         totalProfitabilityPerItem,
+        isMetalEnabled || false,
+        isHardwareEnabled || false,
         id
       ]
     );
