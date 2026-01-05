@@ -1,14 +1,15 @@
+require('dotenv').config();
 const { Pool } = require('pg');
 
 class DatabaseManager {
   constructor() {
     // Основная база данных для всех пользователей
     this.mainDbConfig = {
-      user: 'postgres',
-      database: 'calculations',
-      password: 'root',
-      host: 'localhost',
-      port: 5432,
+      user: process.env.DB_USER || 'postgres',
+      database: process.env.DB_NAME || 'calculations',
+      password: process.env.DB_PASSWORD || 'root',
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT) || 5432,
     };
     
     this.mainPool = new Pool(this.mainDbConfig);
@@ -17,6 +18,65 @@ class DatabaseManager {
   // Получить подключение к основной БД (для пользователей)
   getMainConnection() {
     return this.mainPool;
+  }
+
+  // Инициализировать основные таблицы в схеме public
+  async initializeMainTables() {
+    const client = await this.mainPool.connect();
+    
+    try {
+      // Устанавливаем схему поиска на public
+      await client.query('SET search_path TO public');
+      
+      const mainTables = [
+        `CREATE TABLE IF NOT EXISTS users (
+          id SERIAL PRIMARY KEY,
+          date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+          role VARCHAR(10) DEFAULT 'guest',
+          username VARCHAR(255),
+          email VARCHAR(50) NOT NULL UNIQUE,
+          isActivated BOOLEAN DEFAULT FALSE,
+          activationLink VARCHAR(255),
+          password VARCHAR(255) NOT NULL
+        )`,
+        
+        `CREATE TABLE IF NOT EXISTS login_attempts (
+          id SERIAL PRIMARY KEY,
+          email VARCHAR(50) NOT NULL,
+          success BOOLEAN DEFAULT FALSE,
+          ip_address VARCHAR(45),
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+        )`,
+        
+        `CREATE TABLE IF NOT EXISTS tokenSchema (
+          id SERIAL PRIMARY KEY,
+          user_id INTEGER NOT NULL,
+          refreshToken VARCHAR(50) NOT NULL UNIQUE,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        )`
+      ];
+
+      for (const tableQuery of mainTables) {
+        try {
+          await client.query(tableQuery);
+          console.log(`✅ Основная таблица создана в схеме public`);
+        } catch (error) {
+          if (error.code === '42P07') {
+            console.log(`ℹ️ Основная таблица уже существует в схеме public`);
+          } else {
+            console.error(`❌ Ошибка при создании основной таблицы:`, error.message);
+            throw error;
+          }
+        }
+      }
+      
+      console.log(`🎉 Все основные таблицы в схеме public инициализированы`);
+    } catch (error) {
+      console.error(`❌ Ошибка при инициализации основных таблиц:`, error);
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 
   // Создать схему для пользователя (вместо отдельной БД)

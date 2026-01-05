@@ -30,7 +30,18 @@ app.use('/api', parentCalculationRouter)
 app.use('/api', workersRouter)
 app.use('/api', authRouter)
 
-const server = app.listen(PORT, () => console.log('Server started on port ' + PORT))
+const server = app.listen(PORT, async () => {
+  console.log('Server started on port ' + PORT);
+  
+  // Инициализация основных таблиц при старте сервера
+  try {
+    await dbManager.initializeMainTables();
+    console.log('✅ Основные таблицы инициализированы');
+  } catch (error) {
+    console.error('❌ Ошибка при инициализации основных таблиц:', error);
+  }
+});
+
 app.requestTimeout = 10000;
 
 // Graceful shutdown
