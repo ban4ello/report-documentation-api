@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { Pool } = require('pg');
+const dns = require('dns');
 
 class DatabaseManager {
   constructor() {
@@ -10,6 +11,18 @@ class DatabaseManager {
       password: process.env.DB_PASSWORD || 'root',
       host: process.env.DB_HOST || 'localhost',
       port: parseInt(process.env.DB_PORT) || 5432,
+    };
+    
+    // Создаем кастомную функцию lookup для принудительного использования IPv4
+    // Это решает проблему с IPv6 на Railway и других платформах
+    const ipv4Lookup = (hostname, options, callback) => {
+      dns.lookup(hostname, { family: 4, all: false }, (err, address) => {
+        if (err) {
+          return callback(err);
+        }
+        // Возвращаем IPv4 адрес
+        callback(null, address, 4);
+      });
     };
     
     // Для Supabase: Connection Pooler (порт 6543) не поддерживает DDL операции
@@ -84,8 +97,8 @@ class DatabaseManager {
         ...this.mainDbConfig,
         host: directHost,
         port: 5432, // Прямой порт Supabase
-        // Принудительно используем IPv4 для избежания проблем с IPv6 на Railway
-        family: 4, // IPv4 only
+        // Используем кастомный lookup для принудительного IPv4
+        lookup: ipv4Lookup,
       };
       
       // Проверка формата хоста
@@ -105,12 +118,16 @@ class DatabaseManager {
       // Также принудительно используем IPv4 для pooler
       this.mainPool = new Pool({
         ...this.mainDbConfig,
-        family: 4, // IPv4 only
+        lookup: ipv4Lookup,
       });
     } else {
       // Если используется прямой порт, используем один пул для всего
+      // Также используем IPv4 lookup для надежности
       this.directPool = null;
-      this.mainPool = new Pool(this.mainDbConfig);
+      this.mainPool = new Pool({
+        ...this.mainDbConfig,
+        lookup: ipv4Lookup,
+      });
     }
   }
   
