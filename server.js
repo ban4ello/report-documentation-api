@@ -11,6 +11,17 @@ const parentCalculationRouter = require('./routes/parent-calculation.routes.js')
 const workersRouter = require('./routes/workers.routes.js')
 const authRouter = require('./routes/auth.routes.js')
 
+// CORS должен быть ПЕРВЫМ middleware, до всех остальных
+// Упрощенная конфигурация CORS - разрешаем все origins
+app.use(cors({
+  origin: true, // Разрешаем все origins
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cookie', 'Accept'],
+  exposedHeaders: ['Set-Cookie'],
+  optionsSuccessStatus: 200
+}));
+
 app.use(cookieParser());
 
 const allowedOrigins = [
@@ -19,50 +30,6 @@ const allowedOrigins = [
   'https://report-documentation.vercel.app',
   process.env.FRONTEND_URL
 ].filter(Boolean);
-
-// Упрощенная и надежная конфигурация CORS
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Разрешаем запросы без origin (мобильные приложения, Postman, curl)
-    if (!origin) {
-      return callback(null, true);
-    }
-    
-    // Разрешаем любой origin в development режиме
-    if (process.env.NODE_ENV === 'development') {
-      return callback(null, true);
-    }
-    
-    // Логируем для отладки
-    console.log(`🔍 CORS: Проверка origin: ${origin}`);
-    console.log(`   Разрешенные origins: ${allowedOrigins.join(', ') || 'none'}`);
-    
-    // Проверяем разрешенные origins
-    const isAllowed = allowedOrigins.some(allowedOrigin => {
-      const match = origin === allowedOrigin || origin.startsWith(allowedOrigin);
-      if (match) {
-        console.log(`✅ CORS: Origin разрешен: ${origin} (совпадает с ${allowedOrigin})`);
-      }
-      return match;
-    });
-    
-    if (isAllowed) {
-      return callback(null, true);
-    }
-    
-    // Временно разрешаем все origins для отладки
-    console.warn(`⚠️ CORS: Origin не в списке, но разрешен: ${origin}`);
-    callback(null, true);
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cookie', 'Accept'],
-  exposedHeaders: ['Set-Cookie'],
-  optionsSuccessStatus: 200
-};
-
-// Применяем CORS ко всем запросам
-app.use(cors(corsOptions));
 
 // Middleware для логирования CORS запросов и ответов (для отладки)
 app.use((req, res, next) => {
