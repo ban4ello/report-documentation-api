@@ -17,7 +17,8 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://report-documentation-mt620jzol-ban4ellos-projects.vercel.app/',
+  'http://127.0.0.1:5173',
+  'https://report-documentation-mt620jzol-ban4ellos-projects.vercel.app',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
@@ -26,25 +27,29 @@ app.use(cors({
     // Разрешаем запросы без origin (мобильные приложения, Postman)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    // Разрешаем любой origin в development режиме
+    if (process.env.NODE_ENV === 'development') {
+      return callback(null, true);
     }
+    
+    // Проверяем разрешенные origins
+    if (allowedOrigins.some(allowedOrigin => {
+      // Точное совпадение или если origin начинается с allowedOrigin
+      return origin === allowedOrigin || origin.startsWith(allowedOrigin);
+    })) {
+      return callback(null, true);
+    }
+    
+    // Для продакшена временно разрешаем все origins (для тестирования)
+    // В будущем можно заменить на: callback(new Error('Not allowed by CORS'));
+    callback(null, true);
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 app.use(bodyParser.json());
-
-app.use(function (req, res, next) {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
-	res.setHeader('Access-Control-Allow-Credentials', true);
-
-	next();
-});
 app.use(express.json())
 app.use('/api', calculationRouter)
 app.use('/api', parentCalculationRouter)
