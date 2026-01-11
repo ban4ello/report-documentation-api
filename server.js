@@ -64,7 +64,10 @@ const server = app.listen(PORT, async () => {
     await dbManager.initializeMainTables();
     console.log('✅ Основные таблицы инициализированы');
   } catch (error) {
-    console.error('❌ Ошибка при инициализации основных таблиц:', error);
+    console.error('❌ Ошибка при инициализации основных таблиц:', error.message);
+    console.error('⚠️  Сервер продолжит работу, но таблицы должны быть созданы вручную.');
+    console.error('💡 Выполните SQL скрипт в Supabase SQL Editor:');
+    console.error('   server/scripts/create-main-tables-supabase.sql');
   }
 });
 

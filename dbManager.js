@@ -30,7 +30,7 @@ class DatabaseManager {
         const poolerHost = this.mainDbConfig.host;
         let projectRef = null;
         
-        // Если формат db.xxx.pooler.supabase.com
+        // Приоритет 1: Если формат db.xxx.pooler.supabase.com
         if (poolerHost.startsWith('db.')) {
           const match = poolerHost.match(/^db\.([^.]+)\.pooler\.supabase\.com$/);
           if (match) {
@@ -38,25 +38,43 @@ class DatabaseManager {
             directHost = `db.${projectRef}.supabase.co`;
           }
         }
-        // Если формат aws-1-eu-west-2.pooler.supabase.com - извлекаем project reference из пользователя
-        else if (poolerHost.includes('aws-') || poolerHost.includes('pooler.supabase.com')) {
-          // Извлекаем project reference из DB_USER (формат: postgres.xxx)
+        // Приоритет 2: Извлекаем project reference из DB_USER (формат: postgres.xxx)
+        // Это работает для всех форматов pooler хоста
+        if (!directHost) {
           const dbUser = this.mainDbConfig.user;
+          console.log(`🔍 Извлечение project reference из DB_USER: ${dbUser}`);
           if (dbUser && dbUser.includes('.')) {
             projectRef = dbUser.split('.')[1]; // postgres.xxx -> xxx
+            console.log(`   Извлечен project reference: ${projectRef}`);
             if (projectRef) {
               directHost = `db.${projectRef}.supabase.co`;
+              console.log(`   Сформирован прямой хост: ${directHost}`);
             }
+          } else {
+            console.warn(`   ⚠️ DB_USER не содержит точку или имеет неожиданный формат: ${dbUser}`);
           }
         }
         
-        // Если не удалось определить, пытаемся заменить .pooler.supabase.com на .supabase.co
+        // Если все еще не определен, выводим ошибку
         if (!directHost) {
-          directHost = poolerHost.replace('.pooler.supabase.com', '.supabase.co');
+          console.error('❌ Не удалось определить прямой хост Supabase. Установите DB_DIRECT_HOST в переменных окружения.');
+          console.error(`   Pooler host: ${poolerHost}`);
+          console.error(`   DB User: ${this.mainDbConfig.user}`);
+          console.error(`   Формат DB_USER должен быть: postgres.{projectRef}`);
         }
       }
       
-      // Если прямой хост не определен, используем тот же хост (может не сработать для Supabase)
+      // Если прямой хост не определен для Supabase pooler, выбрасываем ошибку
+      if (!directHost && (isPoolerPort || isSupabasePooler)) {
+        throw new Error(
+          `Не удалось определить прямой хост Supabase для DDL операций. ` +
+          `Установите переменную окружения DB_DIRECT_HOST=db.{projectRef}.supabase.co ` +
+          `или убедитесь, что DB_USER имеет формат postgres.{projectRef}. ` +
+          `Текущий DB_USER: ${this.mainDbConfig.user}, Pooler host: ${this.mainDbConfig.host}`
+        );
+      }
+      
+      // Если прямой хост не определен (не Supabase), используем тот же хост
       if (!directHost) {
         directHost = this.mainDbConfig.host;
       }
@@ -66,16 +84,29 @@ class DatabaseManager {
         ...this.mainDbConfig,
         host: directHost,
         port: 5432, // Прямой порт Supabase
+        // Принудительно используем IPv4 для избежания проблем с IPv6 на Railway
+        family: 4, // IPv4 only
       };
+      
+      // Проверка формата хоста
+      if (!directHost.startsWith('db.') || !directHost.endsWith('.supabase.co')) {
+        console.warn(`⚠️ Прямой хост может быть неправильным: ${directHost}`);
+        console.warn(`   Ожидаемый формат: db.{projectRef}.supabase.co`);
+      }
+      
       this.directPool = new Pool(this.directDbConfig);
       
       // Логирование для отладки
       console.log(`🔌 Database connection configured:`);
       console.log(`   Pooler (queries): ${this.mainDbConfig.host}:${this.mainDbConfig.port}`);
-      console.log(`   Direct (DDL): ${directHost}:5432`);
+      console.log(`   Direct (DDL): ${directHost}:5432 (IPv4 only)`);
       
       // Pooler для обычных запросов (порт 6543 или текущий порт)
-      this.mainPool = new Pool(this.mainDbConfig);
+      // Также принудительно используем IPv4 для pooler
+      this.mainPool = new Pool({
+        ...this.mainDbConfig,
+        family: 4, // IPv4 only
+      });
     } else {
       // Если используется прямой порт, используем один пул для всего
       this.directPool = null;
@@ -131,24 +162,43 @@ class DatabaseManager {
         )`
       ];
 
+      let createdCount = 0;
+      let existingCount = 0;
+      let errorCount = 0;
+
       for (const tableQuery of mainTables) {
         try {
           await client.query(tableQuery);
+          createdCount++;
           console.log(`✅ Основная таблица создана в схеме public`);
         } catch (error) {
           if (error.code === '42P07') {
+            existingCount++;
             console.log(`ℹ️ Основная таблица уже существует в схеме public`);
           } else {
+            errorCount++;
             console.error(`❌ Ошибка при создании основной таблицы:`, error.message);
-            throw error;
+            console.error(`   Код ошибки: ${error.code}`);
+            // Не прерываем выполнение, продолжаем создавать остальные таблицы
           }
         }
       }
       
-      console.log(`🎉 Все основные таблицы в схеме public инициализированы`);
+      if (createdCount > 0 || existingCount > 0) {
+        console.log(`🎉 Инициализация таблиц завершена: создано ${createdCount}, уже существует ${existingCount}`);
+      }
+      
+      if (errorCount > 0) {
+        console.warn(`⚠️ При инициализации возникло ${errorCount} ошибок. Проверьте подключение к БД.`);
+        // Не выбрасываем ошибку, чтобы сервер мог продолжить работу
+      }
     } catch (error) {
-      console.error(`❌ Ошибка при инициализации основных таблиц:`, error);
-      throw error;
+      console.error(`❌ Критическая ошибка при инициализации основных таблиц:`, error.message);
+      console.error(`   Код ошибки: ${error.code}`);
+      console.error(`   Если таблицы не созданы, выполните SQL скрипт вручную:`);
+      console.error(`   server/scripts/create-main-tables-supabase.sql`);
+      // Не выбрасываем ошибку, чтобы сервер мог запуститься
+      // В продакшене таблицы должны быть созданы заранее
     } finally {
       client.release();
     }
@@ -158,22 +208,38 @@ class DatabaseManager {
   async createUserDatabase(userId) {
     // Используем прямое подключение для DDL операций
     const pool = this.getDirectPool();
-    const client = await pool.connect();
+    let client;
     
     try {
+      client = await pool.connect();
+      
       // Создаем схему для пользователя
       await client.query(`CREATE SCHEMA IF NOT EXISTS user_${userId}`);
-      console.log(`Схема user_${userId} создана`);
+      console.log(`✅ Схема user_${userId} создана`);
       
       // Создаем таблицы в схеме пользователя
       await this.createUserTables(client, userId);
       
-      console.log(`Схема для пользователя ${userId} создана успешно`);
+      console.log(`✅ Схема для пользователя ${userId} создана успешно`);
     } catch (error) {
-      console.error(`Ошибка при создании схемы для пользователя ${userId}:`, error);
+      console.error(`❌ Ошибка при создании схемы для пользователя ${userId}:`, error.message);
+      console.error(`   Код ошибки: ${error.code}`);
+      console.error(`   Хост: ${this.directDbConfig?.host || 'не определен'}`);
+      console.error(`   Порт: ${this.directDbConfig?.port || 'не определен'}`);
+      
+      // Если ошибка подключения, выводим более подробную информацию
+      if (error.code === 'ENETUNREACH' || error.code === 'ENOTFOUND') {
+        console.error(`   ⚠️ Проблема с подключением к Supabase. Проверьте:`);
+        console.error(`      1. Правильность DB_DIRECT_HOST в переменных окружения`);
+        console.error(`      2. Доступность хоста ${this.directDbConfig?.host}`);
+        console.error(`      3. Используйте формат: db.{projectRef}.supabase.co`);
+      }
+      
       throw error;
     } finally {
-      client.release();
+      if (client) {
+        client.release();
+      }
     }
   }
 
@@ -398,3 +464,5 @@ class DatabaseManager {
 }
 
 module.exports = new DatabaseManager();
+
+
