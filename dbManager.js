@@ -222,34 +222,7 @@ class DatabaseManager {
         }
       }
       
-      // Создаем пулы с IP адресами или хостами с принудительным IPv4 lookup
-      if (this.directDbConfig) {
-        // Если получили валидный IP адрес (не null и не равен хосту), используем IP напрямую
-        if (directHostIp && directHostIp !== null && directHostIp !== this.directHost) {
-          // Используем IP адрес напрямую
-          this.directPool = new Pool({
-            ...this.directDbConfig,
-            host: directHostIp,
-          });
-          console.log(`✅ Direct pool создан с IP адресом: ${directHostIp}`);
-        } else {
-          // Резолв не удался (null) или вернул хост - используем оригинальный хост с принудительным IPv4 lookup
-          // ВАЖНО: Если хост не резолвится, это может означать, что он неправильный
-          // Но мы все равно пытаемся использовать lookup для принудительного IPv4
-          console.warn(`⚠️ Хост ${this.directDbConfig.host} не резолвится. Проверьте правильность DB_DIRECT_HOST.`);
-          console.warn(`   Ожидаемый формат: db.{projectRef}.supabase.co`);
-          this.directPool = new Pool({
-            ...this.directDbConfig,
-            // host остается из directDbConfig (оригинальный хост)
-            lookup: ipv4Lookup,
-            // Добавляем дополнительные опции для принудительного IPv4
-            connectionTimeoutMillis: 10000,
-          });
-          console.log(`✅ Direct pool создан с хостом и IPv4 lookup: ${this.directDbConfig.host}`);
-        }
-      }
-      
-      // Если получили валидный IP адрес (не null и не равен хосту), используем IP напрямую
+      // Сначала создаем mainPool (pooler)
       if (poolerHostIp && poolerHostIp !== null && poolerHostIp !== this.poolerHost) {
         // Используем IP адрес напрямую
         this.mainPool = new Pool({
@@ -265,6 +238,37 @@ class DatabaseManager {
           lookup: ipv4Lookup,
         });
         console.log(`✅ Main pool создан с хостом и IPv4 lookup: ${this.mainDbConfig.host}`);
+      }
+      
+      // Теперь создаем directPool для DDL операций
+      if (this.directDbConfig) {
+        // Если получили валидный IP адрес (не null и не равен хосту), используем IP напрямую
+        if (directHostIp && directHostIp !== null && directHostIp !== this.directHost) {
+          // Используем IP адрес напрямую
+          this.directPool = new Pool({
+            ...this.directDbConfig,
+            host: directHostIp,
+          });
+          console.log(`✅ Direct pool создан с IP адресом: ${directHostIp}`);
+        } else {
+          // Резолв не удался (null) или вернул хост
+          // ВАЖНО: Если хост не резолвится, это может означать, что он неправильный или недоступен
+          // Создаем пул с хостом и lookup функцией - lookup будет вызван при подключении
+          console.warn(`⚠️ Хост ${this.directDbConfig.host} не резолвится. Проверьте правильность DB_DIRECT_HOST.`);
+          console.warn(`   Ожидаемый формат: db.{projectRef}.supabase.co`);
+          console.warn(`   💡 Проверьте в Supabase Dashboard → Settings → Database → Direct connection`);
+          
+          // Создаем пул с хостом и lookup функцией
+          // Lookup будет вызван при попытке подключения
+          this.directPool = new Pool({
+            ...this.directDbConfig,
+            // host остается из directDbConfig (оригинальный хост)
+            lookup: ipv4Lookup,
+            connectionTimeoutMillis: 10000,
+          });
+          console.log(`✅ Direct pool создан с хостом и IPv4 lookup: ${this.directDbConfig.host}`);
+          console.log(`   ⚠️ Lookup функция будет вызвана при подключении`);
+        }
       }
       
       // Логирование для отладки
