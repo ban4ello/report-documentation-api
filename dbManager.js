@@ -1,6 +1,10 @@
 require('dotenv').config();
 const { Pool } = require('pg');
 const dns = require('dns');
+const { promisify } = require('util');
+
+// Промис-версия dns.lookup для асинхронного резолва
+const dnsLookup = promisify(dns.lookup);
 
 class DatabaseManager {
   constructor() {
@@ -80,40 +84,9 @@ class DatabaseManager {
         directHost = this.mainDbConfig.host;
       }
       
-      // Резолвим IPv4 адреса заранее для гарантированного использования только IPv4
-      // Это решает проблему с IPv6 на Railway
-      let directHostIp = null;
-      let poolerHostIp = null;
-      
-      try {
-        // Резолвим прямой хост в IPv4 адрес
-        console.log(`🔍 Резолв IPv4 адреса для ${directHost}...`);
-        directHostIp = dns.lookupSync(directHost, { family: 4 });
-        console.log(`✅ Прямой хост ${directHost} резолвлен в IPv4: ${directHostIp}`);
-      } catch (err) {
-        console.error(`❌ Ошибка резолва IPv4 для ${directHost}:`, err.message);
-        // Fallback на использование хоста напрямую с lookup
-        directHostIp = directHost;
-      }
-      
-      try {
-        // Резолвим pooler хост в IPv4 адрес
-        console.log(`🔍 Резолв IPv4 адреса для ${this.mainDbConfig.host}...`);
-        poolerHostIp = dns.lookupSync(this.mainDbConfig.host, { family: 4 });
-        console.log(`✅ Pooler хост ${this.mainDbConfig.host} резолвлен в IPv4: ${poolerHostIp}`);
-      } catch (err) {
-        console.error(`❌ Ошибка резолва IPv4 для ${this.mainDbConfig.host}:`, err.message);
-        // Fallback на использование хоста напрямую с lookup
-        poolerHostIp = this.mainDbConfig.host;
-      }
-      
-      // Прямое подключение для DDL (порт 5432)
-      // Используем IP адрес напрямую для гарантированного IPv4
-      this.directDbConfig = {
-        ...this.mainDbConfig,
-        host: directHostIp, // Используем IP адрес вместо хоста
-        port: 5432, // Прямой порт Supabase
-      };
+      // Сохраняем хосты для последующего резолва
+      this.directHost = directHost;
+      this.poolerHost = this.mainDbConfig.host;
       
       // Проверка формата хоста
       if (!directHost.startsWith('db.') || !directHost.endsWith('.supabase.co')) {
@@ -121,56 +94,142 @@ class DatabaseManager {
         console.warn(`   Ожидаемый формат: db.{projectRef}.supabase.co`);
       }
       
-      this.directPool = new Pool(this.directDbConfig);
+      // Пока создаем пулы с хостами, резолв будет выполнен асинхронно
+      this.directDbConfig = {
+        ...this.mainDbConfig,
+        host: directHost,
+        port: 5432, // Прямой порт Supabase
+      };
       
-      // Логирование для отладки
-      console.log(`🔌 Database connection configured:`);
-      console.log(`   Pooler (queries): ${this.mainDbConfig.host} -> ${poolerHostIp}:${this.mainDbConfig.port}`);
-      console.log(`   Direct (DDL): ${directHost} -> ${directHostIp}:5432 (IPv4 only)`);
+      // Создаем пулы с хостами, но будем обновлять их после резолва
+      this.directPool = null;
+      this.mainPool = null;
+      this.poolsInitialized = false;
+    } else {
+      // Если используется прямой порт, используем один пул для всего
+      this.directHost = null;
+      this.poolerHost = this.mainDbConfig.host;
+      this.directPool = null;
+      this.mainPool = null;
+      this.poolsInitialized = false;
+    }
+  }
+  
+  // Асинхронная инициализация пулов с резолвом IPv4 адресов
+  async initializePools() {
+    if (this.poolsInitialized) {
+      return;
+    }
+    
+    try {
+      // Резолвим IPv4 адреса для всех хостов
+      const hostResolutions = [];
       
-      // Pooler для обычных запросов (порт 6543 или текущий порт)
-      // Используем IP адрес напрямую для гарантированного IPv4
+      if (this.directHost) {
+        console.log(`🔍 Резолв IPv4 адреса для ${this.directHost}...`);
+        hostResolutions.push(
+          dnsLookup(this.directHost, { family: 4 })
+            .then(result => {
+              // dns.lookup возвращает объект { address, family } или строку
+              const ip = typeof result === 'string' ? result : (result.address || result);
+              console.log(`✅ Прямой хост ${this.directHost} резолвлен в IPv4: ${ip}`);
+              return { type: 'direct', host: this.directHost, ip };
+            })
+            .catch(err => {
+              console.error(`❌ Ошибка резолва IPv4 для ${this.directHost}:`, err.message);
+              return { type: 'direct', host: this.directHost, ip: this.directHost };
+            })
+        );
+      }
+      
+      if (this.poolerHost) {
+        console.log(`🔍 Резолв IPv4 адреса для ${this.poolerHost}...`);
+        hostResolutions.push(
+          dnsLookup(this.poolerHost, { family: 4 })
+            .then(result => {
+              // dns.lookup возвращает объект { address, family } или строку
+              const ip = typeof result === 'string' ? result : (result.address || result);
+              console.log(`✅ Pooler хост ${this.poolerHost} резолвлен в IPv4: ${ip}`);
+              return { type: 'pooler', host: this.poolerHost, ip };
+            })
+            .catch(err => {
+              console.error(`❌ Ошибка резолва IPv4 для ${this.poolerHost}:`, err.message);
+              return { type: 'pooler', host: this.poolerHost, ip: this.poolerHost };
+            })
+        );
+      }
+      
+      // Ждем резолва всех адресов
+      const resolutions = await Promise.all(hostResolutions);
+      
+      let directHostIp = this.directHost;
+      let poolerHostIp = this.poolerHost;
+      
+      for (const res of resolutions) {
+        if (res.type === 'direct') {
+          directHostIp = res.ip;
+        } else if (res.type === 'pooler') {
+          poolerHostIp = res.ip;
+        }
+      }
+      
+      // Создаем пулы с IP адресами
+      if (this.directDbConfig) {
+        this.directPool = new Pool({
+          ...this.directDbConfig,
+          host: directHostIp, // Используем IP адрес вместо хоста
+        });
+      }
+      
       this.mainPool = new Pool({
         ...this.mainDbConfig,
         host: poolerHostIp, // Используем IP адрес вместо хоста
       });
-    } else {
-      // Если используется прямой порт, используем один пул для всего
-      // Резолвим IPv4 адрес заранее для гарантированного использования только IPv4
-      let mainHostIp = null;
       
-      try {
-        console.log(`🔍 Резолв IPv4 адреса для ${this.mainDbConfig.host}...`);
-        mainHostIp = dns.lookupSync(this.mainDbConfig.host, { family: 4 });
-        console.log(`✅ Хост ${this.mainDbConfig.host} резолвлен в IPv4: ${mainHostIp}`);
-      } catch (err) {
-        console.error(`❌ Ошибка резолва IPv4 для ${this.mainDbConfig.host}:`, err.message);
-        // Fallback на использование хоста напрямую
-        mainHostIp = this.mainDbConfig.host;
+      // Логирование для отладки
+      console.log(`🔌 Database connection configured:`);
+      if (this.directHost) {
+        console.log(`   Direct (DDL): ${this.directHost} -> ${directHostIp}:5432 (IPv4 only)`);
       }
+      console.log(`   Pooler (queries): ${this.poolerHost} -> ${poolerHostIp}:${this.mainDbConfig.port}`);
       
-      this.directPool = null;
-      this.mainPool = new Pool({
-        ...this.mainDbConfig,
-        host: mainHostIp, // Используем IP адрес вместо хоста
-      });
+      this.poolsInitialized = true;
+    } catch (error) {
+      console.error(`❌ Критическая ошибка при инициализации пулов:`, error.message);
+      // Fallback - создаем пулы с хостами напрямую
+      if (this.directDbConfig) {
+        this.directPool = new Pool(this.directDbConfig);
+      }
+      this.mainPool = new Pool(this.mainDbConfig);
+      this.poolsInitialized = true;
     }
   }
   
   // Получить пул для DDL операций (создание таблиц, схем)
-  getDirectPool() {
+  async getDirectPool() {
+    if (!this.poolsInitialized) {
+      await this.initializePools();
+    }
     return this.directPool || this.mainPool;
   }
 
   // Получить подключение к основной БД (для пользователей)
-  getMainConnection() {
+  async getMainConnection() {
+    if (!this.poolsInitialized) {
+      await this.initializePools();
+    }
     return this.mainPool;
   }
 
   // Инициализировать основные таблицы в схеме public
   async initializeMainTables() {
+    // Убеждаемся, что пулы инициализированы
+    if (!this.poolsInitialized) {
+      await this.initializePools();
+    }
+    
     // Используем прямое подключение для DDL операций
-    const pool = this.getDirectPool();
+    const pool = await this.getDirectPool();
     const client = await pool.connect();
     
     try {
@@ -250,7 +309,7 @@ class DatabaseManager {
   // Создать схему для пользователя (вместо отдельной БД)
   async createUserDatabase(userId) {
     // Используем прямое подключение для DDL операций
-    const pool = this.getDirectPool();
+    const pool = await this.getDirectPool();
     let client;
     
     try {
@@ -463,6 +522,11 @@ class DatabaseManager {
 
   // Получить подключение к схеме пользователя
   async getUserConnection(userId) {
+    // Убеждаемся, что пулы инициализированы
+    if (!this.poolsInitialized) {
+      await this.initializePools();
+    }
+    
     // Возвращаем объект с методом query, который устанавливает схему поиска
     return {
       query: async (query, params) => {
@@ -481,7 +545,7 @@ class DatabaseManager {
   // Удалить схему пользователя
   async deleteUserDatabase(userId) {
     // Используем прямое подключение для DDL операций
-    const pool = this.getDirectPool();
+    const pool = await this.getDirectPool();
     const client = await pool.connect();
     
     try {
@@ -499,7 +563,9 @@ class DatabaseManager {
 
   // Закрыть все подключения
   async closeAll() {
-    await this.mainPool.end();
+    if (this.mainPool) {
+      await this.mainPool.end();
+    }
     if (this.directPool) {
       await this.directPool.end();
     }

@@ -59,6 +59,13 @@ app.use('/api', authRouter)
 const server = app.listen(PORT, async () => {
   console.log('Server started on port ' + PORT);
   
+  // Инициализация пулов подключений с резолвом IPv4 адресов
+  try {
+    await dbManager.initializePools();
+  } catch (error) {
+    console.error('❌ Ошибка при инициализации пулов подключений:', error.message);
+  }
+  
   // Инициализация основных таблиц при старте сервера
   try {
     await dbManager.initializeMainTables();
