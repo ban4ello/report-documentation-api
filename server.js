@@ -18,7 +18,7 @@ app.use(cookieParser());
 const allowedOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
-  'https://report-documentation-mt620jzol-ban4ellos-projects.vercel.app',
+  'https://report-documentation.vercel.app',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 

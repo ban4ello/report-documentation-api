@@ -12,7 +12,44 @@ class DatabaseManager {
       port: parseInt(process.env.DB_PORT) || 5432,
     };
     
-    this.mainPool = new Pool(this.mainDbConfig);
+    // Для Supabase: Connection Pooler (порт 6543) не поддерживает DDL операции
+    // Используем прямое подключение (порт 5432) для DDL и pooler для обычных запросов
+    const isPoolerPort = this.mainDbConfig.port === 6543;
+    const isSupabasePooler = this.mainDbConfig.host && this.mainDbConfig.host.includes('pooler.supabase.com');
+    
+    if (isPoolerPort || isSupabasePooler) {
+      // Если используется pooler порт или Supabase pooler хост, создаем два пула:
+      // 1. directPool - для DDL операций (CREATE TABLE, CREATE SCHEMA и т.д.)
+      // 2. poolerPool - для обычных запросов
+      
+      // Определяем хост для прямого подключения Supabase
+      let directHost = this.mainDbConfig.host;
+      if (isSupabasePooler) {
+        // Преобразуем pooler хост в прямой хост
+        // db.xxx.pooler.supabase.com -> db.xxx.supabase.co
+        directHost = this.mainDbConfig.host.replace('.pooler.supabase.com', '.supabase.co');
+      }
+      
+      // Прямое подключение для DDL (порт 5432)
+      this.directDbConfig = {
+        ...this.mainDbConfig,
+        host: directHost,
+        port: 5432, // Прямой порт Supabase
+      };
+      this.directPool = new Pool(this.directDbConfig);
+      
+      // Pooler для обычных запросов (порт 6543 или текущий порт)
+      this.mainPool = new Pool(this.mainDbConfig);
+    } else {
+      // Если используется прямой порт, используем один пул для всего
+      this.directPool = null;
+      this.mainPool = new Pool(this.mainDbConfig);
+    }
+  }
+  
+  // Получить пул для DDL операций (создание таблиц, схем)
+  getDirectPool() {
+    return this.directPool || this.mainPool;
   }
 
   // Получить подключение к основной БД (для пользователей)
@@ -22,7 +59,9 @@ class DatabaseManager {
 
   // Инициализировать основные таблицы в схеме public
   async initializeMainTables() {
-    const client = await this.mainPool.connect();
+    // Используем прямое подключение для DDL операций
+    const pool = this.getDirectPool();
+    const client = await pool.connect();
     
     try {
       // Устанавливаем схему поиска на public
@@ -81,7 +120,9 @@ class DatabaseManager {
 
   // Создать схему для пользователя (вместо отдельной БД)
   async createUserDatabase(userId) {
-    const client = await this.mainPool.connect();
+    // Используем прямое подключение для DDL операций
+    const pool = this.getDirectPool();
+    const client = await pool.connect();
     
     try {
       // Создаем схему для пользователя
@@ -294,7 +335,9 @@ class DatabaseManager {
 
   // Удалить схему пользователя
   async deleteUserDatabase(userId) {
-    const client = await this.mainPool.connect();
+    // Используем прямое подключение для DDL операций
+    const pool = this.getDirectPool();
+    const client = await pool.connect();
     
     try {
       // Удаляем схему со всеми таблицами
@@ -312,6 +355,9 @@ class DatabaseManager {
   // Закрыть все подключения
   async closeAll() {
     await this.mainPool.end();
+    if (this.directPool) {
+      await this.directPool.end();
+    }
   }
 }
 
