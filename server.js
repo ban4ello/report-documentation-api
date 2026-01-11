@@ -12,8 +12,6 @@ const workersRouter = require('./routes/workers.routes.js')
 const authRouter = require('./routes/auth.routes.js')
 
 app.use(cookieParser());
-// app.use(cors({origin: ['http://localhost:5173', 'http://127.0.0.1:5173']}));
-// app.use(cors())
 
 const allowedOrigins = [
   'http://localhost:5173',
@@ -22,6 +20,25 @@ const allowedOrigins = [
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
+// Явная обработка preflight запросов (OPTIONS)
+app.options('*', cors({
+  origin: function (origin, callback) {
+    if (!origin || process.env.NODE_ENV === 'development') {
+      return callback(null, true);
+    }
+    if (allowedOrigins.includes(origin) || allowedOrigins.some(allowed => origin.startsWith(allowed))) {
+      return callback(null, true);
+    }
+    callback(null, true); // Временно разрешаем все
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cookie', 'Accept'],
+  exposedHeaders: ['Set-Cookie'],
+  optionsSuccessStatus: 200
+}));
+
+// CORS middleware для всех запросов
 app.use(cors({
   origin: function (origin, callback) {
     // Разрешаем запросы без origin (мобильные приложения, Postman, curl)
@@ -38,7 +55,7 @@ app.use(cors({
     
     // Логируем все запросы для отладки
     console.log(`🔍 CORS: Проверка origin: ${origin}`);
-    console.log(`   Разрешенные origins: ${allowedOrigins.join(', ')}`);
+    console.log(`   Разрешенные origins: ${allowedOrigins.join(', ') || 'none'}`);
     
     // Проверяем разрешенные origins
     const isAllowed = allowedOrigins.some(allowedOrigin => {
@@ -66,10 +83,22 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cookie'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cookie', 'Accept'],
   exposedHeaders: ['Set-Cookie'],
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  preflightContinue: false
 }));
+
+// Middleware для логирования CORS запросов (для отладки)
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS' || req.headers.origin) {
+    console.log(`📥 ${req.method} ${req.path}`);
+    console.log(`   Origin: ${req.headers.origin || 'none'}`);
+    console.log(`   Access-Control-Request-Method: ${req.headers['access-control-request-method'] || 'none'}`);
+    console.log(`   Access-Control-Request-Headers: ${req.headers['access-control-request-headers'] || 'none'}`);
+  }
+  next();
+});
 
 app.use(bodyParser.json());
 app.use(express.json())
