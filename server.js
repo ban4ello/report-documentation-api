@@ -31,29 +31,28 @@ const allowedOrigins = [
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
-// Middleware для логирования CORS запросов и ответов (для отладки)
+// Middleware для логирования всех запросов (для отладки CORS)
 app.use((req, res, next) => {
-  // Логируем входящие запросы с origin
-  if (req.headers.origin) {
-    console.log(`📥 ${req.method} ${req.path}`);
-    console.log(`   Origin: ${req.headers.origin}`);
-    if (req.method === 'OPTIONS') {
-      console.log(`   Preflight: ${req.headers['access-control-request-method'] || 'none'}`);
-      console.log(`   Request Headers: ${req.headers['access-control-request-headers'] || 'none'}`);
-    }
+  // Логируем все запросы
+  console.log(`📥 ${req.method} ${req.path}`);
+  console.log(`   Origin: ${req.headers.origin || 'none'}`);
+  console.log(`   User-Agent: ${req.headers['user-agent'] || 'none'}`);
+  if (req.method === 'OPTIONS') {
+    console.log(`   ⚙️ Preflight запрос`);
+    console.log(`   Access-Control-Request-Method: ${req.headers['access-control-request-method'] || 'none'}`);
+    console.log(`   Access-Control-Request-Headers: ${req.headers['access-control-request-headers'] || 'none'}`);
   }
   
   // Перехватываем отправку ответа для логирования CORS заголовков
   const originalSend = res.send;
   res.send = function(data) {
+    console.log(`📤 ${req.method} ${req.path} - Response ${res.statusCode}`);
     if (req.headers.origin) {
-      console.log(`📤 ${req.method} ${req.path} - Response`);
-      console.log(`   Status: ${res.statusCode}`);
       console.log(`   CORS Headers:`, {
-        'Access-Control-Allow-Origin': res.getHeader('Access-Control-Allow-Origin'),
-        'Access-Control-Allow-Credentials': res.getHeader('Access-Control-Allow-Credentials'),
-        'Access-Control-Allow-Methods': res.getHeader('Access-Control-Allow-Methods'),
-        'Access-Control-Allow-Headers': res.getHeader('Access-Control-Allow-Headers')
+        'Access-Control-Allow-Origin': res.getHeader('Access-Control-Allow-Origin') || 'not set',
+        'Access-Control-Allow-Credentials': res.getHeader('Access-Control-Allow-Credentials') || 'not set',
+        'Access-Control-Allow-Methods': res.getHeader('Access-Control-Allow-Methods') || 'not set',
+        'Access-Control-Allow-Headers': res.getHeader('Access-Control-Allow-Headers') || 'not set'
       });
     }
     return originalSend.call(this, data);
