@@ -20,88 +20,96 @@ const allowedOrigins = [
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
-// Явная обработка preflight запросов (OPTIONS)
-app.options('*', cors({
-  origin: function (origin, callback) {
-    if (!origin || process.env.NODE_ENV === 'development') {
-      return callback(null, true);
-    }
-    if (allowedOrigins.includes(origin) || allowedOrigins.some(allowed => origin.startsWith(allowed))) {
-      return callback(null, true);
-    }
-    callback(null, true); // Временно разрешаем все
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cookie', 'Accept'],
-  exposedHeaders: ['Set-Cookie'],
-  optionsSuccessStatus: 200
-}));
-
-// CORS middleware для всех запросов
-app.use(cors({
+// Упрощенная и надежная конфигурация CORS
+const corsOptions = {
   origin: function (origin, callback) {
     // Разрешаем запросы без origin (мобильные приложения, Postman, curl)
     if (!origin) {
-      console.log('🔓 CORS: Запрос без origin разрешен');
       return callback(null, true);
     }
     
     // Разрешаем любой origin в development режиме
     if (process.env.NODE_ENV === 'development') {
-      console.log(`🔓 CORS: Development режим - origin разрешен: ${origin}`);
       return callback(null, true);
     }
     
-    // Логируем все запросы для отладки
+    // Логируем для отладки
     console.log(`🔍 CORS: Проверка origin: ${origin}`);
     console.log(`   Разрешенные origins: ${allowedOrigins.join(', ') || 'none'}`);
     
     // Проверяем разрешенные origins
     const isAllowed = allowedOrigins.some(allowedOrigin => {
-      // Точное совпадение
-      if (origin === allowedOrigin) {
-        console.log(`✅ CORS: Точное совпадение с ${allowedOrigin}`);
-        return true;
+      const match = origin === allowedOrigin || origin.startsWith(allowedOrigin);
+      if (match) {
+        console.log(`✅ CORS: Origin разрешен: ${origin} (совпадает с ${allowedOrigin})`);
       }
-      // Проверка начала строки (для поддоменов)
-      if (origin.startsWith(allowedOrigin)) {
-        console.log(`✅ CORS: Origin начинается с ${allowedOrigin}`);
-        return true;
-      }
-      return false;
+      return match;
     });
     
     if (isAllowed) {
       return callback(null, true);
     }
     
-    // Для продакшена временно разрешаем все origins (для тестирования)
-    // В будущем можно заменить на: callback(new Error('Not allowed by CORS'));
-    console.warn(`⚠️ CORS: Origin не в списке разрешенных, но разрешен временно: ${origin}`);
+    // Временно разрешаем все origins для отладки
+    console.warn(`⚠️ CORS: Origin не в списке, но разрешен: ${origin}`);
     callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cookie', 'Accept'],
   exposedHeaders: ['Set-Cookie'],
-  optionsSuccessStatus: 200,
-  preflightContinue: false
-}));
+  optionsSuccessStatus: 200
+};
 
-// Middleware для логирования CORS запросов (для отладки)
+// Применяем CORS ко всем запросам
+app.use(cors(corsOptions));
+
+// Middleware для логирования CORS запросов и ответов (для отладки)
 app.use((req, res, next) => {
-  if (req.method === 'OPTIONS' || req.headers.origin) {
+  // Логируем входящие запросы с origin
+  if (req.headers.origin) {
     console.log(`📥 ${req.method} ${req.path}`);
-    console.log(`   Origin: ${req.headers.origin || 'none'}`);
-    console.log(`   Access-Control-Request-Method: ${req.headers['access-control-request-method'] || 'none'}`);
-    console.log(`   Access-Control-Request-Headers: ${req.headers['access-control-request-headers'] || 'none'}`);
+    console.log(`   Origin: ${req.headers.origin}`);
+    if (req.method === 'OPTIONS') {
+      console.log(`   Preflight: ${req.headers['access-control-request-method'] || 'none'}`);
+      console.log(`   Request Headers: ${req.headers['access-control-request-headers'] || 'none'}`);
+    }
   }
+  
+  // Перехватываем отправку ответа для логирования CORS заголовков
+  const originalSend = res.send;
+  res.send = function(data) {
+    if (req.headers.origin) {
+      console.log(`📤 ${req.method} ${req.path} - Response`);
+      console.log(`   Status: ${res.statusCode}`);
+      console.log(`   CORS Headers:`, {
+        'Access-Control-Allow-Origin': res.getHeader('Access-Control-Allow-Origin'),
+        'Access-Control-Allow-Credentials': res.getHeader('Access-Control-Allow-Credentials'),
+        'Access-Control-Allow-Methods': res.getHeader('Access-Control-Allow-Methods'),
+        'Access-Control-Allow-Headers': res.getHeader('Access-Control-Allow-Headers')
+      });
+    }
+    return originalSend.call(this, data);
+  };
+  
   next();
 });
 
 app.use(bodyParser.json());
 app.use(express.json())
+
+// Обработка ошибок CORS
+app.use((err, req, res, next) => {
+  if (err.message === 'Not allowed by CORS') {
+    console.error(`❌ CORS Error: ${req.headers.origin} не разрешен`);
+    return res.status(403).json({ 
+      message: 'CORS: Origin не разрешен',
+      origin: req.headers.origin 
+    });
+  }
+  next(err);
+});
+
 app.use('/api', calculationRouter)
 app.use('/api', parentCalculationRouter)
 app.use('/api', workersRouter)
