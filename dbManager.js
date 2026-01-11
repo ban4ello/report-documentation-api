@@ -31,12 +31,14 @@ const dnsResolve4 = promisify(dns.resolve4);
 
 // Кастомная функция lookup для принудительного использования IPv4
 const ipv4Lookup = (hostname, options, callback) => {
-  console.log(`🔍 IPv4 lookup для хоста: ${hostname}`);
+  console.log(`🔍 IPv4 lookup вызван для хоста: ${hostname}`);
   // Принудительно используем только IPv4
   dns.lookup(hostname, { family: 4, all: false }, (err, address, family) => {
     if (err) {
       console.error(`❌ IPv4 lookup ошибка для ${hostname}:`, err.message);
-      // Возвращаем ошибку - не позволяем pg использовать IPv6
+      console.error(`   Код ошибки: ${err.code}`);
+      // Если хост не резолвится, возвращаем ошибку - не позволяем pg использовать IPv6
+      // Это предотвратит попытку подключения по IPv6
       return callback(err);
     }
     console.log(`✅ IPv4 lookup успешен для ${hostname}: ${address} (family: ${family || 4})`);
@@ -252,22 +254,22 @@ class DatabaseManager {
           console.log(`✅ Direct pool создан с IP адресом: ${directHostIp}`);
         } else {
           // Резолв не удался (null) или вернул хост
-          // ВАЖНО: Если хост не резолвится, это может означать, что он неправильный или недоступен
-          // Создаем пул с хостом и lookup функцией - lookup будет вызван при подключении
-          console.warn(`⚠️ Хост ${this.directDbConfig.host} не резолвится. Проверьте правильность DB_DIRECT_HOST.`);
-          console.warn(`   Ожидаемый формат: db.{projectRef}.supabase.co`);
-          console.warn(`   💡 Проверьте в Supabase Dashboard → Settings → Database → Direct connection`);
+          // ВАЖНО: Если хост не резолвится, это критическая проблема
+          // Хост должен резолвиться, иначе подключение невозможно
+          console.error(`❌ КРИТИЧЕСКАЯ ПРОБЛЕМА: Хост ${this.directDbConfig.host} не резолвится!`);
+          console.error(`   Это означает, что DB_DIRECT_HOST неправильный или хост недоступен.`);
+          console.error(`   💡 РЕШЕНИЕ: Проверьте DB_DIRECT_HOST в Railway Variables:`);
+          console.error(`      1. Откройте Supabase Dashboard → Settings → Database`);
+          console.error(`      2. Переключитесь на "Direct connection" (не Pooler)`);
+          console.error(`      3. Скопируйте точное значение поля "host"`);
+          console.error(`      4. Установите это значение в Railway как DB_DIRECT_HOST`);
+          console.error(`   ⚠️ ВРЕМЕННОЕ РЕШЕНИЕ: Используется pooler для DDL (НЕ РЕКОМЕНДУЕТСЯ)`);
+          console.error(`      Pooler не поддерживает DDL операции и вызовет ошибки!`);
           
-          // Создаем пул с хостом и lookup функцией
-          // Lookup будет вызван при попытке подключения
-          this.directPool = new Pool({
-            ...this.directDbConfig,
-            // host остается из directDbConfig (оригинальный хост)
-            lookup: ipv4Lookup,
-            connectionTimeoutMillis: 10000,
-          });
-          console.log(`✅ Direct pool создан с хостом и IPv4 lookup: ${this.directDbConfig.host}`);
-          console.log(`   ⚠️ Lookup функция будет вызвана при подключении`);
+          // Используем pooler как временное решение
+          // Это НЕ будет работать для DDL операций, но позволит серверу запуститься
+          this.directPool = this.mainPool;
+          console.log(`⚠️ Direct pool использует pooler (временное решение, НЕ для продакшена)`);
         }
       }
       

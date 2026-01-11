@@ -24,29 +24,51 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Разрешаем запросы без origin (мобильные приложения, Postman)
-    if (!origin) return callback(null, true);
-    
-    // Разрешаем любой origin в development режиме
-    if (process.env.NODE_ENV === 'development') {
+    // Разрешаем запросы без origin (мобильные приложения, Postman, curl)
+    if (!origin) {
+      console.log('🔓 CORS: Запрос без origin разрешен');
       return callback(null, true);
     }
     
+    // Разрешаем любой origin в development режиме
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`🔓 CORS: Development режим - origin разрешен: ${origin}`);
+      return callback(null, true);
+    }
+    
+    // Логируем все запросы для отладки
+    console.log(`🔍 CORS: Проверка origin: ${origin}`);
+    console.log(`   Разрешенные origins: ${allowedOrigins.join(', ')}`);
+    
     // Проверяем разрешенные origins
-    if (allowedOrigins.some(allowedOrigin => {
-      // Точное совпадение или если origin начинается с allowedOrigin
-      return origin === allowedOrigin || origin.startsWith(allowedOrigin);
-    })) {
+    const isAllowed = allowedOrigins.some(allowedOrigin => {
+      // Точное совпадение
+      if (origin === allowedOrigin) {
+        console.log(`✅ CORS: Точное совпадение с ${allowedOrigin}`);
+        return true;
+      }
+      // Проверка начала строки (для поддоменов)
+      if (origin.startsWith(allowedOrigin)) {
+        console.log(`✅ CORS: Origin начинается с ${allowedOrigin}`);
+        return true;
+      }
+      return false;
+    });
+    
+    if (isAllowed) {
       return callback(null, true);
     }
     
     // Для продакшена временно разрешаем все origins (для тестирования)
     // В будущем можно заменить на: callback(new Error('Not allowed by CORS'));
+    console.warn(`⚠️ CORS: Origin не в списке разрешенных, но разрешен временно: ${origin}`);
     callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cookie'],
+  exposedHeaders: ['Set-Cookie'],
+  optionsSuccessStatus: 200
 }));
 
 app.use(bodyParser.json());
@@ -58,6 +80,10 @@ app.use('/api', authRouter)
 
 const server = app.listen(PORT, async () => {
   console.log('Server started on port ' + PORT);
+  console.log('🌐 CORS configuration:');
+  console.log(`   Allowed origins: ${allowedOrigins.join(', ') || 'none'}`);
+  console.log(`   FRONTEND_URL: ${process.env.FRONTEND_URL || 'not set'}`);
+  console.log(`   NODE_ENV: ${process.env.NODE_ENV || 'not set'}`);
   
   // Инициализация пулов подключений с резолвом IPv4 адресов
   try {
