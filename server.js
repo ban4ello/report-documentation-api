@@ -13,7 +13,28 @@ const authRouter = require('./routes/auth.routes.js')
 
 app.use(cookieParser());
 // app.use(cors({origin: ['http://localhost:5173', 'http://127.0.0.1:5173']}));
-app.use(cors())
+// app.use(cors())
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://report-documentation-mt620jzol-ban4ellos-projects.vercel.app/',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Разрешаем запросы без origin (мобильные приложения, Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
