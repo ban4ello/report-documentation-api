@@ -15,11 +15,29 @@ class DatabaseManager {
     
     // Создаем кастомную функцию lookup для принудительного использования IPv4
     // Это решает проблему с IPv6 на Railway и других платформах
+    // Используем dns.resolve4 для гарантированного получения только IPv4 адресов
     const ipv4Lookup = (hostname, options, callback) => {
-      dns.lookup(hostname, { family: 4, all: false }, (err, address) => {
+      // Используем resolve4 для гарантированного получения только IPv4 адресов
+      dns.resolve4(hostname, (err, addresses) => {
         if (err) {
-          return callback(err);
+          console.error(`❌ DNS resolve4 error for ${hostname}:`, err.message);
+          // Fallback на lookup с family: 4
+          return dns.lookup(hostname, { family: 4, all: false }, (lookupErr, address, family) => {
+            if (lookupErr) {
+              return callback(lookupErr);
+            }
+            console.log(`🔍 DNS lookup (fallback) for ${hostname}: ${address} (IPv${family || 4})`);
+            callback(null, address, 4);
+          });
         }
+        // Берем первый IPv4 адрес из массива
+        if (!addresses || addresses.length === 0) {
+          const error = new Error(`No IPv4 addresses found for ${hostname}`);
+          console.error(`❌ ${error.message}`);
+          return callback(error);
+        }
+        const address = addresses[0];
+        console.log(`🔍 DNS resolve4 for ${hostname}: ${address} (IPv4)`);
         // Возвращаем IPv4 адрес
         callback(null, address, 4);
       });
