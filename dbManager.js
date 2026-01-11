@@ -3,8 +3,19 @@ const { Pool } = require('pg');
 const dns = require('dns');
 const { promisify } = require('util');
 
-// Промис-версия dns.lookup для асинхронного резолва
+// Промис-версия dns.lookup и dns.resolve4 для асинхронного резолва
 const dnsLookup = promisify(dns.lookup);
+const dnsResolve4 = promisify(dns.resolve4);
+
+// Кастомная функция lookup для принудительного использования IPv4
+const ipv4Lookup = (hostname, options, callback) => {
+  dns.lookup(hostname, { family: 4, all: false }, (err, address, family) => {
+    if (err) {
+      return callback(err);
+    }
+    callback(null, address, 4);
+  });
+};
 
 class DatabaseManager {
   constructor() {
@@ -128,16 +139,26 @@ class DatabaseManager {
       if (this.directHost) {
         console.log(`🔍 Резолв IPv4 адреса для ${this.directHost}...`);
         hostResolutions.push(
-          dnsLookup(this.directHost, { family: 4 })
-            .then(result => {
-              // dns.lookup возвращает объект { address, family } или строку
-              const ip = typeof result === 'string' ? result : (result.address || result);
-              console.log(`✅ Прямой хост ${this.directHost} резолвлен в IPv4: ${ip}`);
+          // Сначала пробуем resolve4 (более надежный для IPv4)
+          dnsResolve4(this.directHost)
+            .then(addresses => {
+              const ip = addresses[0];
+              console.log(`✅ Прямой хост ${this.directHost} резолвлен в IPv4 через resolve4: ${ip}`);
               return { type: 'direct', host: this.directHost, ip };
             })
-            .catch(err => {
-              console.error(`❌ Ошибка резолва IPv4 для ${this.directHost}:`, err.message);
-              return { type: 'direct', host: this.directHost, ip: this.directHost };
+            .catch(() => {
+              // Fallback на lookup
+              return dnsLookup(this.directHost, { family: 4 })
+                .then(result => {
+                  const ip = typeof result === 'string' ? result : (result.address || result);
+                  console.log(`✅ Прямой хост ${this.directHost} резолвлен в IPv4 через lookup: ${ip}`);
+                  return { type: 'direct', host: this.directHost, ip };
+                })
+                .catch(err => {
+                  console.error(`❌ Ошибка резолва IPv4 для ${this.directHost}:`, err.message);
+                  console.warn(`⚠️ Используется хост напрямую с принудительным IPv4 lookup`);
+                  return { type: 'direct', host: this.directHost, ip: null }; // null означает использовать хост с lookup
+                });
             })
         );
       }
@@ -173,18 +194,40 @@ class DatabaseManager {
         }
       }
       
-      // Создаем пулы с IP адресами
+      // Создаем пулы с IP адресами или хостами с принудительным IPv4 lookup
       if (this.directDbConfig) {
-        this.directPool = new Pool({
-          ...this.directDbConfig,
-          host: directHostIp, // Используем IP адрес вместо хоста
-        });
+        // Если получили IP адрес (не null и не равен хосту), используем IP напрямую
+        // Иначе используем хост с принудительным IPv4 lookup
+        if (directHostIp && directHostIp !== this.directHost && directHostIp !== null) {
+          // Используем IP адрес напрямую
+          this.directPool = new Pool({
+            ...this.directDbConfig,
+            host: directHostIp,
+          });
+        } else {
+          // Резолв не удался или вернул хост - используем хост с принудительным IPv4 lookup
+          this.directPool = new Pool({
+            ...this.directDbConfig,
+            lookup: ipv4Lookup,
+          });
+        }
       }
       
-      this.mainPool = new Pool({
-        ...this.mainDbConfig,
-        host: poolerHostIp, // Используем IP адрес вместо хоста
-      });
+      // Если получили IP адрес (не null и не равен хосту), используем IP напрямую
+      // Иначе используем хост с принудительным IPv4 lookup
+      if (poolerHostIp && poolerHostIp !== this.poolerHost && poolerHostIp !== null) {
+        // Используем IP адрес напрямую
+        this.mainPool = new Pool({
+          ...this.mainDbConfig,
+          host: poolerHostIp,
+        });
+      } else {
+        // Резолв не удался или вернул хост - используем хост с принудительным IPv4 lookup
+        this.mainPool = new Pool({
+          ...this.mainDbConfig,
+          lookup: ipv4Lookup,
+        });
+      }
       
       // Логирование для отладки
       console.log(`🔌 Database connection configured:`);
@@ -196,11 +239,17 @@ class DatabaseManager {
       this.poolsInitialized = true;
     } catch (error) {
       console.error(`❌ Критическая ошибка при инициализации пулов:`, error.message);
-      // Fallback - создаем пулы с хостами напрямую
+      // Fallback - создаем пулы с хостами и принудительным IPv4 lookup
       if (this.directDbConfig) {
-        this.directPool = new Pool(this.directDbConfig);
+        this.directPool = new Pool({
+          ...this.directDbConfig,
+          lookup: ipv4Lookup,
+        });
       }
-      this.mainPool = new Pool(this.mainDbConfig);
+      this.mainPool = new Pool({
+        ...this.mainDbConfig,
+        lookup: ipv4Lookup,
+      });
       this.poolsInitialized = true;
     }
   }
