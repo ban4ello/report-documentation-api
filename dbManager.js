@@ -2,6 +2,28 @@ require('dotenv').config();
 const { Pool } = require('pg');
 const dns = require('dns');
 const { promisify } = require('util');
+const net = require('net');
+
+// Принудительно устанавливаем IPv4 как приоритетный (если доступно)
+if (net.setDefaultAutoSelectFamily) {
+  try {
+    net.setDefaultAutoSelectFamily(false);
+    if (net.setDefaultAutoSelectFamilyIPv4) {
+      net.setDefaultAutoSelectFamilyIPv4();
+    }
+  } catch (e) {
+    // Игнорируем ошибки, если функции не доступны
+  }
+}
+
+// Устанавливаем приоритет IPv4 для DNS резолва
+if (dns.setDefaultResultOrder) {
+  try {
+    dns.setDefaultResultOrder('ipv4first');
+  } catch (e) {
+    // Игнорируем ошибки, если функция не доступна
+  }
+}
 
 // Промис-версия dns.lookup и dns.resolve4 для асинхронного резолва
 const dnsLookup = promisify(dns.lookup);
@@ -212,10 +234,16 @@ class DatabaseManager {
           console.log(`✅ Direct pool создан с IP адресом: ${directHostIp}`);
         } else {
           // Резолв не удался (null) или вернул хост - используем оригинальный хост с принудительным IPv4 lookup
+          // ВАЖНО: Если хост не резолвится, это может означать, что он неправильный
+          // Но мы все равно пытаемся использовать lookup для принудительного IPv4
+          console.warn(`⚠️ Хост ${this.directDbConfig.host} не резолвится. Проверьте правильность DB_DIRECT_HOST.`);
+          console.warn(`   Ожидаемый формат: db.{projectRef}.supabase.co`);
           this.directPool = new Pool({
             ...this.directDbConfig,
             // host остается из directDbConfig (оригинальный хост)
             lookup: ipv4Lookup,
+            // Добавляем дополнительные опции для принудительного IPv4
+            connectionTimeoutMillis: 10000,
           });
           console.log(`✅ Direct pool создан с хостом и IPv4 lookup: ${this.directDbConfig.host}`);
         }
