@@ -14,6 +14,7 @@
     "clone-calculation": "node scripts/clone-calculation.js",
     "backup-calculations": "node scripts/backup-calculations.js",
     "restore-calculations": "node scripts/restore-calculations.js",
+    "copy-database": "node scripts/copy-database.js",
     "create-media-files-table": "node scripts/create-media-files-table.js",
     "initialize-main-tables": "node scripts/initialize-main-tables.js",
     "alter-notes-to-text": "node scripts/alter-notes-to-text.js",

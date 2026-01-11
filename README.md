@@ -239,8 +239,9 @@ npm run populate-workers          # Наполнение тестовыми ра
 npm run clear-workers             # Очистка работников
 npm run clear-parent-calculations # Очистка родительских расчетов
 npm run clone-calculation         # Клонирование расчета
-npm run backup-calculations       # Создание бэкапа
-npm run restore-calculations      # Восстановление из бэкапа
+npm run backup-calculations       # Создание бэкапа (JSON)
+npm run restore-calculations      # Восстановление из бэкапа (JSON)
+npm run copy-database             # Создание SQL-дампа схемы
 ```
 
 ## 🗄️ Подключение к базе данных
