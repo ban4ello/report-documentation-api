@@ -2,10 +2,10 @@
   "name": "report-documentation-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "pm2 start server.js",
+    "start": "node server.js",
     "stop": "pm2 stop server.js",
     "lint:fix": "eslint --fix ./*.js",
     "populate-workers": "node scripts/populate-test-workers.js",
