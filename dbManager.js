@@ -23,11 +23,42 @@ class DatabaseManager {
       // 2. poolerPool - для обычных запросов
       
       // Определяем хост для прямого подключения Supabase
-      let directHost = this.mainDbConfig.host;
-      if (isSupabasePooler) {
-        // Преобразуем pooler хост в прямой хост
-        // db.xxx.pooler.supabase.com -> db.xxx.supabase.co
-        directHost = this.mainDbConfig.host.replace('.pooler.supabase.com', '.supabase.co');
+      let directHost = process.env.DB_DIRECT_HOST; // Можно указать явно через переменную окружения
+      
+      if (!directHost && isSupabasePooler) {
+        // Пытаемся извлечь project reference из pooler хоста или пользователя
+        const poolerHost = this.mainDbConfig.host;
+        let projectRef = null;
+        
+        // Если формат db.xxx.pooler.supabase.com
+        if (poolerHost.startsWith('db.')) {
+          const match = poolerHost.match(/^db\.([^.]+)\.pooler\.supabase\.com$/);
+          if (match) {
+            projectRef = match[1];
+            directHost = `db.${projectRef}.supabase.co`;
+          }
+        }
+        // Если формат aws-1-eu-west-2.pooler.supabase.com - извлекаем project reference из пользователя
+        else if (poolerHost.includes('aws-') || poolerHost.includes('pooler.supabase.com')) {
+          // Извлекаем project reference из DB_USER (формат: postgres.xxx)
+          const dbUser = this.mainDbConfig.user;
+          if (dbUser && dbUser.includes('.')) {
+            projectRef = dbUser.split('.')[1]; // postgres.xxx -> xxx
+            if (projectRef) {
+              directHost = `db.${projectRef}.supabase.co`;
+            }
+          }
+        }
+        
+        // Если не удалось определить, пытаемся заменить .pooler.supabase.com на .supabase.co
+        if (!directHost) {
+          directHost = poolerHost.replace('.pooler.supabase.com', '.supabase.co');
+        }
+      }
+      
+      // Если прямой хост не определен, используем тот же хост (может не сработать для Supabase)
+      if (!directHost) {
+        directHost = this.mainDbConfig.host;
       }
       
       // Прямое подключение для DDL (порт 5432)
@@ -37,6 +68,11 @@ class DatabaseManager {
         port: 5432, // Прямой порт Supabase
       };
       this.directPool = new Pool(this.directDbConfig);
+      
+      // Логирование для отладки
+      console.log(`🔌 Database connection configured:`);
+      console.log(`   Pooler (queries): ${this.mainDbConfig.host}:${this.mainDbConfig.port}`);
+      console.log(`   Direct (DDL): ${directHost}:5432`);
       
       // Pooler для обычных запросов (порт 6543 или текущий порт)
       this.mainPool = new Pool(this.mainDbConfig);
