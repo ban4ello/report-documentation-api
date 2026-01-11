@@ -9,10 +9,16 @@ const dnsResolve4 = promisify(dns.resolve4);
 
 // Кастомная функция lookup для принудительного использования IPv4
 const ipv4Lookup = (hostname, options, callback) => {
+  console.log(`🔍 IPv4 lookup для хоста: ${hostname}`);
+  // Принудительно используем только IPv4
   dns.lookup(hostname, { family: 4, all: false }, (err, address, family) => {
     if (err) {
+      console.error(`❌ IPv4 lookup ошибка для ${hostname}:`, err.message);
+      // Возвращаем ошибку - не позволяем pg использовать IPv6
       return callback(err);
     }
+    console.log(`✅ IPv4 lookup успешен для ${hostname}: ${address} (family: ${family || 4})`);
+    // Всегда возвращаем family: 4 для гарантии IPv4
     callback(null, address, 4);
   });
 };
@@ -183,58 +189,64 @@ class DatabaseManager {
       // Ждем резолва всех адресов
       const resolutions = await Promise.all(hostResolutions);
       
-      let directHostIp = this.directHost;
-      let poolerHostIp = this.poolerHost;
+      let directHostIp = null;
+      let poolerHostIp = null;
       
       for (const res of resolutions) {
         if (res.type === 'direct') {
-          directHostIp = res.ip;
+          directHostIp = res.ip; // Может быть IP адрес или null
         } else if (res.type === 'pooler') {
-          poolerHostIp = res.ip;
+          poolerHostIp = res.ip; // Может быть IP адрес или хост
         }
       }
       
       // Создаем пулы с IP адресами или хостами с принудительным IPv4 lookup
       if (this.directDbConfig) {
-        // Если получили IP адрес (не null и не равен хосту), используем IP напрямую
-        // Иначе используем хост с принудительным IPv4 lookup
-        if (directHostIp && directHostIp !== this.directHost && directHostIp !== null) {
+        // Если получили валидный IP адрес (не null и не равен хосту), используем IP напрямую
+        if (directHostIp && directHostIp !== null && directHostIp !== this.directHost) {
           // Используем IP адрес напрямую
           this.directPool = new Pool({
             ...this.directDbConfig,
             host: directHostIp,
           });
+          console.log(`✅ Direct pool создан с IP адресом: ${directHostIp}`);
         } else {
-          // Резолв не удался или вернул хост - используем хост с принудительным IPv4 lookup
+          // Резолв не удался (null) или вернул хост - используем оригинальный хост с принудительным IPv4 lookup
           this.directPool = new Pool({
             ...this.directDbConfig,
+            // host остается из directDbConfig (оригинальный хост)
             lookup: ipv4Lookup,
           });
+          console.log(`✅ Direct pool создан с хостом и IPv4 lookup: ${this.directDbConfig.host}`);
         }
       }
       
-      // Если получили IP адрес (не null и не равен хосту), используем IP напрямую
-      // Иначе используем хост с принудительным IPv4 lookup
-      if (poolerHostIp && poolerHostIp !== this.poolerHost && poolerHostIp !== null) {
+      // Если получили валидный IP адрес (не null и не равен хосту), используем IP напрямую
+      if (poolerHostIp && poolerHostIp !== null && poolerHostIp !== this.poolerHost) {
         // Используем IP адрес напрямую
         this.mainPool = new Pool({
           ...this.mainDbConfig,
           host: poolerHostIp,
         });
+        console.log(`✅ Main pool создан с IP адресом: ${poolerHostIp}`);
       } else {
-        // Резолв не удался или вернул хост - используем хост с принудительным IPv4 lookup
+        // Резолв не удался или вернул хост - используем оригинальный хост с принудительным IPv4 lookup
         this.mainPool = new Pool({
           ...this.mainDbConfig,
+          // host остается из mainDbConfig (оригинальный хост)
           lookup: ipv4Lookup,
         });
+        console.log(`✅ Main pool создан с хостом и IPv4 lookup: ${this.mainDbConfig.host}`);
       }
       
       // Логирование для отладки
       console.log(`🔌 Database connection configured:`);
       if (this.directHost) {
-        console.log(`   Direct (DDL): ${this.directHost} -> ${directHostIp}:5432 (IPv4 only)`);
+        const directDisplay = directHostIp && directHostIp !== null ? directHostIp : this.directHost;
+        console.log(`   Direct (DDL): ${this.directHost} -> ${directDisplay}:5432 (IPv4 only)`);
       }
-      console.log(`   Pooler (queries): ${this.poolerHost} -> ${poolerHostIp}:${this.mainDbConfig.port}`);
+      const poolerDisplay = poolerHostIp && poolerHostIp !== null && poolerHostIp !== this.poolerHost ? poolerHostIp : this.poolerHost;
+      console.log(`   Pooler (queries): ${this.poolerHost} -> ${poolerDisplay}:${this.mainDbConfig.port}`);
       
       this.poolsInitialized = true;
     } catch (error) {
