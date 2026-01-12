@@ -634,15 +634,26 @@ class DatabaseManager {
         return;
       }
       
-      // Проверяем наличие критических таблиц (например, workers_tax_data)
-      const tableCheck = await client.query(
-        `SELECT table_name FROM information_schema.tables 
-         WHERE table_schema = $1 AND table_name = $2`,
-        [schemaName, 'workers_tax_data']
-      );
+      // Проверяем наличие критических таблиц, которые могли быть добавлены позже
+      // Проверяем несколько таблиц, которые могут отсутствовать в старых схемах
+      const criticalTables = ['workers_tax_data', 'itr_tax_data', 'calculation_media_files'];
+      const missingTables = [];
       
-      if (tableCheck.rows.length === 0) {
-        console.log(`⚠️ Таблица workers_tax_data отсутствует в схеме ${schemaName}, создаем недостающие таблицы...`);
+      for (const tableName of criticalTables) {
+        const tableCheck = await client.query(
+          `SELECT table_name FROM information_schema.tables 
+           WHERE table_schema = $1 AND table_name = $2`,
+          [schemaName, tableName]
+        );
+        
+        if (tableCheck.rows.length === 0) {
+          missingTables.push(tableName);
+        }
+      }
+      
+      if (missingTables.length > 0) {
+        console.log(`⚠️ Отсутствуют таблицы в схеме ${schemaName}: ${missingTables.join(', ')}`);
+        console.log(`   Создаем недостающие таблицы...`);
         await this.createTablesProgrammatically(client, schemaName);
         console.log(`✅ Недостающие таблицы в схеме ${schemaName} созданы`);
       }
