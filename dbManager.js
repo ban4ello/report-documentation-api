@@ -615,11 +615,58 @@ class DatabaseManager {
     console.log(`🎉 Все таблицы в схеме ${schemaName} созданы программно`);
   }
 
+  // Проверить и создать отсутствующие таблицы в схеме пользователя
+  async ensureUserTables(userId) {
+    const schemaName = `user_${userId}`;
+    const pool = await this.getDirectPool();
+    const client = await pool.connect();
+    
+    try {
+      // Проверяем существование схемы
+      const schemaCheck = await client.query(
+        `SELECT schema_name FROM information_schema.schemata WHERE schema_name = $1`,
+        [schemaName]
+      );
+      
+      if (schemaCheck.rows.length === 0) {
+        console.log(`⚠️ Схема ${schemaName} не существует, создаем...`);
+        await this.createUserDatabase(userId);
+        return;
+      }
+      
+      // Проверяем наличие критических таблиц (например, workers_tax_data)
+      const tableCheck = await client.query(
+        `SELECT table_name FROM information_schema.tables 
+         WHERE table_schema = $1 AND table_name = $2`,
+        [schemaName, 'workers_tax_data']
+      );
+      
+      if (tableCheck.rows.length === 0) {
+        console.log(`⚠️ Таблица workers_tax_data отсутствует в схеме ${schemaName}, создаем недостающие таблицы...`);
+        await this.createTablesProgrammatically(client, schemaName);
+        console.log(`✅ Недостающие таблицы в схеме ${schemaName} созданы`);
+      }
+    } catch (error) {
+      console.error(`❌ Ошибка при проверке таблиц в схеме ${schemaName}:`, error.message);
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
   // Получить подключение к схеме пользователя
   async getUserConnection(userId) {
     // Убеждаемся, что пулы инициализированы
     if (!this.poolsInitialized) {
       await this.initializePools();
+    }
+    
+    // Проверяем и создаем отсутствующие таблицы (для миграции)
+    try {
+      await this.ensureUserTables(userId);
+    } catch (error) {
+      console.warn(`⚠️ Не удалось проверить таблицы для пользователя ${userId}:`, error.message);
+      // Продолжаем работу, даже если проверка не удалась
     }
     
     // Возвращаем объект с методом query, который устанавливает схему поиска
