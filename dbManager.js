@@ -687,7 +687,21 @@ class DatabaseManager {
         try {
           // Устанавливаем схему поиска для пользователя
           await client.query(`SET search_path TO user_${userId}, public`);
-          return await client.query(query, params);
+          try {
+            return await client.query(query, params);
+          } catch (error) {
+            // Автовосстановление: если таблицы в схеме пользователя не были созданы/обновлены (старые схемы),
+            // то пробуем создать недостающие таблицы и повторить запрос один раз.
+            if (error && error.code === '42P01') {
+              console.warn(
+                `⚠️ Missing relation for user_${userId} (42P01). Trying to ensure tables and retry once...`
+              );
+              await this.ensureUserTables(userId);
+              await client.query(`SET search_path TO user_${userId}, public`);
+              return await client.query(query, params);
+            }
+            throw error;
+          }
         } finally {
           client.release();
         }
