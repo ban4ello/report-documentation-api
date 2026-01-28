@@ -649,103 +649,133 @@ class CalculationController {
   }
 
   async getCalculation(req, res) {
-    const id = req.params.id;
-    const calculation = await req.userDb.query('SELECT * FROM calculation where id = $1', [id]);
-    const newSpecificationData = await req.userDb.query('SELECT * FROM specification_data where calculation_id = $1', [id]);
-    const newSpecificationDataNotes = newSpecificationData.rows[0].notes;
-    const newSpecificationDataId = newSpecificationData.rows[0].id;
-    const resSpecificationDataTable = await req.userDb.query('SELECT * FROM specification_data_table where specification_data_id = $1', [newSpecificationDataId]);
-    const resWorkersTaxData = await req.userDb.query('SELECT * FROM workers_tax_data where calculation_id = $1', [id]);
-    const resItrTaxData = await req.userDb.query('SELECT * FROM itr_tax_data where calculation_id = $1', [id]);
-
-		const camelizeSpecificationData = resSpecificationDataTable.rows.map((row) => { // TODO: refactor this
-			return Object.keys(row).reduce((acc, key) => {
-				acc[camelize(key)] = row[key];
-	
-				return acc;
-			}, {});
-		});
-
-    const newWorkersData = await req.userDb.query('SELECT * FROM workers_data where calculation_id = $1', [id]);
-    const newWorkersDataNotes = newWorkersData.rows[0].notes;
-    const newWorkersDataId = newWorkersData.rows[0].id;
-    const resWorkersDataTable = await req.userDb.query('SELECT * FROM workers_data_table where workers_data_id = $1', [newWorkersDataId]);
-
-		const camelizeWorkersData = resWorkersDataTable.rows.map((row) => { // TODO: refactor this
-			return Object.keys(row).reduce((acc, key) => {
-				acc[camelize(key)] = row[key];
-	
-				return acc;
-			}, {});
-		});
-
-    const newItrDataRes = await req.userDb.query('SELECT * FROM itr_data where calculation_id = $1', [id]);
-		const newItrData = newItrDataRes.rows.length ? newItrDataRes.rows[0] : {};
-    const newItrDataId = newItrData.id;
-    const newItrDataNotes = newItrData.notes || ('note-' + newItrDataId);
-    // const newItrDataNotes = newItrData.notes;
-    const resItrDataTable = await req.userDb.query('SELECT * FROM itr_data_table where itr_data_id = $1', [newItrDataId]);
-
-		const camelizeItrData = resItrDataTable.rows.map((row) => { // TODO: refactor this
-			return Object.keys(row).reduce((acc, key) => {
-				acc[camelize(key)] = row[key];
-	
-				return acc;
-			}, {});
-		});
-
-		const camelizeWorkersTaxData = resWorkersTaxData.rows.map((row) => { // TODO: refactor this
-			return Object.keys(row).reduce((acc, key) => {
-        switch (camelize(key)) {
-          case 'calculationId':
-          case 'coefficient':
-          case 'coefficientA':
-          case 'coefficientB':
-          case 'subtotal':
-          case 'total':
-            acc[camelize(key)] = row[key] !== null ? Number(row[key]) : null;
-            // acc[camelize(key)] = row[key];
-            break;
-            
-          default:
-            acc[camelize(key)] = row[key];
-            break;
-        }
-	
-				return acc;
-			}, {});
-		});
-
-		const camelizeItrTaxData = resItrTaxData.rows.map((row) => { // TODO: refactor this
-			return Object.keys(row).reduce((acc, key) => {
-				acc[camelize(key)] = row[key];
-	
-				return acc;
-			}, {});
-		});
-
-    res.json({
-      ...calculation.rows[0],
-      coeficient_of_nds: Number(calculation.rows[0].coeficient_of_nds),
-      profitability_coeficient: Number(calculation.rows[0].profitability_coeficient),
-      workers_tax_data: camelizeWorkersTaxData.sort((a,b) => a.orderId - b.orderId), // TODO: refactor: не должно быть зависимости от порядка расположения записей в массиве camelizeWorkersTaxData, так как в методе "computedWorkerTaxData" есть зависимость от порядка вычисления каждого поля
-      itr_tax_data: camelizeItrTaxData.sort((a,b) => a.orderId - b.orderId), // TODO: refactor: не должно быть зависимости от порядка расположения записей в массиве camelizeWorkersTaxData, так как в методе "computedWorkerTaxData" есть зависимость от порядка вычисления каждого поля,
-      specification_data: {
-				id: newSpecificationDataId,
-        table: camelizeSpecificationData,
-        notes: newSpecificationDataNotes
-      },
-      workers_data: {
-				id: newWorkersDataId,
-        table: camelizeWorkersData,
-        notes: newWorkersDataNotes
-      },
-      itr_data: {
-				id: newItrDataId,
-        table: camelizeItrData,
-        notes: newItrDataNotes
+    try {
+      const id = req.params.id;
+      const calculation = await req.userDb.query('SELECT * FROM calculation where id = $1', [id]);
+      
+      if (!calculation.rows || calculation.rows.length === 0) {
+        return res.status(404).json({
+          message: 'Калькуляция не найдена',
+          code: 'CALCULATION_NOT_FOUND'
+        });
       }
-    });
+
+      const newSpecificationData = await req.userDb.query('SELECT * FROM specification_data where calculation_id = $1', [id]);
+      const newSpecificationDataRow = newSpecificationData.rows.length > 0 ? newSpecificationData.rows[0] : null;
+      const newSpecificationDataNotes = newSpecificationDataRow?.notes || '';
+      const newSpecificationDataId = newSpecificationDataRow?.id;
+      
+      let resSpecificationDataTable = { rows: [] };
+      if (newSpecificationDataId) {
+        resSpecificationDataTable = await req.userDb.query('SELECT * FROM specification_data_table where specification_data_id = $1', [newSpecificationDataId]);
+      }
+      
+      const resWorkersTaxData = await req.userDb.query('SELECT * FROM workers_tax_data where calculation_id = $1', [id]);
+      const resItrTaxData = await req.userDb.query('SELECT * FROM itr_tax_data where calculation_id = $1', [id]);
+
+      const camelizeSpecificationData = resSpecificationDataTable.rows.map((row) => { // TODO: refactor this
+        return Object.keys(row).reduce((acc, key) => {
+          acc[camelize(key)] = row[key];
+  
+          return acc;
+        }, {});
+      });
+
+      const newWorkersData = await req.userDb.query('SELECT * FROM workers_data where calculation_id = $1', [id]);
+      const newWorkersDataRow = newWorkersData.rows.length > 0 ? newWorkersData.rows[0] : null;
+      const newWorkersDataNotes = newWorkersDataRow?.notes || '';
+      const newWorkersDataId = newWorkersDataRow?.id;
+      
+      let resWorkersDataTable = { rows: [] };
+      if (newWorkersDataId) {
+        resWorkersDataTable = await req.userDb.query('SELECT * FROM workers_data_table where workers_data_id = $1', [newWorkersDataId]);
+      }
+
+      const camelizeWorkersData = resWorkersDataTable.rows.map((row) => { // TODO: refactor this
+        return Object.keys(row).reduce((acc, key) => {
+          acc[camelize(key)] = row[key];
+  
+          return acc;
+        }, {});
+      });
+
+      const newItrDataRes = await req.userDb.query('SELECT * FROM itr_data where calculation_id = $1', [id]);
+      const newItrData = newItrDataRes.rows.length ? newItrDataRes.rows[0] : {};
+      const newItrDataId = newItrData.id;
+      const newItrDataNotes = newItrData.notes || ('note-' + newItrDataId);
+      
+      let resItrDataTable = { rows: [] };
+      if (newItrDataId) {
+        resItrDataTable = await req.userDb.query('SELECT * FROM itr_data_table where itr_data_id = $1', [newItrDataId]);
+      }
+
+      const camelizeItrData = resItrDataTable.rows.map((row) => { // TODO: refactor this
+        return Object.keys(row).reduce((acc, key) => {
+          acc[camelize(key)] = row[key];
+  
+          return acc;
+        }, {});
+      });
+
+      const camelizeWorkersTaxData = resWorkersTaxData.rows.map((row) => { // TODO: refactor this
+        return Object.keys(row).reduce((acc, key) => {
+          switch (camelize(key)) {
+            case 'calculationId':
+            case 'coefficient':
+            case 'coefficientA':
+            case 'coefficientB':
+            case 'subtotal':
+            case 'total':
+              acc[camelize(key)] = row[key] !== null ? Number(row[key]) : null;
+              // acc[camelize(key)] = row[key];
+              break;
+              
+            default:
+              acc[camelize(key)] = row[key];
+              break;
+          }
+  
+          return acc;
+        }, {});
+      });
+
+      const camelizeItrTaxData = resItrTaxData.rows.map((row) => { // TODO: refactor this
+        return Object.keys(row).reduce((acc, key) => {
+          acc[camelize(key)] = row[key];
+  
+          return acc;
+        }, {});
+      });
+
+      res.json({
+        ...calculation.rows[0],
+        coeficient_of_nds: Number(calculation.rows[0].coeficient_of_nds),
+        profitability_coeficient: Number(calculation.rows[0].profitability_coeficient),
+        workers_tax_data: camelizeWorkersTaxData.sort((a,b) => a.orderId - b.orderId), // TODO: refactor: не должно быть зависимости от порядка расположения записей в массиве camelizeWorkersTaxData, так как в методе "computedWorkerTaxData" есть зависимость от порядка вычисления каждого поля
+        itr_tax_data: camelizeItrTaxData.sort((a,b) => a.orderId - b.orderId), // TODO: refactor: не должно быть зависимости от порядка расположения записей в массиве camelizeWorkersTaxData, так как в методе "computedWorkerTaxData" есть зависимость от порядка вычисления каждого поля,
+        specification_data: {
+          id: newSpecificationDataId || null,
+          table: camelizeSpecificationData,
+          notes: newSpecificationDataNotes
+        },
+        workers_data: {
+          id: newWorkersDataId || null,
+          table: camelizeWorkersData,
+          notes: newWorkersDataNotes
+        },
+        itr_data: {
+          id: newItrDataId || null,
+          table: camelizeItrData,
+          notes: newItrDataNotes
+        }
+      });
+    } catch (error) {
+      console.error('❌ Error getting calculation:', error);
+      res.status(500).json({
+        message: 'Ошибка при получении калькуляции',
+        code: error.code || 'CALCULATION_GET_ERROR'
+      });
+    }
   }
 
   async getCalculationByParentId(req, res) {
