@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const dbManager = require('./dbManager');
 const PORT = process.env.PORT || 8000;
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 const calculationRouter = require('./routes/calculation.routes.js');
 const parentCalculationRouter = require('./routes/parent-calculation.routes.js');
 const workersRouter = require('./routes/workers.routes.js');
@@ -57,6 +59,8 @@ app.use('/api', calculationRouter);
 app.use('/api', parentCalculationRouter);
 app.use('/api', workersRouter);
 app.use('/api', authRouter);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const server = app.listen(PORT, async () => {
   console.log('Server started on port ' + PORT);
