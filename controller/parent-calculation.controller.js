@@ -11,6 +11,20 @@ class ParentCalculationController {
     const parent_calculation = await req.userDb.query('SELECT * FROM parent_calculation where id = $1', [id]);
     res.json(parent_calculation.rows[0]);
   }
+
+  async updateParentCalculation(req, res) {
+    const id = req.params.id;
+    const { title } = req.body;
+    const result = await req.userDb.query('UPDATE parent_calculation SET title = $1 WHERE id = $2 RETURNING *', [title, id]);
+    if (!result.rows || result.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Родительская калькуляция не найдена',
+        code: 'PARENT_CALCULATION_NOT_FOUND'
+      });
+    }
+    res.json(result.rows[0]);
+  }
+
   async deleteParentCalculation(req, res) {
     const id = req.params.id;
     const parent_calculation = await req.userDb.query('DELETE FROM parent_calculation where id = $1', [id]);
