@@ -73,16 +73,18 @@ USER_ID=1
 
 ### 📋 Описание переменных окружения
 
-| Переменная | Описание | Пример | Обязательная |
-|------------|----------|--------|--------------|
-| `PORT` | Порт, на котором будет запущен сервер | `8000` | ✅ |
-| `JWT_SECRET` | Секретный ключ для подписи JWT токенов | `your_jwt_secret_key_here` | ✅ |
-| `DB_HOST` | Хост базы данных PostgreSQL | `localhost` | ✅ |
-| `DB_PORT` | Порт базы данных PostgreSQL | `5432` | ✅ |
-| `DB_NAME` | Название базы данных | `calculations` | ✅ |
-| `DB_USER` | Пользователь для подключения к БД | `postgres` | ✅ |
-| `DB_PASSWORD` | Пароль для подключения к БД | `root` | ✅ |
-| `USER_ID` | ID пользователя по умолчанию для тестирования | `1` | ❌ |
+| Переменная     | Описание                                            | Пример                                    | Обязательная |
+| -------------- | --------------------------------------------------- | ----------------------------------------- | ------------ |
+| `PORT`         | Порт, на котором будет запущен сервер               | `8000`                                    | ✅           |
+| `JWT_SECRET`   | Секретный ключ для подписи JWT токенов              | `your_jwt_secret_key_here`                | ✅           |
+| `DB_HOST`      | Хост базы данных PostgreSQL                         | `localhost`                               | ✅           |
+| `DB_PORT`      | Порт базы данных PostgreSQL                         | `5432`                                    | ✅           |
+| `DB_NAME`      | Название базы данных                                | `calculations`                            | ✅           |
+| `DB_USER`      | Пользователь для подключения к БД                   | `postgres`                                | ✅           |
+| `DB_PASSWORD`  | Пароль для подключения к БД                         | `root`                                    | ✅           |
+| `USER_ID`      | ID пользователя по умолчанию для тестирования       | `1`                                       | ❌           |
+| `API_URL`      | Публичный URL API (для Swagger и деплоя на Railway) | `https://your-app.up.railway.app`         | ❌           |
+| `FRONTEND_URL` | URL фронтенда для CORS                              | `https://report-documentation.vercel.app` | ❌           |
 
 #### Детальное описание:
 
@@ -101,6 +103,10 @@ USER_ID=1
 - **`DB_PASSWORD`** - Пароль пользователя PostgreSQL. Убедитесь, что пароль правильный и пользователь имеет необходимые права.
 
 - **`USER_ID`** - ID пользователя для тестирования и отладки. Используется в некоторых скриптах. Не обязательная переменная.
+
+- **`API_URL`** - Публичный URL вашего API без слэша в конце. На **Railway** задайте переменную `API_URL` (например, `https://your-service.up.railway.app`), чтобы в Swagger UI кнопка «Try it out» отправляла запросы на ваш сервер, а не на localhost.
+
+- **`FRONTEND_URL`** - URL фронтенда для CORS. Добавьте в список разрешённых origin при деплое.
 
 ### 4. Быстрая настройка (одной командой)
 
@@ -125,6 +131,7 @@ npm run dev
 ```
 
 **Примечание:** Если нужно создать таблицы вручную (например, для отладки), используйте:
+
 ```bash
 npm run initialize-main-tables
 ```
@@ -138,6 +145,7 @@ npm run dev
 ```
 
 При первом запуске сервер автоматически:
+
 - ✅ Создаст основные таблицы (`users`, `login_attempts`, `tokenSchema`) в схеме `public`
 - ✅ Выведет сообщение об успешной инициализации
 
@@ -156,10 +164,12 @@ npm run stop
 ## 🗄️ Структура базы данных
 
 ### Основная схема `public` (общая для всех):
+
 - **users** - пользователи системы
 - **tokenSchema** - refresh токены
 
 ### Пользовательские схемы `user_{userId}` (изолированные):
+
 - **workers** - сотрудники
 - **parent_calculation** - родительские расчеты
 - **calculation** - основные расчеты
@@ -173,14 +183,25 @@ npm run stop
 - **itr_tax_data** - налоговые данные ИТР
 - **calculation_media_files** - медиа файлы (PDF, JPG, PNG), прикрепленные к расчетам
 
+## 📖 Swagger (OpenAPI)
+
+Интерактивная документация API доступна по адресу: **`/api-docs`**
+
+- Локально: `http://localhost:8000/api-docs`
+- На Railway: `https://ваш-сервис.up.railway.app/api-docs`
+
+**Для деплоя на Railway:** в настройках сервиса добавьте переменную окружения **`API_URL`** = `https://ваш-домен.up.railway.app` (без слэша в конце). Тогда в Swagger UI будет выбран правильный сервер для «Try it out».
+
 ## 🔌 API Endpoints
 
 ### Аутентификация
+
 - `POST /api/signup` - регистрация пользователя (автоматически создает схему)
 - `POST /api/login` - вход в систему
 - `POST /api/logout` - выход из системы
 
 ### Расчеты (требуют аутентификации)
+
 - `GET /api/calculations` - получение всех расчетов пользователя
 - `POST /api/calculation` - создание нового расчета
 - `GET /api/calculation/:id` - получение расчета по ID
@@ -188,17 +209,20 @@ npm run stop
 - `DELETE /api/calculation/:id` - удаление расчета
 
 ### Медиа файлы (требуют аутентификации)
+
 - `POST /api/calculation/:id/media-files` - загрузка медиа файлов (PDF, JPG, PNG) для расчета
 - `GET /api/calculation/:id/media-files` - получение списка медиа файлов расчета
 - `GET /api/calculation-media-file/:id` - скачивание медиа файла
 - `DELETE /api/calculation-media-file/:id` - удаление медиа файла
 
 ### Родительские расчеты (требуют аутентификации)
+
 - `GET /api/parent-calculations` - получение всех родительских расчетов
 - `POST /api/parent-calculation` - создание родительского расчета
 - `DELETE /api/parent-calculation/:id` - удаление родительского расчета
 
 ### Сотрудники (требуют аутентификации)
+
 - `GET /api/workers` - получение всех сотрудников
 - `POST /api/worker` - создание сотрудника
 - `PUT /api/worker/:id` - обновление сотрудника
@@ -207,12 +231,14 @@ npm run stop
 ## 🔐 Безопасность и изоляция данных
 
 ### Принципы работы:
+
 1. **Регистрация**: Создается пользователь + автоматически создается схема `user_{userId}`
 2. **Аутентификация**: Middleware устанавливает `search_path` на схему пользователя
 3. **Изоляция**: Все запросы выполняются в контексте схемы конкретного пользователя
 4. **Безопасность**: Невозможно получить доступ к данным других пользователей
 
 ### Пример работы:
+
 ```javascript
 // При запросе с токеном пользователя ID=5
 // Автоматически устанавливается: SET search_path TO user_5, public
@@ -277,6 +303,7 @@ SELECT schemaname, tablename FROM pg_tables WHERE schemaname LIKE 'user_%';
 ## 🧪 Тестирование системы
 
 ### Регистрация пользователя:
+
 ```bash
 curl -X POST http://localhost:8000/api/signup \
   -H "Content-Type: application/json" \
@@ -289,6 +316,7 @@ curl -X POST http://localhost:8000/api/signup \
 ```
 
 ### Вход в систему:
+
 ```bash
 curl -X POST http://localhost:8000/api/login \
   -H "Content-Type: application/json" \
@@ -299,6 +327,7 @@ curl -X POST http://localhost:8000/api/login \
 ```
 
 ### Создание сотрудника (с токеном):
+
 ```bash
 curl -X POST http://localhost:8000/api/worker \
   -H "Content-Type: application/json" \
@@ -311,6 +340,7 @@ curl -X POST http://localhost:8000/api/worker \
 ```
 
 ### Загрузка медиа файлов (с токеном):
+
 ```bash
 curl -X POST http://localhost:8000/api/calculation/1/media-files \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
@@ -319,12 +349,14 @@ curl -X POST http://localhost:8000/api/calculation/1/media-files \
 ```
 
 ### Получение списка медиа файлов (с токеном):
+
 ```bash
 curl -X GET http://localhost:8000/api/calculation/1/media-files \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
 ### Скачивание медиа файла (с токеном):
+
 ```bash
 curl -X GET http://localhost:8000/api/calculation-media-file/1 \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
@@ -332,6 +364,7 @@ curl -X GET http://localhost:8000/api/calculation-media-file/1 \
 ```
 
 ### Удаление медиа файла (с токеном):
+
 ```bash
 curl -X DELETE http://localhost:8000/api/calculation-media-file/1 \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
@@ -340,25 +373,30 @@ curl -X DELETE http://localhost:8000/api/calculation-media-file/1 \
 ## 🐛 Решение проблем
 
 ### Ошибка подключения к базе данных
+
 - Убедитесь, что PostgreSQL запущен
 - Проверьте правильность параметров подключения в `.env` (DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD)
 - Убедитесь, что база данных `calculations` существует
 - Проверьте, что пользователь БД имеет права на создание схем и таблиц
 
 ### Ошибка "relation 'users' does not exist"
+
 - Таблицы должны создаться автоматически при первом запуске
 - Если таблицы не создались, запустите вручную: `npm run initialize-main-tables`
 - Проверьте логи сервера на наличие ошибок инициализации
 
 ### Ошибка создания схемы пользователя
+
 - Проверьте права пользователя PostgreSQL на создание схем
 - Убедитесь, что нет активных подключений к БД
 
 ### Порт уже используется
+
 - Измените `PORT` в файле `.env`
 - Или остановите процесс: `pkill -f "node.*server.js"`
 
 ### Ошибки JWT
+
 - Убедитесь, что `JWT_SECRET` установлен в файле `.env`
 - Используйте безопасный секретный ключ
 
@@ -391,11 +429,13 @@ server/
 Система поддерживает прикрепление медиа файлов (PDF, JPG, PNG) к расчетам. Файлы хранятся в базе данных в таблице `calculation_media_files`.
 
 ### Ограничения:
+
 - **Поддерживаемые форматы**: PDF, JPG, PNG
 - **Максимальный размер файла**: 10MB
 - **Максимальное количество файлов за раз**: 10
 
 ### Особенности:
+
 - Файлы хранятся в формате BYTEA в PostgreSQL
 - Автоматическое каскадное удаление при удалении расчета
 - Полная изоляция данных между пользователями через схемы
@@ -405,6 +445,7 @@ server/
 После запуска сервер будет доступен по адресу: `http://localhost:8000`
 
 ### Проверка создания схем:
+
 ```sql
 -- Подключение к БД
 psql -U postgres -d calculations
@@ -420,17 +461,19 @@ SET search_path TO user_1, public;
 ## 🔧 Мониторинг и обслуживание
 
 ### Просмотр использования схем:
+
 ```sql
 -- Размер каждой схемы пользователя
-SELECT 
+SELECT
     schemaname,
     pg_size_pretty(sum(pg_total_relation_size(schemaname||'.'||tablename))::bigint) as size
-FROM pg_tables 
-WHERE schemaname LIKE 'user_%' 
+FROM pg_tables
+WHERE schemaname LIKE 'user_%'
 GROUP BY schemaname;
 ```
 
 ### Очистка неиспользуемых схем:
+
 ```sql
 -- Удаление схемы пользователя (при необходимости)
 DROP SCHEMA IF EXISTS user_123 CASCADE;
