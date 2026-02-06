@@ -12,6 +12,7 @@ const calculationRouter = require('./routes/calculation.routes.js');
 const parentCalculationRouter = require('./routes/parent-calculation.routes.js');
 const workersRouter = require('./routes/workers.routes.js');
 const authRouter = require('./routes/auth.routes.js');
+const templateRouter = require('./routes/template.routes.js');
 
 const allowedOrigins = [
   'http://localhost:5173',
@@ -59,6 +60,7 @@ app.use('/api', calculationRouter);
 app.use('/api', parentCalculationRouter);
 app.use('/api', workersRouter);
 app.use('/api', authRouter);
+app.use('/api', templateRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

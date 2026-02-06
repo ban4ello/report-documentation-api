@@ -162,3 +162,31 @@ create TABLE calculation_media_files (
 	date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (calculation_id) REFERENCES calculation(id) ON DELETE CASCADE
 );
+
+create TABLE templates (
+	id SERIAL PRIMARY KEY,
+	title VARCHAR(255) NOT NULL,
+	template_type VARCHAR(50) NOT NULL CHECK (template_type IN ('workers', 'itr')),
+	date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+create TABLE template_workers_data_table (
+	id SERIAL PRIMARY KEY,
+	date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+	name VARCHAR(255),
+	number_of_hours_worked INTEGER,
+	salary_per_day INTEGER,
+	salary_per_hour INTEGER,
+	total DECIMAL,
+	template_id INTEGER NOT NULL,
+	FOREIGN KEY (template_id) REFERENCES templates(id) ON DELETE CASCADE
+);
+
+create TABLE template_itr_data_table (
+	id SERIAL PRIMARY KEY,
+	date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+	name VARCHAR(255),
+	salary_per_month INTEGER,
+	template_id INTEGER NOT NULL,
+	FOREIGN KEY (template_id) REFERENCES templates(id) ON DELETE CASCADE
+);
