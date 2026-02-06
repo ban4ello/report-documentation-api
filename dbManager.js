@@ -595,6 +595,34 @@ class DatabaseManager {
         file_data BYTEA NOT NULL,
         date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (calculation_id) REFERENCES ${schemaName}.calculation(id) ON DELETE CASCADE
+      )`,
+      
+      `CREATE TABLE IF NOT EXISTS ${schemaName}.templates (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        template_type VARCHAR(50) NOT NULL CHECK (template_type IN ('workers', 'itr')),
+        date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      )`,
+      
+      `CREATE TABLE IF NOT EXISTS ${schemaName}.template_workers_data_table (
+        id SERIAL PRIMARY KEY,
+        date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        name VARCHAR(255),
+        number_of_hours_worked INTEGER,
+        salary_per_day INTEGER,
+        salary_per_hour INTEGER,
+        total DECIMAL,
+        template_id INTEGER NOT NULL,
+        FOREIGN KEY (template_id) REFERENCES ${schemaName}.templates(id) ON DELETE CASCADE
+      )`,
+      
+      `CREATE TABLE IF NOT EXISTS ${schemaName}.template_itr_data_table (
+        id SERIAL PRIMARY KEY,
+        date_of_creation TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        name VARCHAR(255),
+        salary_per_month INTEGER,
+        template_id INTEGER NOT NULL,
+        FOREIGN KEY (template_id) REFERENCES ${schemaName}.templates(id) ON DELETE CASCADE
       )`
     ];
 
@@ -636,7 +664,7 @@ class DatabaseManager {
       
       // Проверяем наличие критических таблиц, которые могли быть добавлены позже
       // Проверяем несколько таблиц, которые могут отсутствовать в старых схемах
-      const criticalTables = ['workers_tax_data', 'itr_tax_data', 'calculation_media_files'];
+      const criticalTables = ['workers_tax_data', 'itr_tax_data', 'calculation_media_files', 'templates', 'template_workers_data_table', 'template_itr_data_table'];
       const missingTables = [];
       
       for (const tableName of criticalTables) {
