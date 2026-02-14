@@ -3,78 +3,8 @@ const camelize = (s) => s.replace(/_./g, (x) => x[1].toUpperCase());
 
 class CalculationController {
   async createCalculation(req, res) {
-    const {
-      itrWorkedDays,
-      coeficientOfNds,
-      costOfElectricityPerDay,
-      galvanizedValue,
-      numberOfDaysPerShift,
-      numberOfHoursPerShift,
-      rentalCostPerDay,
-      profitabilityCoeficient,
-      title,
-      transportValue,
-      dateOfCreation,
-      lastEditDate,
-      parentCalculationId,
-      calculationType,
-      consumablesData,
-      hardwareData,
-      metalData,
-      specificationData,
-			workersData,
-			itrData,
-      workersTaxData,
-      itrTaxData,
-      totalMetalPerItem,
-      totalProcessingPerItem,
-      totalProfitabilityPerItem,
-      total,
-      isMetalEnabled,
-      isHardwareEnabled
-    } = req.body;
-    let resSpecificationDataTable = [];
-    let resWorkersTaxDataTable = [];
-    let resItrTaxDataTable = [];
-    let resWorkersDataTable = [];
-    let resItrDataTable = [];
-
-    let newParentCalculationId = parentCalculationId;
-    if (calculationType === 'plan') {
-      const parent = await req.userDb.query(
-        `INSERT INTO parent_calculation (title, date_of_creation) values ($1, $2) RETURNING *`,
-        [title, dateOfCreation || new Date()]
-      );
-      newParentCalculationId = parent.rows[0].id;
-    }
-
-    const newCalculation = await req.userDb.query(
-      `INSERT INTO calculation (
-			itr_worked_days,
-			coeficient_of_nds,
-			cost_of_electricity_per_day,
-			galvanized_value,
-			number_of_days_per_shift,
-			number_of_hours_per_shift,
-			rental_cost_per_day,
-			profitability_coeficient,
-			title,
-			transport_value,
-			date_of_creation,
-			last_edit_date,
-			parent_calculation_id,
-			calculation_type,
-			consumables_data,
-			hardware_data,
-			metal_data,
-			total_metal_per_item,
-			total_processing_per_item,
-			total_profitability_per_item,
-      total,
-			is_metal_enabled,
-			is_hardware_enabled
-		) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23) RETURNING *`,
-      [
+    try {
+      const {
         itrWorkedDays,
         coeficientOfNds,
         costOfElectricityPerDay,
@@ -85,186 +15,265 @@ class CalculationController {
         profitabilityCoeficient,
         title,
         transportValue,
-        dateOfCreation || new Date(),
+        dateOfCreation,
         lastEditDate,
-        newParentCalculationId,
+        parentCalculationId,
         calculationType,
         consumablesData,
         hardwareData,
         metalData,
+        specificationData,
+			  workersData,
+			  itrData,
+        workersTaxData,
+        itrTaxData,
         totalMetalPerItem,
         totalProcessingPerItem,
         totalProfitabilityPerItem,
         total,
-        isMetalEnabled || false,
-        isHardwareEnabled || false
-      ]
-    );
+        isMetalEnabled,
+        isHardwareEnabled
+      } = req.body;
+      let resSpecificationDataTable = [];
+      let resWorkersTaxDataTable = [];
+      let resItrTaxDataTable = [];
+      let resWorkersDataTable = [];
+      let resItrDataTable = [];
 
-		const newCalculationId = newCalculation.rows[0].id;
+      let newParentCalculationId = parentCalculationId;
+      if (calculationType === 'plan') {
+        const parent = await req.userDb.query(
+          `INSERT INTO parent_calculation (title, date_of_creation) values ($1, $2) RETURNING *`,
+          [title, dateOfCreation || new Date()]
+        );
+        newParentCalculationId = parent.rows[0].id;
+      }
 
-    if (itrTaxData) {
-      resItrTaxDataTable = await Promise.all(
-        itrTaxData.map((item) => {
-          return new Promise((res) =>
-            res(
-              req.userDb.query(
-								`INSERT INTO itr_tax_data (
-                  order_id,
-									name,
-                  coefficient,
-                  coefficient_a,
-                  coefficient_b,
-                  key,
-                  subtotal,
-                  total,
-                  calculation_id
-                ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
-                [
-                item.orderId,
-                item.name,
-                item.coefficient,
-                item.coefficientA,
-                item.coefficientB,
-                item.key,
-                item.subtotal,
-                item.total,
-                newCalculationId
-              ])
-            )
-          );
-        })
+      const newCalculation = await req.userDb.query(
+        `INSERT INTO calculation (
+			  itr_worked_days,
+			  coeficient_of_nds,
+			  cost_of_electricity_per_day,
+			  galvanized_value,
+			  number_of_days_per_shift,
+			  number_of_hours_per_shift,
+			  rental_cost_per_day,
+			  profitability_coeficient,
+			  title,
+			  transport_value,
+			  date_of_creation,
+			  last_edit_date,
+			  parent_calculation_id,
+			  calculation_type,
+			  consumables_data,
+			  hardware_data,
+			  metal_data,
+			  total_metal_per_item,
+			  total_processing_per_item,
+			  total_profitability_per_item,
+        total,
+			  is_metal_enabled,
+			  is_hardware_enabled
+		  ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23) RETURNING *`,
+        [
+          itrWorkedDays,
+          coeficientOfNds,
+          costOfElectricityPerDay,
+          galvanizedValue,
+          numberOfDaysPerShift,
+          numberOfHoursPerShift,
+          rentalCostPerDay,
+          profitabilityCoeficient,
+          title,
+          transportValue,
+          dateOfCreation || new Date(),
+          lastEditDate,
+          newParentCalculationId,
+          calculationType,
+          consumablesData,
+          hardwareData,
+          metalData,
+          totalMetalPerItem,
+          totalProcessingPerItem,
+          totalProfitabilityPerItem,
+          total,
+          isMetalEnabled || false,
+          isHardwareEnabled || false
+        ]
       );
-    }
 
-    if (workersTaxData) {
-      resWorkersTaxDataTable = await Promise.all(
-        workersTaxData.map((item) => {
-          return new Promise((res) =>
-            res(
-              req.userDb.query(
-								`INSERT INTO workers_tax_data (
-                  order_id,
-									name,
-                  coefficient,
-                  coefficient_a,
-                  coefficient_b,
-                  key,
-                  subtotal,
-                  total,
-                  calculation_id
-                ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
-                [
-                item.orderId,
-                item.name,
-                item.coefficient,
-                item.coefficientA,
-                item.coefficientB,
-                item.key,
-                item.subtotal,
-                item.total,
-                newCalculationId
-              ])
-            )
-          );
-        })
-      );
-    }
+		  const newCalculationId = newCalculation.rows[0].id;
 
-    if (specificationData) {
-      const newSpecificationDataRes = await req.userDb.query(`INSERT INTO specification_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
-        specificationData.notes,
-        newCalculationId
-      ]);
-			const newSpecificationDataId = newSpecificationDataRes.rows[0].id;
-
-      resSpecificationDataTable = await Promise.all(
-        specificationData.table.map((item) => {
-          return new Promise((res) =>
-            res(
-              req.userDb.query(
-								`INSERT INTO specification_data_table (
-									name,
-									quantity,
-									value_per_unit,
-									unit_of_measurement,
-									total_weight,
-									specification_data_id
-								) values ($1, $2, $3, $4, $5, $6) RETURNING *`,
-                [item.name, item.quantity, item.valuePerUnit, item.unitOfMeasurement, item.totalWeight, newSpecificationDataId]
+      if (itrTaxData) {
+        resItrTaxDataTable = await Promise.all(
+          itrTaxData.map((item) => {
+            return new Promise((res) =>
+              res(
+                req.userDb.query(
+								  `INSERT INTO itr_tax_data (
+                    order_id,
+									  name,
+                    coefficient,
+                    coefficient_a,
+                    coefficient_b,
+                    key,
+                    subtotal,
+                    total,
+                    calculation_id
+                  ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+                  [
+                  item.orderId,
+                  item.name,
+                  item.coefficient,
+                  item.coefficientA,
+                  item.coefficientB,
+                  item.key,
+                  item.subtotal,
+                  item.total,
+                  newCalculationId
+                ])
               )
-            )
-          );
-        })
-      );
-    }
+            );
+          })
+        );
+      }
 
-    if (workersData) {
-      const newWorkersDataRes = await req.userDb.query(`INSERT INTO workers_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
-        workersData.notes,
-        newCalculationId
-      ]);
-			const newWorkersDataId = newWorkersDataRes.rows[0].id;
-
-      resWorkersDataTable = await Promise.all(
-        workersData.table.map((item) => {
-          return new Promise((res) =>
-            res(
-              req.userDb.query(
-								`INSERT INTO workers_data_table (
-									name,
-									number_of_hours_worked,
-									salary_per_day,
-									salary_per_hour,
-									total,
-									workers_data_id
-								) values ($1, $2, $3, $4, $5, $6) RETURNING *`,
-                [item.name, item.numberOfHoursWorked, item.salaryPerDay, item.salaryPerHour, item.total, newWorkersDataId]
+      if (workersTaxData) {
+        resWorkersTaxDataTable = await Promise.all(
+          workersTaxData.map((item) => {
+            return new Promise((res) =>
+              res(
+                req.userDb.query(
+								  `INSERT INTO workers_tax_data (
+                    order_id,
+									  name,
+                    coefficient,
+                    coefficient_a,
+                    coefficient_b,
+                    key,
+                    subtotal,
+                    total,
+                    calculation_id
+                  ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+                  [
+                  item.orderId,
+                  item.name,
+                  item.coefficient,
+                  item.coefficientA,
+                  item.coefficientB,
+                  item.key,
+                  item.subtotal,
+                  item.total,
+                  newCalculationId
+                ])
               )
-            )
-          );
-        })
-      );
-    }
+            );
+          })
+        );
+      }
 
-    if (itrData) {
-      const newItrDataRes = await req.userDb.query(`INSERT INTO itr_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
-        itrData.notes,
-        newCalculationId
-      ]);
-			const newItrDataId = newItrDataRes.rows[0].id;
+      if (specificationData) {
+        const newSpecificationDataRes = await req.userDb.query(`INSERT INTO specification_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
+          specificationData.notes,
+          newCalculationId
+        ]);
+			  const newSpecificationDataId = newSpecificationDataRes.rows[0].id;
 
-      resItrDataTable = await Promise.all(
-        itrData.table.map((item) => {
-          return new Promise((res) =>
-            res(
-              req.userDb.query(
-								`INSERT INTO itr_data_table (
-									name,
-									salary_per_month,
-									itr_data_id
-								) values ($1, $2, $3) RETURNING *`,
-                [item.name, item.salaryPerMonth, newItrDataId]
+        resSpecificationDataTable = await Promise.all(
+          specificationData.table.map((item) => {
+            return new Promise((res) =>
+              res(
+                req.userDb.query(
+								  `INSERT INTO specification_data_table (
+									  name,
+									  quantity,
+									  value_per_unit,
+									  unit_of_measurement,
+									  total_weight,
+									  specification_data_id
+								  ) values ($1, $2, $3, $4, $5, $6) RETURNING *`,
+                  [item.name, item.quantity, item.valuePerUnit, item.unitOfMeasurement, item.totalWeight, newSpecificationDataId]
+                )
               )
-            )
-          );
-        })
-      );
-    }
+            );
+          })
+        );
+      }
 
-    res.json({
-      ...newCalculation.rows[0],
-      specification_data: resSpecificationDataTable.map((item) => item.rows[0]),
-      workers_data: resWorkersDataTable.map((item) => item.rows[0]),
-      itr_data: resItrDataTable.map((item) => item.rows[0]),
-      workers_tax_data: resWorkersTaxDataTable.map((item) => item.rows[0]),
-      itr_tax_data: resItrTaxDataTable.map((item) => item.rows[0]),
-    });
+      if (workersData) {
+        const newWorkersDataRes = await req.userDb.query(`INSERT INTO workers_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
+          workersData.notes,
+          newCalculationId
+        ]);
+			  const newWorkersDataId = newWorkersDataRes.rows[0].id;
+
+        resWorkersDataTable = await Promise.all(
+          workersData.table.map((item) => {
+            return new Promise((res) =>
+              res(
+                req.userDb.query(
+								  `INSERT INTO workers_data_table (
+									  name,
+									  number_of_hours_worked,
+									  salary_per_day,
+									  salary_per_hour,
+									  total,
+									  workers_data_id
+								  ) values ($1, $2, $3, $4, $5, $6) RETURNING *`,
+                  [item.name, item.numberOfHoursWorked, item.salaryPerDay, item.salaryPerHour, item.total, newWorkersDataId]
+                )
+              )
+            );
+          })
+        );
+      }
+
+      if (itrData) {
+        const newItrDataRes = await req.userDb.query(`INSERT INTO itr_data (notes, calculation_id) values ($1, $2) RETURNING *`, [
+          itrData.notes,
+          newCalculationId
+        ]);
+			  const newItrDataId = newItrDataRes.rows[0].id;
+
+        resItrDataTable = await Promise.all(
+          itrData.table.map((item) => {
+            return new Promise((res) =>
+              res(
+                req.userDb.query(
+								  `INSERT INTO itr_data_table (
+									  name,
+									  salary_per_month,
+									  itr_data_id
+								  ) values ($1, $2, $3) RETURNING *`,
+                  [item.name, item.salaryPerMonth, newItrDataId]
+                )
+              )
+            );
+          })
+        );
+      }
+
+      res.json({
+        ...newCalculation.rows[0],
+        specification_data: resSpecificationDataTable.map((item) => item.rows[0]),
+        workers_data: resWorkersDataTable.map((item) => item.rows[0]),
+        itr_data: resItrDataTable.map((item) => item.rows[0]),
+        workers_tax_data: resWorkersTaxDataTable.map((item) => item.rows[0]),
+        itr_tax_data: resItrTaxDataTable.map((item) => item.rows[0]),
+      });
+    } catch (error) {
+      console.error('❌ Error creating calculation:', error);
+      res.status(500).json({
+        message: 'Ошибка при сохранении калькуляции',
+        code: error.code || 'CALCULATION_CREATE_ERROR'
+      });
+    }
   }
 
   async updCalculation(req, res) {
-    const id = req.params.id;
-    const {
+    try {
+      const id = req.params.id;
+      const {
       itrWorkedDays,
       coeficientOfNds,
       costOfElectricityPerDay,
@@ -291,9 +300,9 @@ class CalculationController {
       total,
       isMetalEnabled,
       isHardwareEnabled
-    } = req.body;
+      } = req.body;
 
-    const calculation = await req.userDb.query(
+      const calculation = await req.userDb.query(
       `UPDATE calculation set 
 				itr_worked_days = $1,
 				coeficient_of_nds = $2,
@@ -341,7 +350,7 @@ class CalculationController {
         isHardwareEnabled || false,
         id
       ]
-    );
+      );
 
 		if (specificationData) {
 			const specificationDataRes = await req.userDb.query(
@@ -629,107 +638,144 @@ class CalculationController {
       );
 		}
 
-    res.json(calculation.rows[0]);
+      res.json(calculation.rows[0]);
+    } catch (error) {
+      console.error('❌ Error updating calculation:', error);
+      res.status(500).json({
+        message: 'Ошибка при обновлении калькуляции',
+        code: error.code || 'CALCULATION_UPDATE_ERROR'
+      });
+    }
   }
 
   async getCalculation(req, res) {
-    const id = req.params.id;
-    const calculation = await req.userDb.query('SELECT * FROM calculation where id = $1', [id]);
-    const newSpecificationData = await req.userDb.query('SELECT * FROM specification_data where calculation_id = $1', [id]);
-    const newSpecificationDataNotes = newSpecificationData.rows[0].notes;
-    const newSpecificationDataId = newSpecificationData.rows[0].id;
-    const resSpecificationDataTable = await req.userDb.query('SELECT * FROM specification_data_table where specification_data_id = $1', [newSpecificationDataId]);
-    const resWorkersTaxData = await req.userDb.query('SELECT * FROM workers_tax_data where calculation_id = $1', [id]);
-    const resItrTaxData = await req.userDb.query('SELECT * FROM itr_tax_data where calculation_id = $1', [id]);
-
-		const camelizeSpecificationData = resSpecificationDataTable.rows.map((row) => { // TODO: refactor this
-			return Object.keys(row).reduce((acc, key) => {
-				acc[camelize(key)] = row[key];
-	
-				return acc;
-			}, {});
-		});
-
-    const newWorkersData = await req.userDb.query('SELECT * FROM workers_data where calculation_id = $1', [id]);
-    const newWorkersDataNotes = newWorkersData.rows[0].notes;
-    const newWorkersDataId = newWorkersData.rows[0].id;
-    const resWorkersDataTable = await req.userDb.query('SELECT * FROM workers_data_table where workers_data_id = $1', [newWorkersDataId]);
-
-		const camelizeWorkersData = resWorkersDataTable.rows.map((row) => { // TODO: refactor this
-			return Object.keys(row).reduce((acc, key) => {
-				acc[camelize(key)] = row[key];
-	
-				return acc;
-			}, {});
-		});
-
-    const newItrDataRes = await req.userDb.query('SELECT * FROM itr_data where calculation_id = $1', [id]);
-		const newItrData = newItrDataRes.rows.length ? newItrDataRes.rows[0] : {};
-    const newItrDataId = newItrData.id;
-    const newItrDataNotes = newItrData.notes || ('note-' + newItrDataId);
-    // const newItrDataNotes = newItrData.notes;
-    const resItrDataTable = await req.userDb.query('SELECT * FROM itr_data_table where itr_data_id = $1', [newItrDataId]);
-
-		const camelizeItrData = resItrDataTable.rows.map((row) => { // TODO: refactor this
-			return Object.keys(row).reduce((acc, key) => {
-				acc[camelize(key)] = row[key];
-	
-				return acc;
-			}, {});
-		});
-
-		const camelizeWorkersTaxData = resWorkersTaxData.rows.map((row) => { // TODO: refactor this
-			return Object.keys(row).reduce((acc, key) => {
-        switch (camelize(key)) {
-          case 'calculationId':
-          case 'coefficient':
-          case 'coefficientA':
-          case 'coefficientB':
-          case 'subtotal':
-          case 'total':
-            acc[camelize(key)] = row[key] !== null ? Number(row[key]) : null;
-            // acc[camelize(key)] = row[key];
-            break;
-            
-          default:
-            acc[camelize(key)] = row[key];
-            break;
-        }
-	
-				return acc;
-			}, {});
-		});
-
-		const camelizeItrTaxData = resItrTaxData.rows.map((row) => { // TODO: refactor this
-			return Object.keys(row).reduce((acc, key) => {
-				acc[camelize(key)] = row[key];
-	
-				return acc;
-			}, {});
-		});
-
-    res.json({
-      ...calculation.rows[0],
-      coeficient_of_nds: Number(calculation.rows[0].coeficient_of_nds),
-      profitability_coeficient: Number(calculation.rows[0].profitability_coeficient),
-      workers_tax_data: camelizeWorkersTaxData.sort((a,b) => a.orderId - b.orderId), // TODO: refactor: не должно быть зависимости от порядка расположения записей в массиве camelizeWorkersTaxData, так как в методе "computedWorkerTaxData" есть зависимость от порядка вычисления каждого поля
-      itr_tax_data: camelizeItrTaxData.sort((a,b) => a.orderId - b.orderId), // TODO: refactor: не должно быть зависимости от порядка расположения записей в массиве camelizeWorkersTaxData, так как в методе "computedWorkerTaxData" есть зависимость от порядка вычисления каждого поля,
-      specification_data: {
-				id: newSpecificationDataId,
-        table: camelizeSpecificationData,
-        notes: newSpecificationDataNotes
-      },
-      workers_data: {
-				id: newWorkersDataId,
-        table: camelizeWorkersData,
-        notes: newWorkersDataNotes
-      },
-      itr_data: {
-				id: newItrDataId,
-        table: camelizeItrData,
-        notes: newItrDataNotes
+    try {
+      const id = req.params.id;
+      const calculation = await req.userDb.query('SELECT * FROM calculation where id = $1', [id]);
+      
+      if (!calculation.rows || calculation.rows.length === 0) {
+        return res.status(404).json({
+          message: 'Калькуляция не найдена',
+          code: 'CALCULATION_NOT_FOUND'
+        });
       }
-    });
+
+      const newSpecificationData = await req.userDb.query('SELECT * FROM specification_data where calculation_id = $1', [id]);
+      const newSpecificationDataRow = newSpecificationData.rows.length > 0 ? newSpecificationData.rows[0] : null;
+      const newSpecificationDataNotes = newSpecificationDataRow?.notes || '';
+      const newSpecificationDataId = newSpecificationDataRow?.id;
+      
+      let resSpecificationDataTable = { rows: [] };
+      if (newSpecificationDataId) {
+        resSpecificationDataTable = await req.userDb.query('SELECT * FROM specification_data_table where specification_data_id = $1', [newSpecificationDataId]);
+      }
+      
+      const resWorkersTaxData = await req.userDb.query('SELECT * FROM workers_tax_data where calculation_id = $1', [id]);
+      const resItrTaxData = await req.userDb.query('SELECT * FROM itr_tax_data where calculation_id = $1', [id]);
+
+      const camelizeSpecificationData = resSpecificationDataTable.rows.map((row) => { // TODO: refactor this
+        return Object.keys(row).reduce((acc, key) => {
+          acc[camelize(key)] = row[key];
+  
+          return acc;
+        }, {});
+      });
+
+      const newWorkersData = await req.userDb.query('SELECT * FROM workers_data where calculation_id = $1', [id]);
+      const newWorkersDataRow = newWorkersData.rows.length > 0 ? newWorkersData.rows[0] : null;
+      const newWorkersDataNotes = newWorkersDataRow?.notes || '';
+      const newWorkersDataId = newWorkersDataRow?.id;
+      
+      let resWorkersDataTable = { rows: [] };
+      if (newWorkersDataId) {
+        resWorkersDataTable = await req.userDb.query('SELECT * FROM workers_data_table where workers_data_id = $1', [newWorkersDataId]);
+      }
+
+      const camelizeWorkersData = resWorkersDataTable.rows.map((row) => { // TODO: refactor this
+        return Object.keys(row).reduce((acc, key) => {
+          acc[camelize(key)] = row[key];
+  
+          return acc;
+        }, {});
+      });
+
+      const newItrDataRes = await req.userDb.query('SELECT * FROM itr_data where calculation_id = $1', [id]);
+      const newItrData = newItrDataRes.rows.length ? newItrDataRes.rows[0] : {};
+      const newItrDataId = newItrData.id;
+      const newItrDataNotes = newItrData.notes || ('note-' + newItrDataId);
+      
+      let resItrDataTable = { rows: [] };
+      if (newItrDataId) {
+        resItrDataTable = await req.userDb.query('SELECT * FROM itr_data_table where itr_data_id = $1', [newItrDataId]);
+      }
+
+      const camelizeItrData = resItrDataTable.rows.map((row) => { // TODO: refactor this
+        return Object.keys(row).reduce((acc, key) => {
+          acc[camelize(key)] = row[key];
+  
+          return acc;
+        }, {});
+      });
+
+      const camelizeWorkersTaxData = resWorkersTaxData.rows.map((row) => { // TODO: refactor this
+        return Object.keys(row).reduce((acc, key) => {
+          switch (camelize(key)) {
+            case 'calculationId':
+            case 'coefficient':
+            case 'coefficientA':
+            case 'coefficientB':
+            case 'subtotal':
+            case 'total':
+              acc[camelize(key)] = row[key] !== null ? Number(row[key]) : null;
+              // acc[camelize(key)] = row[key];
+              break;
+              
+            default:
+              acc[camelize(key)] = row[key];
+              break;
+          }
+  
+          return acc;
+        }, {});
+      });
+
+      const camelizeItrTaxData = resItrTaxData.rows.map((row) => { // TODO: refactor this
+        return Object.keys(row).reduce((acc, key) => {
+          acc[camelize(key)] = row[key];
+  
+          return acc;
+        }, {});
+      });
+
+      res.json({
+        ...calculation.rows[0],
+        coeficient_of_nds: Number(calculation.rows[0].coeficient_of_nds),
+        profitability_coeficient: Number(calculation.rows[0].profitability_coeficient),
+        workers_tax_data: camelizeWorkersTaxData.sort((a,b) => a.orderId - b.orderId), // TODO: refactor: не должно быть зависимости от порядка расположения записей в массиве camelizeWorkersTaxData, так как в методе "computedWorkerTaxData" есть зависимость от порядка вычисления каждого поля
+        itr_tax_data: camelizeItrTaxData.sort((a,b) => a.orderId - b.orderId), // TODO: refactor: не должно быть зависимости от порядка расположения записей в массиве camelizeWorkersTaxData, так как в методе "computedWorkerTaxData" есть зависимость от порядка вычисления каждого поля,
+        specification_data: {
+          id: newSpecificationDataId || null,
+          table: camelizeSpecificationData,
+          notes: newSpecificationDataNotes
+        },
+        workers_data: {
+          id: newWorkersDataId || null,
+          table: camelizeWorkersData,
+          notes: newWorkersDataNotes
+        },
+        itr_data: {
+          id: newItrDataId || null,
+          table: camelizeItrData,
+          notes: newItrDataNotes
+        }
+      });
+    } catch (error) {
+      console.error('❌ Error getting calculation:', error);
+      res.status(500).json({
+        message: 'Ошибка при получении калькуляции',
+        code: error.code || 'CALCULATION_GET_ERROR'
+      });
+    }
   }
 
   async getCalculationByParentId(req, res) {
