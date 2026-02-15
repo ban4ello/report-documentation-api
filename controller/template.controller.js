@@ -1,6 +1,14 @@
 const dbManager = require('../dbManager');
 
 class TemplateController {
+  constructor() {
+    this.createTemplate = this.createTemplate.bind(this);
+    this.getTemplates = this.getTemplates.bind(this);
+    this.getTemplate = this.getTemplate.bind(this);
+    this.updateTemplate = this.updateTemplate.bind(this);
+    this.deleteTemplate = this.deleteTemplate.bind(this);
+  }
+
   // Вспомогательный метод для проверки и создания таблиц шаблонов
   async ensureTemplateTables(userId) {
     try {
