@@ -41,7 +41,8 @@ class CalculationController {
       let resItrDataTable = [];
 
       let newParentCalculationId = parentCalculationId;
-      if (calculationType === 'plan') {
+      // Create a new parent only when none was provided (re-import can attach a plan to an existing parent)
+      if (calculationType === 'plan' && !parentCalculationId) {
         const parent = await req.userDb.query(
           `INSERT INTO parent_calculation (title, date_of_creation) values ($1, $2) RETURNING *`,
           [title, dateOfCreation || new Date()]
