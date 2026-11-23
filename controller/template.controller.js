@@ -340,4 +340,13 @@ class TemplateController {
   }
 }
 
-module.exports = new TemplateController();
+const templateController = new TemplateController();
+
+// Bind methods so Express route handlers keep the controller as `this`
+module.exports = {
+  createTemplate: templateController.createTemplate.bind(templateController),
+  getTemplates: templateController.getTemplates.bind(templateController),
+  getTemplate: templateController.getTemplate.bind(templateController),
+  updateTemplate: templateController.updateTemplate.bind(templateController),
+  deleteTemplate: templateController.deleteTemplate.bind(templateController)
+};
