@@ -1,0 +1,238 @@
+{
+	"info": {
+		"_postman_id": "templates-api-collection",
+		"name": "Templates API",
+		"description": "Коллекция запросов для тестирования API шаблонов",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Создать шаблон - Зарплата Цех",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Шаблон зарплаты цеха - Стандартный\",\n  \"templateType\": \"workers\",\n  \"workersData\": [\n    {\n      \"name\": \"Иванов Иван Иванович\",\n      \"numberOfHoursWorked\": 8,\n      \"salaryPerDay\": 2000,\n      \"salaryPerHour\": 250,\n      \"total\": 16000\n    },\n    {\n      \"name\": \"Петров Петр Петрович\",\n      \"numberOfHoursWorked\": 8,\n      \"salaryPerDay\": 1800,\n      \"salaryPerHour\": 225,\n      \"total\": 14400\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/template",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"template"
+					]
+				},
+				"description": "Создает новый шаблон для таблицы \"Зарплата - Цех\""
+			},
+			"response": []
+		},
+		{
+			"name": "2. Создать шаблон - Зарплата ИТР",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Шаблон зарплаты ИТР - Базовый\",\n  \"templateType\": \"itr\",\n  \"itrData\": [\n    {\n      \"name\": \"Директор\",\n      \"salaryPerMonth\": 150000\n    },\n    {\n      \"name\": \"Главный инженер\",\n      \"salaryPerMonth\": 120000\n    },\n    {\n      \"name\": \"Инженер-конструктор\",\n      \"salaryPerMonth\": 80000\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/template",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"template"
+					]
+				},
+				"description": "Создает новый шаблон для таблицы \"Зарплата - ИТР\""
+			},
+			"response": []
+		},
+		{
+			"name": "3. Получить все шаблоны",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/templates",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"templates"
+					]
+				},
+				"description": "Возвращает список всех шаблонов пользователя"
+			},
+			"response": []
+		},
+		{
+			"name": "4. Получить шаблон по ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/template/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"template",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID шаблона"
+						}
+					]
+				},
+				"description": "Возвращает шаблон по указанному ID"
+			},
+			"response": []
+		},
+		{
+			"name": "5. Обновить шаблон",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Обновленное название шаблона\",\n  \"templateType\": \"workers\",\n  \"workersData\": [\n    {\n      \"name\": \"Обновленный сотрудник\",\n      \"numberOfHoursWorked\": 8,\n      \"salaryPerDay\": 2200,\n      \"salaryPerHour\": 275,\n      \"total\": 17600\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/template/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"template",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID шаблона для обновления"
+						}
+					]
+				},
+				"description": "Обновляет существующий шаблон. При обновлении все старые данные заменяются новыми."
+			},
+			"response": []
+		},
+		{
+			"name": "6. Удалить шаблон",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/template/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"template",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID шаблона для удаления"
+						}
+					]
+				},
+				"description": "Удаляет шаблон по указанному ID"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "YOUR_TOKEN_HERE",
+			"type": "string"
+		}
+	]
+}
