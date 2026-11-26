@@ -856,15 +856,26 @@ class CalculationController {
     }
 
     try {
-      const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+      const allowedTypes = [
+        'application/pdf',
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+        'application/vnd.ms-excel', // .xls
+        'application/octet-stream' // some browsers/tools send xlsx as this
+      ];
+      const allowedExtensions = ['.pdf', '.jpg', '.jpeg', '.png', '.xlsx', '.xls'];
       const maxFileSize = 10 * 1024 * 1024; // 10MB
 
       const uploadedFiles = [];
 
       for (const file of files) {
-        if (!allowedTypes.includes(file.mimetype)) {
+        const lowerName = (file.originalname || '').toLowerCase();
+        const hasAllowedExt = allowedExtensions.some((ext) => lowerName.endsWith(ext));
+        if (!allowedTypes.includes(file.mimetype) && !hasAllowedExt) {
           return res.status(400).json({ 
-            message: `Файл ${file.originalname} имеет недопустимый тип. Разрешены только PDF, JPG, PNG` 
+            message: `Файл ${file.originalname} имеет недопустимый тип. Разрешены PDF, JPG, PNG, XLS, XLSX` 
           });
         }
 
@@ -959,8 +970,15 @@ class CalculationController {
       }
 
       const file = result.rows[0];
-      res.setHeader('Content-Type', file.file_type);
-      res.setHeader('Content-Disposition', `attachment; filename="${file.file_name}"`);
+      // HTTP headers are Latin-1; Cyrillic/Unicode names must use RFC 5987 filename*
+      const rawName = file.file_name || 'file';
+      const asciiFallback = rawName.replace(/[^\x20-\x7E]/g, '_') || 'file';
+      const encodedName = encodeURIComponent(rawName).replace(/['()]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`);
+      res.setHeader('Content-Type', file.file_type || 'application/octet-stream');
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${asciiFallback}"; filename*=UTF-8''${encodedName}`
+      );
       res.send(file.file_data);
     } catch (error) {
       console.error('Error downloading media file:', error);
