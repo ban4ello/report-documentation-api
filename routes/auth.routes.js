@@ -8,21 +8,10 @@ const authMiddleware = require('../middleware/auth');
  * /api/signup:
  *   post:
  *     tags: [Auth]
- *     summary: Регистрация пользователя
+ *     summary: Регистрация пользователя (отключена)
  *     security: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [email, password]
- *             properties:
- *               email: { type: string, format: email }
- *               password: { type: string, minLength: 6 }
  *     responses:
- *       201: { description: Пользователь создан }
- *       400: { description: Ошибка валидации }
+ *       403: { description: Публичная регистрация отключена }
  */
 router.post('/signup', authController.signupUser);
 
